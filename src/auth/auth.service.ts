@@ -15,6 +15,17 @@ export class AuthService {
         private readonly jwtService: JwtService,
         @InjectConnection() private readonly connection: mongoose.Connection,
     ) { }
+
+    /**
+     * поиск уникального пользователя по имени
+     */
+    async uniqUsername({ username }: { username: string }) {
+        return await this.userModel.findOne({ username }).exec();
+    }
+
+    /**
+     * регистрация пользователя
+     */
     async signup(user: SignUpDto): Promise<{ accessToken: string; refreshToken: string; }> {
         const session = await this.connection.startSession();
         session.startTransaction();
@@ -41,10 +52,9 @@ export class AuthService {
 
     }
 
-    async uniqUsername({ username }: { username: string }) {
-        return await this.userModel.findOne({ username }).exec();
-    }
-
+    /**
+     * авторизация пользователя
+     */
     async login({ username, password }: { username: string; password: string }) {
         try {
             const user = await this.uniqUsername({ username });
