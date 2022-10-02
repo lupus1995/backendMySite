@@ -15,6 +15,13 @@ export class AuthService {
         @InjectConnection() private readonly connection: Connection,
     ) { }
 
+    private generateTokens({ username }: { username: string }) {
+        const accessToken = this.jwtService.sign({ sub: username }, { expiresIn: '120s' });
+        const refreshToken = this.jwtService.sign({ sub: username }, { expiresIn: '360s' });
+
+        return { accessToken, refreshToken }
+    }
+
     /**
      * поиск уникального пользователя по имени
      */
@@ -44,10 +51,7 @@ export class AuthService {
             session.endSession();
         }
 
-        const accessToken = this.jwtService.sign({sub: user.username}, {expiresIn: '120s'});
-        const refreshToken = this.jwtService.sign({sub: user.username}, {expiresIn: '360s'});
-
-        return { accessToken, refreshToken };
+        return this.generateTokens({username: user.username});
 
     }
 
@@ -59,15 +63,17 @@ export class AuthService {
             const user = await this.uniqUsername({ username });
             const isVerifyPassword = await argon2.verify(user.password, password)
             if (isVerifyPassword) {
-                const accessToken = this.jwtService.sign({sub: user.username}, {expiresIn: '120s'});
-                const refreshToken = this.jwtService.sign({sub: user.username}, {expiresIn: '360s'});
-    
-                return { accessToken, refreshToken };
+                return this.generateTokens({username: user.username});
             }
 
             throw new HttpException('Логин или пароль некорректы', HttpStatus.BAD_REQUEST);
         } catch (e) {
             throw new HttpException('Логин или пароль некорректы', HttpStatus.BAD_REQUEST);
         }
+    }
+
+    async refreshTokens({ token }: { token: string }) {
+        const username = this.jwtService.verify(token).sub;
+        return this.generateTokens({username});
     }
 }

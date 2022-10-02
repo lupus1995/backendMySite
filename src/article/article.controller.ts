@@ -1,18 +1,21 @@
+import { AuthGuard } from './../auth/auth.guard';
 import { ArticleService } from './article.service';
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { CreateArticleDto } from './article.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { QueryPaginationDto } from './query-pagination.dto';
 
 @Controller('article')
 export class ArticleController {
     constructor(private articleService: ArticleService){}
 
+    @UseGuards(AuthGuard)
     @Get()
     @ApiOkResponse({ description: 'Получение нескольких статей' })
     @ApiQuery({type: 'string', name: 'offset', description: 'Количество статей, которое нужно отступить от начала отсчета'})
     @ApiQuery({type: 'string', name: 'limit', description: 'Лимит статей на странице'})
-    async getArticles( @Query('offset') offset: number,@Query('limit') limit: number) {
-        return await this.articleService.getArticles({offset, limit});
+    async getArticles( @Query() queryPagination: QueryPaginationDto) {
+        return await this.articleService.getArticles(queryPagination);
     }
 
     @Get(':id')

@@ -81,7 +81,7 @@ export class ArticleService {
     /**
      * получение нескольких статей
      */
-    async getArticles ({ offset = 0, limit = 10 }: {offset?: number, limit?: number}) {
-        return this.articleModel.collection.find().skip(offset).limit(limit);
+    async getArticles ({ offset = 0, limit = 10 }: {offset: number, limit: number}) {
+        return this.articleModel.find().skip(offset).limit(limit)
     }
 }

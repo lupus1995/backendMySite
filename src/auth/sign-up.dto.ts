@@ -9,7 +9,7 @@ export class SignUpDto {
         type: String,
         description: 'Имя пользователя'
     })
-    username: number;
+    username: string;
 
     @IsString()
     @ApiProperty({
