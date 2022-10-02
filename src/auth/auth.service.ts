@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Connection } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
 import * as argon2 from "argon2";
 import { User, UserDocument } from 'src/schemas/user.schema';
-import * as mongoose from 'mongoose';
 import { SignUpDto } from './sign-up.dto';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class AuthService {
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
         private readonly jwtService: JwtService,
-        @InjectConnection() private readonly connection: mongoose.Connection,
+        @InjectConnection() private readonly connection: Connection,
     ) { }
 
     /**
@@ -40,7 +39,7 @@ export class AuthService {
             await session.commitTransaction();
         } catch (error) {
             await session.abortTransaction();
-            throw error;
+            throw new HttpException('Ошибка регистрации пользователя', HttpStatus.BAD_REQUEST);
         } finally {
             session.endSession();
         }
