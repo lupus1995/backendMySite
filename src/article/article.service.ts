@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Article, ArticleDocument } from 'src/schemas/article.schema';
+import { Article, ArticleDocument } from '../schemas/article.schema';
 import { CreateArticleDto } from './article.dto';
 
 @Injectable()

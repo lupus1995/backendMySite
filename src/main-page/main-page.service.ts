@@ -2,7 +2,7 @@ import { MainPageDocument } from './../schemas/mainPage.schema';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { MainPage } from 'src/schemas/mainPage.schema';
+import { MainPage } from '../schemas/mainPage.schema';
 import { CreateMainPageDto } from './main-page.dto';
 
 @Injectable()
