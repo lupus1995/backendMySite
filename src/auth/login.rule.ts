@@ -14,6 +14,6 @@ export class CustomLoginValidation implements ValidatorConstraintInterface {
       }
       
       defaultMessage(args: ValidationArguments) {
-        return `User does not exist`;
+        return `Пользователя в базе данных нет, зарегистрируйтесь`;
       }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Validate } from 'class-validator';
+import { CustomConfirmPasswordValidation } from './confirm-password.rule';
 import { CustomUsernameValidation } from './exists-username.rule';
 
 export class SignUpDto {
@@ -19,6 +20,7 @@ export class SignUpDto {
     password: string;
 
     @IsString()
+    @Validate(CustomConfirmPasswordValidation)
     @ApiProperty({
         type: String,
         description: 'Поле для повторного пароля пользователя'
