@@ -1,4 +1,4 @@
-import { SignUpDto } from './sign-up.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()

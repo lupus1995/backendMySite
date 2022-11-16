@@ -1,11 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import * as argon2 from "argon2";
+import { Connection, Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
-import { SignUpDto } from './sign-up.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -51,7 +50,7 @@ export class AuthService {
             session.endSession();
         }
 
-        return this.generateTokens({username: user.username});
+        return this.generateTokens({ username: user.username });
 
     }
 
@@ -63,7 +62,7 @@ export class AuthService {
             const user = await this.uniqUsername({ username });
             const isVerifyPassword = await argon2.verify(user.password, password)
             if (isVerifyPassword) {
-                return this.generateTokens({username: user.username});
+                return this.generateTokens({ username: user.username });
             }
 
             throw new HttpException('Логин или пароль некорректы', HttpStatus.BAD_REQUEST);
@@ -72,8 +71,19 @@ export class AuthService {
         }
     }
 
+    /**
+     * обновление токенов
+     */
     async refreshTokens({ token }: { token: string }) {
         const username = this.jwtService.verify(token).sub;
-        return this.generateTokens({username});
+        if (username) {
+            return this.generateTokens({ username });
+        }
+
+        throw new HttpException('Для просмотра страницы необходимо авторизоваться', HttpStatus.FORBIDDEN);
+    }
+
+    async checkAccessToken({ token }: { token: string }) {
+        return Boolean(this.jwtService.verify(token).sub);
     }
 }
