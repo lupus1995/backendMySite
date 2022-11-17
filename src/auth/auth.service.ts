@@ -16,7 +16,7 @@ export class AuthService {
 
     private generateTokens({ username }: { username: string }) {
         const accessToken = this.jwtService.sign({ sub: username }, { expiresIn: '120s' });
-        const refreshToken = this.jwtService.sign({ sub: username }, { expiresIn: '360s' });
+        const refreshToken = this.jwtService.sign({ sub: username }, { expiresIn: '1800s' });
 
         return { accessToken, refreshToken }
     }
@@ -75,15 +75,25 @@ export class AuthService {
      * обновление токенов
      */
     async refreshTokens({ token }: { token: string }) {
-        const username = this.jwtService.verify(token).sub;
-        if (username) {
-            return this.generateTokens({ username });
+        try {
+            const username = this.jwtService.verify(token).sub;
+            if (username) {
+                return this.generateTokens({ username });
+            }
+
+            throw new HttpException('Для просмотра страницы необходимо авторизоваться', HttpStatus.FORBIDDEN);
+        } catch {
+            throw new HttpException('Для просмотра страницы необходимо авторизоваться', HttpStatus.FORBIDDEN);
         }
 
-        throw new HttpException('Для просмотра страницы необходимо авторизоваться', HttpStatus.FORBIDDEN);
     }
 
     async checkAccessToken({ token }: { token: string }) {
-        return Boolean(this.jwtService.verify(token).sub);
+        try {
+            return Boolean(this.jwtService.verify(token).sub);
+        } catch {
+            return false;
+        }
+
     }
 }
