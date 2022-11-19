@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
   protected getToken(request: {
     headers: Record<string, string | string[]>;
   }): string {
-    console.log('headers', request.headers);
     const token = request.headers['authorization'];
     if (!token || Array.isArray(token)) {
       throw new Error('Invalid Authorization Header');

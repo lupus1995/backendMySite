@@ -11,14 +11,14 @@ export class MainPageController {
     @Post()
     @ApiCreatedResponse({ description: 'Данные по главной странице заполнены' })
     async createMainPage(@Body() mainPageDto: CreateMainPageDto) {
+        console.log('mainPageDto', mainPageDto)
         return await this.mainPageService.create({createMainPageDto: mainPageDto})
     }
 
-    @Get(':id')
-    @ApiParam({type: 'string', name: 'id', description: 'Получение объекта с данными для страницы'})
+    @Get()
     @ApiOkResponse({ description: 'Получение данных для страницы' })
-    async getMainPage(@Param('id') id: string) {
-        return await this.mainPageService.get({id});
+    async getMainPage() {
+        return await this.mainPageService.get();
     }
 
     @UseGuards(AuthGuard)

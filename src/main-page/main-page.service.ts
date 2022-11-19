@@ -18,7 +18,6 @@ export class MainPageService {
     async create({ createMainPageDto }: { createMainPageDto: CreateMainPageDto }) {
         const session = await this.connection.startSession();
         session.startTransaction();
-        
         try {
             const model = new this.mainPageModel(createMainPageDto);
             const savedModel = await model.save();
@@ -56,7 +55,8 @@ export class MainPageService {
     /**
      * Получение объекта, в котором будут хранится данные по главной странице 
      */
-    async get({ id }: { id: string }) {
-        return await this.mainPageModel.findById(id);
+    async get() {
+        const result = await this.mainPageModel.findOne().exec();
+        return result;
     }
 }
