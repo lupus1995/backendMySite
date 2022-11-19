@@ -25,14 +25,13 @@ export class AuthController {
     @ApiParam({ type: 'string', name: 'token', description: 'Access токен' })
     @ApiOkResponse({ description: 'Проверка access токена' })
     checkAccessToken(@Headers() { authorization }: AuthorizationDto) {
-        return this.authService.checkAccessToken({ token: authorization })
+        return this.authService.checkToken({ token: authorization })
     }
 
     @Post('refresh')
     @ApiParam({ type: 'string', name: 'token', description: 'Refresh токен' })
     @ApiOkResponse({ description: 'Обновление пары токенов пользователя' })
     refresh(@Headers() { authorization }: AuthorizationDto) {
-        console.log('authorization', authorization);
         return this.authService.refreshTokens({ token: authorization });
     }
 }

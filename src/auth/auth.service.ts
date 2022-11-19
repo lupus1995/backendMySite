@@ -88,7 +88,7 @@ export class AuthService {
 
     }
 
-    async checkAccessToken({ token }: { token: string }) {
+    async checkToken({ token }: { token: string }) {
         try {
             return Boolean(this.jwtService.verify(token).sub);
         } catch {

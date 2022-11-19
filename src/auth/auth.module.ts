@@ -14,6 +14,6 @@ import { CustomLoginValidation } from './login.rule';
   ],
   controllers: [AuthController],
   providers: [CustomUsernameValidation, CustomLoginValidation, AuthService],
-  exports: [JwtModule],
+  exports: [JwtModule, AuthService],
 })
 export class AuthModule {}
