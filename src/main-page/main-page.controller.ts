@@ -11,7 +11,6 @@ export class MainPageController {
     @Post()
     @ApiCreatedResponse({ description: 'Данные по главной странице заполнены' })
     async createMainPage(@Body() mainPageDto: CreateMainPageDto) {
-        console.log('mainPageDto', mainPageDto)
         return await this.mainPageService.create({createMainPageDto: mainPageDto})
     }
 
