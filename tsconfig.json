@@ -11,6 +11,12 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "strict": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "@types/*/**",
+      "node_modules/@types"
+    ]
   }
 }
