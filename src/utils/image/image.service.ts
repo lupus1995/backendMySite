@@ -3,7 +3,7 @@ import { SharpService } from "nestjs-sharp";
 import * as fs from 'fs'
 import { sizes, sizes2x } from './constants';
 
-// вспомогательный модуль для сохранения и нарезки картинок в нужный размер
+// вспомогательный модуль для сохранения и нарезки картинок в нужный размер, их выдачи на запрос
 @Injectable()
 export class ImageService {
     constructor(private sharpService: SharpService) { }
@@ -64,5 +64,19 @@ export class ImageService {
     convetFileToBase64({nameFile}:{nameFile: string}): string {
         const mimeType = nameFile.substring(nameFile.indexOf('.')+1)
         return `data:image/${mimeType};base64,` + fs.readFileSync(`./images/${nameFile}`).toString('base64');
+    }
+
+    convertFilesToBase64ByName({nameFile}:{nameFile: string}) {
+        const nameImageWithoutMime = nameFile.substring(0, nameFile.indexOf('.'))
+        const mimeType = nameFile.substring(nameFile.indexOf('.')+1)
+
+        const arrSize = [...sizes, ...sizes2x];
+
+        const result = arrSize.map((item) => ({
+            size: item.size,
+            file: `data:image/${mimeType};base64,` + fs.readFileSync(`./images/${item.size}/${nameImageWithoutMime}@${item.size}.${mimeType}`).toString('base64'),
+        }))
+
+        return result;
     }
 }

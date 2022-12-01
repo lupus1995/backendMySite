@@ -39,7 +39,6 @@ export class MainPageService {
             return savedModel;
 
         } catch (e) {
-            console.log('e', e)
             await session.abortTransaction();
             throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
         } finally {
@@ -91,5 +90,25 @@ export class MainPageService {
             throw new HttpException('Ошибка получения статьи', HttpStatus.BAD_REQUEST);
         }
         
+    }
+
+    /**
+     * получить имена картинок
+     */
+    async getImageName () {
+        try {
+            const result = await this.mainPageModel.findOne().exec();
+            const { firstBlockBackgroundImage, aboutMePhoto } = result;
+            return { firstBlockBackgroundImage, aboutMePhoto };
+        } catch (e) {
+            throw new HttpException('Ошибка получения данных', HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * получить конвертированные картинки на сторону фронта
+     */
+    getImages({imageName}: {imageName: string}) {
+        return this.imageService.convertFilesToBase64ByName({ nameFile: imageName })
     }
 }

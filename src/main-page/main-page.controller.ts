@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Header, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateMainPageDto } from './main-page.dto';
@@ -17,7 +17,20 @@ export class MainPageController {
     @Get()
     @ApiOkResponse({ description: 'Получение данных для страницы' })
     async getMainPage() {
-        return await this.mainPageService.get();
+        const result = await this.mainPageService.get();
+        return result;
+    }
+
+    @Get('imageName')
+    @ApiOkResponse({ description: 'Получить названия картинок' })
+    async getImageName() {
+        return await this.mainPageService.getImageName();
+    }
+
+    @Get(':imageName')
+    @ApiOkResponse({ description: "Получение нарезанных картинок" })
+    async getImamges(@Param('imageName') imageName: string) {
+        return this.mainPageService.getImages({imageName})
     }
 
     @UseGuards(AuthGuard)
