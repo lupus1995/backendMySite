@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import * as argon2 from "argon2";
@@ -8,11 +8,14 @@ import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
+    private readonly logger: Logger;
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
         private readonly jwtService: JwtService,
         @InjectConnection() private readonly connection: Connection,
-    ) { }
+    ) {
+        this.logger = new Logger();
+     }
 
     private generateTokens({ username }: { username: string }) {
         const accessToken = this.jwtService.sign({ sub: username }, { expiresIn: '120s' });
@@ -44,6 +47,7 @@ export class AuthService {
             await model.save();
             await session.commitTransaction();
         } catch (error) {
+            this.logger.error(error);
             await session.abortTransaction();
             throw new HttpException('Ошибка регистрации пользователя', HttpStatus.BAD_REQUEST);
         } finally {
@@ -67,6 +71,7 @@ export class AuthService {
 
             throw new HttpException('Логин или пароль некорректы', HttpStatus.BAD_REQUEST);
         } catch (e) {
+            this.logger.error(e);
             throw new HttpException('Логин или пароль некорректы', HttpStatus.BAD_REQUEST);
         }
     }

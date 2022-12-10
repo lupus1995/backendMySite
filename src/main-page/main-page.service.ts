@@ -1,5 +1,5 @@
 import { MainPageDocument } from './../schemas/mainPage.schema';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { MainPage } from '../schemas/mainPage.schema';
@@ -8,12 +8,15 @@ import { ImageService } from 'src/utils/image/image.service';
 
 @Injectable()
 export class MainPageService {
+    private readonly logger: Logger;
     private rootFolder: string = './images';
     constructor(
         @InjectModel(MainPage.name) private mainPageModel: Model<MainPageDocument>,
         @InjectConnection() private readonly connection: Connection,
         private imageService: ImageService,
-    ) { }
+    ) {
+        this.logger = new Logger();
+    }
 
     /**
      * Создание объекта, в котором будут хранится данные по главной странице
@@ -39,6 +42,7 @@ export class MainPageService {
             return savedModel;
 
         } catch (e) {
+            this.logger.error(e);
             await session.abortTransaction();
             throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
         } finally {
@@ -70,6 +74,7 @@ export class MainPageService {
             await session.commitTransaction();
             return model;
         } catch (e) {
+            this.logger.error(e);
             await session.abortTransaction();
             throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
         } finally {
@@ -83,24 +88,26 @@ export class MainPageService {
     async get() {
         try {
             const result = await this.mainPageModel.findOne().exec();
-            result.firstBlockBackgroundImage = this.imageService.convetFileToBase64({nameFile: result.firstBlockBackgroundImage});
-            result.aboutMePhoto = this.imageService.convetFileToBase64({nameFile: result.aboutMePhoto});
+            result.firstBlockBackgroundImage = this.imageService.convetFileToBase64({ nameFile: result.firstBlockBackgroundImage, rootFolder: this.rootFolder, });
+            result.aboutMePhoto = this.imageService.convetFileToBase64({ nameFile: result.aboutMePhoto, rootFolder: this.rootFolder, });
             return result;
         } catch (e) {
+            this.logger.error(e);
             throw new HttpException('Ошибка получения статьи', HttpStatus.BAD_REQUEST);
         }
-        
+
     }
 
     /**
      * получить имена картинок
      */
-    async getImageName () {
+    async getImageName() {
         try {
             const result = await this.mainPageModel.findOne().exec();
             const { firstBlockBackgroundImage, aboutMePhoto } = result;
             return { firstBlockBackgroundImage, aboutMePhoto };
         } catch (e) {
+            this.logger.error(e);
             throw new HttpException('Ошибка получения данных', HttpStatus.BAD_REQUEST);
         }
     }
@@ -108,7 +115,7 @@ export class MainPageService {
     /**
      * получить конвертированные картинки на сторону фронта
      */
-    getImages({imageName}: {imageName: string}) {
-        return this.imageService.convertFilesToBase64ByName({ nameFile: imageName })
+    getImages({ imageName }: { imageName: string }) {
+        return this.imageService.convertFilesToBase64ByName({ nameFile: imageName, rootFolder: this.rootFolder })
     }
 }
