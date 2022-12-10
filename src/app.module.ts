@@ -6,9 +6,17 @@ import { MainPageModule } from './main-page/main-page.module';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost:27017/nest'), MainPageModule, ArticleModule, AuthModule, UserModule],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/nest'),
+    MainPageModule,
+    ArticleModule,
+    AuthModule,
+    UserModule,
+    FeedbackModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

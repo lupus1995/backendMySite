@@ -3,7 +3,7 @@ import { ArticleService } from './article.service';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { CreateArticleDto } from './article.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { QueryPaginationDto } from './query-pagination.dto';
+import { QueryPaginationDto } from '../utils/dto/query-pagination.dto';
 
 @Controller('articles')
 export class ArticleController {
