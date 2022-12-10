@@ -1,12 +1,18 @@
-import { Body, Controller, Delete, Get, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiQuery } from "@nestjs/swagger";
 import { AuthGuard } from "src/auth/auth.guard";
 import { QueryPaginationDto } from "src/utils/dto/query-pagination.dto";
+import { FeedbackDto } from "./feedback.dto";
 import { FeedbackService } from "./feedback.service";
 
 @Controller('feedback')
 export class FeedbackController {
     constructor(private feedbakService: FeedbackService) {}
+
+    @Post()
+    async createFeedback(@Body() data: FeedbackDto) {
+        return await this.feedbakService.createFeedback({feedback: data})
+    }
 
     @UseGuards(AuthGuard)
     @Get()
