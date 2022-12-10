@@ -28,6 +28,9 @@ export class Article {
 
     @Prop()
     keyWords: string;
+
+    @Prop()
+    hidePublishedArticle: boolean;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);

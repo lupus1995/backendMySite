@@ -5,7 +5,7 @@ import { CreateArticleDto } from './article.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { QueryPaginationDto } from './query-pagination.dto';
 
-@Controller('article')
+@Controller('articles')
 export class ArticleController {
     constructor(private articleService: ArticleService){}
 
@@ -25,6 +25,7 @@ export class ArticleController {
         return await this.articleService.getArticle({id});
     }
 
+    @UseGuards(AuthGuard)
     @Delete(':id')
     @ApiOkResponse({ description: 'Удаление статьи' })
     @ApiParam({type: 'string', name: 'id', description: 'Id статьи'})
@@ -32,12 +33,14 @@ export class ArticleController {
         return await this.articleService.delete({id})
     }
 
+    @UseGuards(AuthGuard)
     @Post()
     @ApiCreatedResponse({description: 'Создание статьи'})
     async createArticle(@Body() createArticleDto: CreateArticleDto) {
         return await this.articleService.create({createArticle:createArticleDto})
     }
 
+    @UseGuards(AuthGuard)
     @Put(':id')
     @ApiOkResponse({ description: 'The resource was updated successfully' })
     @ApiParam({type: 'string', name: 'id', description: 'Редактирование объекта с данными страницы'})
