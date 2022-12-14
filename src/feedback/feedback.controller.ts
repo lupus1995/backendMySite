@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Query, UseGuards } from "@nestjs/common";
-import { ApiOkResponse, ApiQuery } from "@nestjs/swagger";
+import { ApiOkResponse, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { AuthGuard } from "src/auth/auth.guard";
 import { QueryPaginationDto } from "src/utils/dto/query-pagination.dto";
 import { FeedbackDto } from "./feedback.dto";
@@ -10,6 +10,8 @@ export class FeedbackController {
     constructor(private feedbakService: FeedbackService) {}
 
     @Post()
+    @ApiParam({ type: 'object', name: 'data', description: 'Данные для создания записи обратной связи с формы на главном экране' })
+    @ApiOkResponse({ description: 'Создание записи обратной связи с формы на главном экране' })
     async createFeedback(@Body() data: FeedbackDto) {
         return await this.feedbakService.createFeedback({feedback: data})
     }
