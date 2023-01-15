@@ -1,20 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsBoolean, IsString, ValidateNested } from "class-validator";
+import { LanguageDto } from "src/utils/dto/language.dto";
 
 export class CreateArticleDto {
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Заголовок статьи'
     })
-    title: string;
+    title: LanguageDto;
 
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Описание статьи'
     })
-    description: string;
+    description: LanguageDto;
 
     @IsString()
     @ApiProperty({
@@ -23,19 +27,21 @@ export class CreateArticleDto {
     })
     thumbnail: string;
 
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Текст статьи'
     })
-    text: string;
+    text: LanguageDto;
 
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Ключевые слова статьи'
     })
-    keyWords: string;
+    keyWords: LanguageDto;
 
     @IsString()
     @ApiProperty({

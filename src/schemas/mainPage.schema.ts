@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Language } from './language.schema';
 
 export type MainPageDocument = MainPage & Document;
 
@@ -9,16 +10,16 @@ export class MainPage {
   firstBlockBackgroundImage: string;
 
   @Prop()
-  firstBlockTitle: string;
+  firstBlockTitle: Language
 
   @Prop()
-  firstBlockSubtitle: string;
+  firstBlockSubtitle: Language
 
   @Prop()
-  aboutMeTitle: string;
+  aboutMeTitle: Language
 
   @Prop()
-  aboutMeDescription: string;
+  aboutMeDescription: Language
 
   @Prop()
   aboutMePhoto: string;

@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString, ValidateNested } from "class-validator";
+import { LanguageDto } from "src/utils/dto/language.dto";
 
 export class CreateMainPageDto {
     @IsString()
@@ -9,33 +11,37 @@ export class CreateMainPageDto {
     })
     firstBlockBackgroundImage: string;
   
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Заголовок в первом блоке'
     })
-    firstBlockTitle: string;
+    firstBlockTitle: LanguageDto;
   
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Подзаголовок в первом блоке'
     })
-    firstBlockSubtitle: string;
+    firstBlockSubtitle: LanguageDto;
   
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Заголовок блока обо мне'
     })
-    aboutMeTitle: string;
+    aboutMeTitle: LanguageDto;
   
-    @IsString()
+    @Type(() => LanguageDto)
+    @ValidateNested()
     @ApiProperty({
-        type: String,
+        type: LanguageDto,
         description: 'Описание блока обо мне'
     })
-    aboutMeDescription: string;
+    aboutMeDescription: LanguageDto;
   
     @IsString()
     @ApiProperty({

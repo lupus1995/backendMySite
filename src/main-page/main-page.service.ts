@@ -76,7 +76,7 @@ export class MainPageService {
         } catch (e) {
             this.logger.error(e);
             await session.abortTransaction();
-            throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Ошибка редактирования данных', HttpStatus.BAD_REQUEST);
         } finally {
             session.endSession();
         }

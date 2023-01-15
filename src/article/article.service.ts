@@ -56,7 +56,7 @@ export class ArticleService {
         session.startTransaction();
 
         try {
-            const artilce = {...createArticle};
+            const artilce: CreateArticleDto = {...createArticle};
             const currentArticle = await this.articleModel.findById(id);
             const nameFile = currentArticle.thumbnail.substring(0, currentArticle.thumbnail.indexOf('.'));
             artilce.thumbnail = await this.imageService.saveImage({
@@ -64,7 +64,7 @@ export class ArticleService {
                 nameImage: nameFile,
                 rootFolder: this.rootFolder,
             });
-            const model = await this.articleModel.updateOne({ id }, artilce).exec();
+            const model = await this.articleModel.updateOne({ _id: id }, artilce);
             await session.commitTransaction();
             return model;
         } catch (e) {

@@ -1,21 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Language } from './language.schema';
 
 export type ArticleDocument = Article & Document;
 
 @Schema()
 export class Article {
     @Prop()
-    title: string;
+    title: Language
 
     @Prop()
-    description: string;
+    description: Language
 
     @Prop()
     thumbnail: string;
 
     @Prop()
-    text: string;
+    text: Language
 
     @Prop()
     createdAt: Date;
@@ -27,7 +28,7 @@ export class Article {
     publishedAt: Date;
 
     @Prop()
-    keyWords: string;
+    keyWords: Language
 
     @Prop()
     hidePublishedArticle: boolean;
