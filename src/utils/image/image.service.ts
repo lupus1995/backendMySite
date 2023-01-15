@@ -6,31 +6,32 @@ import { sizes, sizes2x } from './constants';
 // вспомогательный модуль для сохранения и нарезки картинок в нужный размер, их выдачи на запрос
 @Injectable()
 export class ImageService {
-    private readonly logger: Logger;
-    constructor(private sharpService: SharpService) {
+    protected readonly logger: Logger;
+    constructor(protected sharpService: SharpService) {
         this.logger = new Logger();
     }
 
     // получение имени файла без его расширения
-    private getImageWithoutMimeType(nameFile: string) {
+    protected getImageWithoutMimeType(nameFile: string): string {
         return nameFile.substring(0, nameFile.indexOf('.'))
     }
 
     // получение расширение файла из его названия
-    private getMimeTypeFromNameFile(nameFile: string) {
+    protected getMimeTypeFromNameFile(nameFile: string): string {
         return nameFile.substring(nameFile.indexOf('.') + 1)
     }
 
     // проверяем существование папки или файла
-    private checkedIsExistPath (path: string, isLogExistPath: boolean = true) {
+    protected checkedIsExistPath (path: string): boolean {
         const isExistPath = fs.existsSync(path);
-        if (!isExistPath && isLogExistPath) {
+        if (!isExistPath) {
             this.logger.error(`Нет такого пути: ${path}`)
         }
 
         return isExistPath;
     }
 
+    // получаем тип картинки из кода base64
     getImageType(codeImage: string): string {
         const imageMime = codeImage.substring(codeImage.indexOf(":") + 1, codeImage.indexOf(";"))
 
@@ -82,8 +83,6 @@ export class ImageService {
                     break;
                 }
             }
-
-
         }
 
         return imageName;
@@ -101,7 +100,10 @@ export class ImageService {
     }
 
     // конвертируем файлы в base64
-    convertFilesToBase64ByName({ nameFile, rootFolder }: { nameFile: string, rootFolder: string }) {
+    convertFilesToBase64ByName({ nameFile, rootFolder }: { nameFile: string, rootFolder: string }): {
+        size: number;
+        file: string;
+    }[] {
         const nameImageWithoutMime = this.getImageWithoutMimeType(nameFile);
         const mimeType = this.getMimeTypeFromNameFile(nameFile);
 
@@ -122,11 +124,11 @@ export class ImageService {
     }
 
     // удаление файлов после удаления статьи
-    deletedFiles({ nameImage, rootFolder }: { nameImage: string, rootFolder: string }) {
+    deletedFiles({ nameImage, rootFolder }: { nameImage: string, rootFolder: string }): void {
         const imagePath = `${rootFolder}/${nameImage}`;
         const mimeType = this.getMimeTypeFromNameFile(nameImage);
 
-        if (this.checkedIsExistPath(imagePath, false)) {
+        if (this.checkedIsExistPath(imagePath)) {
             fs.unlinkSync(imagePath);
         }
 
@@ -135,7 +137,7 @@ export class ImageService {
 
         arrSize.forEach(item => {
             const path = `${rootFolder}/${item.size}/${nameImageWithoutMime}@${item.size}.${mimeType}`;
-            if (this.checkedIsExistPath(path, false)) {
+            if (this.checkedIsExistPath(path)) {
                 fs.unlinkSync(path)
             }
         })
