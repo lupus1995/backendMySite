@@ -1,19 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { AuthService } from "./auth.service";
+import { Injectable } from '@nestjs/common';
+import {
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
+import { AuthService } from './auth.service';
 
 @ValidatorConstraint({ name: 'usernameId', async: true })
 @Injectable()
 export class CustomUsernameValidation implements ValidatorConstraintInterface {
-  constructor(protected readonly authService: AuthService) { }
+  constructor(protected readonly authService: AuthService) {}
 
-  async validate(value: string, args: ValidationArguments): Promise<boolean> {
-    const user = await this.authService.uniqUsername({ username: value })
+  async validate(value: string): Promise<boolean> {
+    const user = await this.authService.uniqUsername({ username: value });
 
-    return !Boolean(user)
+    return !Boolean(user);
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return `User already exist`;
   }
 }

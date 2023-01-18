@@ -1,9 +1,9 @@
 import { SignUpDto } from './dto/sign-up.dto';
-import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class AuthPipe implements PipeTransform {
-  transform(value: unknown, metadata: ArgumentMetadata) {
+  transform(value: unknown) {
     const errors: string[] = [];
 
     if (!this.valueHasPassAndConfPass(value)) {
@@ -22,12 +22,8 @@ export class AuthPipe implements PipeTransform {
 
     return value;
   }
-  
-  private valueHasPassAndConfPass (val: unknown): val is SignUpDto {
-    return (
-      typeof val === 'object' &&
-      'password' in val &&
-      'username' in val
-    );
+
+  private valueHasPassAndConfPass(val: unknown): val is SignUpDto {
+    return typeof val === 'object' && 'password' in val && 'username' in val;
   }
 }

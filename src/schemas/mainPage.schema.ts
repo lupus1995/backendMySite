@@ -10,20 +10,19 @@ export class MainPage {
   firstBlockBackgroundImage: string;
 
   @Prop()
-  firstBlockTitle: Language
+  firstBlockTitle: Language;
 
   @Prop()
-  firstBlockSubtitle: Language
+  firstBlockSubtitle: Language;
 
   @Prop()
-  aboutMeTitle: Language
+  aboutMeTitle: Language;
 
   @Prop()
-  aboutMeDescription: Language
+  aboutMeDescription: Language;
 
   @Prop()
   aboutMePhoto: string;
 }
 
 export const MainPageSchema = SchemaFactory.createForClass(MainPage);
-

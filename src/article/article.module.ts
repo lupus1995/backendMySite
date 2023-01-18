@@ -10,9 +10,9 @@ import { ImageModule } from 'src/utils/image/image.module';
   imports: [
     MongooseModule.forFeature([{ name: Article.name, schema: ArticleSchema }]),
     AuthModule,
-    ImageModule
+    ImageModule,
   ],
   providers: [ArticleService],
-  controllers: [ArticleController]
+  controllers: [ArticleController],
 })
-export class ArticleModule { }
+export class ArticleModule {}

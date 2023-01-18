@@ -7,12 +7,14 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ImageModule } from 'src/utils/image/image.module';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: MainPage.name, schema: MainPageSchema }]),
-        AuthModule,
-        ImageModule,
-    ],
-    providers: [MainPageService],
-    controllers: [MainPageController]
+  imports: [
+    MongooseModule.forFeature([
+      { name: MainPage.name, schema: MainPageSchema },
+    ]),
+    AuthModule,
+    ImageModule,
+  ],
+  providers: [MainPageService],
+  controllers: [MainPageController],
 })
 export class MainPageModule {}

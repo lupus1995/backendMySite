@@ -1,11 +1,10 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { IncomingMessage } from "http";
-import { AuthService } from "./auth.service";
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { IncomingMessage } from 'http';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = this.getRequest<
@@ -13,8 +12,7 @@ export class AuthGuard implements CanActivate {
     >(context); // you could use FastifyRequest here too
     try {
       const token = this.getToken(request);
-      const user = this.authService.checkToken({ token });
-      return true;
+      return this.authService.checkToken({ token });
     } catch (e) {
       return false;
     }

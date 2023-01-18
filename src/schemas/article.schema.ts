@@ -6,32 +6,32 @@ export type ArticleDocument = Article & Document;
 
 @Schema()
 export class Article {
-    @Prop()
-    title: Language
+  @Prop()
+  title: Language;
 
-    @Prop()
-    description: Language
+  @Prop()
+  description: Language;
 
-    @Prop()
-    thumbnail: string;
+  @Prop()
+  thumbnail: string;
 
-    @Prop()
-    text: Language
+  @Prop()
+  text: Language;
 
-    @Prop()
-    createdAt: Date;
+  @Prop()
+  createdAt: Date;
 
-    @Prop()
-    updatedAt: Date;
+  @Prop()
+  updatedAt: Date;
 
-    @Prop()
-    publishedAt: Date;
+  @Prop()
+  publishedAt: Date;
 
-    @Prop()
-    keyWords: Language
+  @Prop()
+  keyWords: Language;
 
-    @Prop()
-    hidePublishedArticle: boolean;
+  @Prop()
+  hidePublishedArticle: boolean;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
