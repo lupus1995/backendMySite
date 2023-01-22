@@ -1,5 +1,6 @@
 import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { AuthPipe } from './auth.pipe';
 import { AuthService } from './auth.service';
 import { AuthorizationDto } from './dto/authorization.dto';
 import { LoginDto } from './dto/login.dto';
@@ -11,7 +12,7 @@ export class AuthController {
 
   @ApiCreatedResponse({ description: 'Создание пользователя' })
   @Post('signup')
-  signup(@Body() newUser: SignUpDto) {
+  signup(@Body(new AuthPipe()) newUser: SignUpDto) {
     return this.authService.signup(newUser);
   }
 

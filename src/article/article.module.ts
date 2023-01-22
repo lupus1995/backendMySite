@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Article, ArticleSchema } from 'src/schemas/article.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { ImageModule } from 'src/utils/image/image.module';
+import { ArticleRepository } from './article.repository';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { ImageModule } from 'src/utils/image/image.module';
     AuthModule,
     ImageModule,
   ],
-  providers: [ArticleService],
+  providers: [ArticleService, ArticleRepository],
   controllers: [ArticleController],
 })
 export class ArticleModule {}

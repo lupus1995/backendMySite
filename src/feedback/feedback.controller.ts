@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+import { QueryPaginationDto } from '../utils/dto/query-pagination.dto';
 import { FeedbackDto } from './feedback.dto';
 import { FeedbackService } from './feedback.service';
 

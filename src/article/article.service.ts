@@ -1,18 +1,15 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
 import { ImageService } from '../utils/image/image.service';
 import { v4 as uuid } from 'uuid';
-import { Article, ArticleDocument } from '../schemas/article.schema';
 import { CreateArticleDto } from './article.dto';
+import { ArticleRepository } from './article.repository';
 
 @Injectable()
 export class ArticleService {
   private readonly logger: Logger;
   private rootFolder = './images';
   constructor(
-    @InjectModel(Article.name) private articleModel: Model<ArticleDocument>,
-    @InjectConnection() private readonly connection: Connection,
+    private articleRepository: ArticleRepository,
     private imageService: ImageService,
   ) {
     this.logger = new Logger();
@@ -22,29 +19,17 @@ export class ArticleService {
    * создание статьи
    */
   async create({ createArticle }: { createArticle: CreateArticleDto }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const model = new this.articleModel(createArticle);
-
-      const imageID: string = uuid();
-      model.thumbnail = await this.imageService.saveImage({
-        codeImage: model.thumbnail,
-        nameImage: imageID,
+    const model = {
+      ...createArticle,
+      thumbnail: await this.imageService.saveImage({
+        codeImage: createArticle.thumbnail,
+        nameImage: uuid(),
         rootFolder: this.rootFolder,
-      });
+      }),
+    };
 
-      const savedModel = await model.save();
-      await session.commitTransaction();
-      return savedModel;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
-      throw new HttpException('Ошибка создания статьи', HttpStatus.BAD_REQUEST);
-    } finally {
-      session.endSession();
-    }
+    const article = await this.articleRepository.create(model);
+    return article;
   }
 
   /**
@@ -57,59 +42,37 @@ export class ArticleService {
     createArticle: CreateArticleDto;
     id: string;
   }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
+    const article: CreateArticleDto = { ...createArticle };
+    const currentArticle = await this.articleRepository.findById(id);
 
-    try {
-      const artilce: CreateArticleDto = { ...createArticle };
-      const currentArticle = await this.articleModel.findById(id);
-      const nameFile = currentArticle.thumbnail.substring(
-        0,
-        currentArticle.thumbnail.indexOf('.'),
-      );
-      artilce.thumbnail = await this.imageService.saveImage({
-        codeImage: artilce.thumbnail,
-        nameImage: nameFile,
-        rootFolder: this.rootFolder,
-      });
-      const model = await this.articleModel.updateOne({ _id: id }, artilce);
-      await session.commitTransaction();
-      return model;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
-      throw new HttpException(
-        'Ошибка редактирования статьи',
-        HttpStatus.BAD_REQUEST,
-      );
-    } finally {
-      session.endSession();
-    }
+    const nameFile = currentArticle.thumbnail.substring(
+      0,
+      currentArticle.thumbnail.indexOf('.'),
+    );
+    article.thumbnail = await this.imageService.saveImage({
+      codeImage: article.thumbnail,
+      nameImage: nameFile,
+      rootFolder: this.rootFolder,
+    });
+
+    const model = await this.articleRepository.update({ id, article });
+
+    return model;
   }
 
   /**
    * удаление статьи
    */
   async delete({ id }: { id: string }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
+    const article = await this.articleRepository.findById(id);
+    this.imageService.deletedFiles({
+      nameImage: article.thumbnail,
+      rootFolder: this.rootFolder,
+    });
 
-    try {
-      const currentArticle = await this.articleModel.findById(id);
-      this.imageService.deletedFiles({
-        nameImage: currentArticle.thumbnail,
-        rootFolder: this.rootFolder,
-      });
-      const model = await this.articleModel.deleteOne({ id });
-      await session.commitTransaction();
-      return model;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
-      throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
-    } finally {
-      session.endSession();
-    }
+    const model = this.articleRepository.delete(id);
+
+    return model;
   }
 
   /**
@@ -117,7 +80,7 @@ export class ArticleService {
    */
   async getArticle({ id }: { id: string }) {
     try {
-      const article = await this.articleModel.findById(id);
+      const article = await this.articleRepository.findById(id);
 
       article.thumbnail = this.imageService.convetFileToBase64({
         nameFile: article.thumbnail,
@@ -145,7 +108,10 @@ export class ArticleService {
     limit: number;
   }) {
     try {
-      const articles = await this.articleModel.find().skip(offset).limit(limit);
+      const articles = await this.articleRepository.getAll({
+        offset,
+        limit,
+      });
       return articles.map((article) => {
         article.thumbnail = this.imageService.convetFileToBase64({
           nameFile: article.thumbnail,

@@ -3,7 +3,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 
 @ValidatorConstraint({ name: 'login', async: true })
 @Injectable()

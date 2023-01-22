@@ -1,28 +1,15 @@
 import { MainPageService } from './main-page.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MainPageController } from './main-page.controller';
-import { CreateMainPageDto } from './main-page.dto';
+import { CanActivate } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from '../auth/auth.service';
+import { mainPageCreateData } from './mockData';
 
 describe('MainPageController', () => {
-  const mainPageCreateData: CreateMainPageDto = {
-    firstBlockBackgroundImage: 'firstBlockBackgroundImage',
-    firstBlockTitle: {
-      en: 'firstBlockTitle',
-      ru: 'заголовок первой статьи',
-    },
-    firstBlockSubtitle: {
-      en: 'firstBlockSubtitle',
-      ru: 'подзаголовок первой статьи',
-    },
-    aboutMeTitle: {
-      en: 'aboutMeTitle',
-      ru: 'заголовок обо мне',
-    },
-    aboutMeDescription: {
-      en: 'aboutMeDescription',
-      ru: 'описание обо мне',
-    },
-    aboutMePhoto: 'aboutMePhoto',
+  const AuthGuardMock: CanActivate = {
+    canActivate: jest.fn().mockReturnValue(false),
   };
 
   const mainPageData = {
@@ -34,6 +21,14 @@ describe('MainPageController', () => {
     create: jest.fn(() => mainPageData),
     update: jest.fn(() => mainPageData),
     get: jest.fn(() => mainPageData),
+    getImageName: jest.fn().mockReturnValue('getImageName'),
+    getImages: jest.fn().mockReturnValue('getImages'),
+  }));
+
+  const authService = jest.fn().mockReturnValue(() => ({
+    checkToken: jest.fn(() => {
+      return true;
+    }),
   }));
   let controller: MainPageController;
 
@@ -45,8 +40,19 @@ describe('MainPageController', () => {
           provide: MainPageService,
           useFactory: mainPageService,
         },
+        {
+          provide: JwtService,
+          useValue: {},
+        },
+        {
+          provide: AuthService,
+          useFactory: authService,
+        },
       ],
-    }).compile();
+    })
+      .overrideProvider(AuthGuard)
+      .useValue(AuthGuardMock)
+      .compile();
 
     controller = module.get<MainPageController>(MainPageController);
   });
@@ -65,5 +71,13 @@ describe('MainPageController', () => {
     expect(await controller.updateMainPage(mainPageCreateData, 'id')).toBe(
       mainPageData,
     );
+  });
+
+  it('getImageName', async () => {
+    expect(await controller.getImageName()).toBe('getImageName');
+  });
+
+  it('getImamges', async () => {
+    expect(await controller.getImamges('imageName')).toBe('getImages');
   });
 });

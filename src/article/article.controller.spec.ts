@@ -3,36 +3,13 @@ import { AuthGuard } from './../auth/auth.guard';
 import { ArticleService } from './article.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
-import { CreateArticleDto } from './article.dto';
 import { AuthService } from '../auth/auth.service';
 import { CanActivate } from '@nestjs/common';
+import { articleCreatedData } from './mockData';
 
 describe('ArticleController', () => {
   const AuthGuardMock: CanActivate = {
     canActivate: jest.fn().mockReturnValue(false),
-  };
-  const articleCreatedData: CreateArticleDto = {
-    title: {
-      ru: 'заголовок',
-      en: 'title',
-    },
-    description: {
-      ru: 'описание',
-      en: 'description',
-    },
-    thumbnail: 'thumbnail',
-    text: {
-      ru: 'текст',
-      en: 'text',
-    },
-    keyWords: {
-      ru: 'ключевые слова',
-      en: 'key words',
-    },
-    createdAt: '',
-    updatedAt: '',
-    publishedAt: '',
-    hidePublishedArticle: false,
   };
 
   const articleData = {

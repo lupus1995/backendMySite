@@ -19,19 +19,13 @@ describe('AuthController', () => {
     confirmPassword: 'password',
   };
 
-  const user = {
-    username: 'username',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    password: 'password',
-  };
-
   beforeEach(async () => {
     const authServiceMock = jest.fn(() => ({
-      uniqUsername: jest.fn(() => user),
-      signup: jest.fn(() => tokens),
-      login: jest.fn(() => tokens),
-      refreshTokens: jest.fn(() => tokens),
+      uniqUsername: jest.fn().mockReturnValue(tokens),
+      signup: jest.fn().mockReturnValue(tokens),
+      login: jest.fn().mockReturnValue(tokens),
+      checkToken: jest.fn().mockReturnValue(tokens),
+      refreshTokens: jest.fn().mockReturnValue(tokens),
     }));
 
     const module: TestingModule = await Test.createTestingModule({
@@ -53,6 +47,12 @@ describe('AuthController', () => {
 
   it('check login', () => {
     expect(controller.login(loginData)).toBe(tokens);
+  });
+
+  it('access', () => {
+    expect(controller.checkAccessToken({ authorization: 'token' })).toBe(
+      tokens,
+    );
   });
 
   it('check refresh', () =>

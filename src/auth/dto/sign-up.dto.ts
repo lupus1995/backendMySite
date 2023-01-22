@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Validate } from 'class-validator';
-import { CustomConfirmPasswordValidation } from '../confirm-password.rule';
-import { CustomUsernameValidation } from '../exists-username.rule';
+import { CustomConfirmPasswordValidation } from '../rules/confirm-password.rule';
+import { CustomUsernameValidation } from '../rules/exists-username.rule';
 
 export class SignUpDto {
   @IsString()
