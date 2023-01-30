@@ -87,7 +87,7 @@ export class ArticleRepository {
     session.startTransaction();
 
     try {
-      const model = await this.articleModel.deleteOne({ id });
+      const model = await this.articleModel.deleteOne({ _id: id });
       await session.commitTransaction();
       return model;
     } catch (e) {
