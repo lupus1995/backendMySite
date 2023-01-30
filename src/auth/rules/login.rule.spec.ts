@@ -32,7 +32,9 @@ jest.mock('mongoose', () => {
 });
 
 describe('login rule', () => {
-  it('rule validation true', async () => {
+  let rule: CustomLoginValidation;
+
+  beforeEach(() => {
     const jwtService = new JwtService();
 
     const model = new Model();
@@ -40,21 +42,14 @@ describe('login rule', () => {
     const authRepository = new AuthRepository(model, connection);
 
     const authService = new AuthService(jwtService, authRepository);
-    const rule = new CustomLoginValidation(authService);
+    rule = new CustomLoginValidation(authService);
+  });
 
+  it('rule validation true', async () => {
     expect(await rule.validate('user')).toBe(true);
   });
 
   it('rule validation false', async () => {
-    const jwtService = new JwtService();
-
-    const model = new Model();
-    const connection = new Connection();
-    const authRepository = new AuthRepository(model, connection);
-
-    const authService = new AuthService(jwtService, authRepository);
-    const rule = new CustomLoginValidation(authService);
-
     expect(await rule.validate(null)).toBe(false);
   });
 });

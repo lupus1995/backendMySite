@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../schemas/user.schema';
 import { AuthController } from './auth.controller';
+import { AuthRepository } from './auth.repository';
 import { AuthService } from './auth.service';
 import { CustomUsernameValidation } from './rules/exists-username.rule';
 import { CustomLoginValidation } from './rules/login.rule';
@@ -13,7 +14,12 @@ import { CustomLoginValidation } from './rules/login.rule';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [CustomUsernameValidation, CustomLoginValidation, AuthService],
+  providers: [
+    CustomUsernameValidation,
+    CustomLoginValidation,
+    AuthRepository,
+    AuthService,
+  ],
   exports: [JwtModule, AuthService],
 })
 export class AuthModule {}
