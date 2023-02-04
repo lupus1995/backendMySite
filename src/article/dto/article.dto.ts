@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsString, ValidateNested } from 'class-validator';
-import { LanguageDto } from '../utils/dto/language.dto';
+import { LanguageDto } from '../../utils/dto/language.dto';
 
 export class CreateArticleDto {
   @Type(() => LanguageDto)

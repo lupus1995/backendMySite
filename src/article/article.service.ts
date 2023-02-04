@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ImageService } from '../utils/image/image.service';
 import { v4 as uuid } from 'uuid';
-import { CreateArticleDto } from './article.dto';
+import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
+import { ArticlePaginationDto } from './dto/article-pagination.dto';
 
 @Injectable()
 export class ArticleService {
@@ -103,14 +104,13 @@ export class ArticleService {
   async getArticles({
     offset = 0,
     limit = 10,
-  }: {
-    offset: number;
-    limit: number;
-  }) {
+    hasFilter = false,
+  }: ArticlePaginationDto) {
     try {
       const articles = await this.articleRepository.getAll({
         offset,
         limit,
+        hasFilter,
       });
       return articles.map((article) => {
         article.thumbnail = this.imageService.convetFileToBase64({

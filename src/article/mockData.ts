@@ -1,4 +1,4 @@
-import { CreateArticleDto } from './article.dto';
+import { CreateArticleDto } from './dto/article.dto';
 
 export const articleCreatedData: CreateArticleDto = {
   title: {

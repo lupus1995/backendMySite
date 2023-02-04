@@ -17,11 +17,11 @@ export class AuthService {
   protected generateTokens({ username }: { username: string }) {
     const accessToken = this.jwtService.sign(
       { sub: username },
-      { expiresIn: '120s' },
+      { expiresIn: '6000s' },
     );
     const refreshToken = this.jwtService.sign(
       { sub: username },
-      { expiresIn: '1800s' },
+      { expiresIn: '12000s' },
     );
 
     return { accessToken, refreshToken };

@@ -11,20 +11,19 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateArticleDto } from './article.dto';
+import { CreateArticleDto } from './dto/article.dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { QueryPaginationDto } from '../utils/dto/query-pagination.dto';
+import { ArticlePaginationDto } from './dto/article-pagination.dto';
 
 @Controller('articles')
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-  @UseGuards(AuthGuard)
   @Get()
   @ApiOkResponse({ description: 'Получение нескольких статей' })
   @ApiQuery({
@@ -37,7 +36,12 @@ export class ArticleController {
     name: 'limit',
     description: 'Лимит статей на странице',
   })
-  async getArticles(@Query() queryPagination: QueryPaginationDto) {
+  @ApiQuery({
+    type: 'boolean',
+    name: 'hasFilter',
+    description: 'Скрывать ранее опубликованные статьи',
+  })
+  async getArticles(@Query() queryPagination: ArticlePaginationDto) {
     return await this.articleService.getArticles(queryPagination);
   }
 

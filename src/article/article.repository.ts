@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { Article, ArticleDocument } from '../schemas/article.schema';
-import { CreateArticleDto } from './article.dto';
+import { ArticlePaginationDto } from './dto/article-pagination.dto';
+import { CreateArticleDto } from './dto/article.dto';
 
 @Injectable()
 export class ArticleRepository {
@@ -17,11 +18,22 @@ export class ArticleRepository {
   public async getAll({
     offset = 0,
     limit = 10,
-  }: {
-    offset: number;
-    limit: number;
-  }) {
-    const articles = await this.articleModel.find().skip(offset).limit(limit);
+    hasFilter,
+  }: ArticlePaginationDto) {
+    let articles;
+    if (hasFilter) {
+      articles = await this.articleModel
+        .find({ hidePublishedArticle: false })
+        .sort({ publishedAt: -1 })
+        .skip(offset)
+        .limit(limit);
+    } else {
+      articles = await this.articleModel
+        .find()
+        .sort({ publishedAt: -1 })
+        .skip(offset)
+        .limit(limit);
+    }
 
     return articles;
   }
