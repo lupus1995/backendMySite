@@ -19,6 +19,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
+import { ArticleGuard } from './article.guard';
 
 @Controller('articles')
 export class ArticleController {
@@ -46,6 +47,7 @@ export class ArticleController {
   }
 
   @Get(':id')
+  @UseGuards(ArticleGuard)
   @ApiOkResponse({
     description: 'Получение всей информации для определенной статьи',
   })

@@ -23,7 +23,7 @@ export class ArticleRepository {
     let articles;
     if (hasFilter) {
       articles = await this.articleModel
-        .find({ hidePublishedArticle: false })
+        .find({ hidePublishedArticle: false, publishedAt: { $lt: new Date() } })
         .sort({ publishedAt: -1 })
         .skip(offset)
         .limit(limit);
