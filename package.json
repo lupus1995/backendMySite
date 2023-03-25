@@ -25,15 +25,18 @@
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.2",
+    "@vk-io/authorization": "^1.4.0",
     "argon2": "^0.29.1",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "fs": "^0.0.1-security",
     "nestjs-sharp": "^1.1.0",
+    "nestjs-vk": "^4.5.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vk-io": "^4.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
