@@ -7,6 +7,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ImageModule } from 'src/utils/image/image.module';
 import { ArticleRepository } from './article.repository';
 import { VKModule } from 'src/utils/vk/vk.module';
+import { TelegramModule } from 'src/utils/telegram/telegram.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { VKModule } from 'src/utils/vk/vk.module';
     AuthModule,
     ImageModule,
     VKModule.forRoot(),
+    TelegramModule.forRoot(),
   ],
   providers: [ArticleService, ArticleRepository],
   controllers: [ArticleController],

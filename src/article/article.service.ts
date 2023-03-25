@@ -5,6 +5,7 @@ import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
 import { VkService } from 'src/utils/vk/vk.service';
+import { TelegramService } from 'src/utils/telegram/telegram.service';
 
 @Injectable()
 export class ArticleService {
@@ -14,6 +15,7 @@ export class ArticleService {
     private articleRepository: ArticleRepository,
     private imageService: ImageService,
     private vkService: VkService,
+    private telegramService: TelegramService,
   ) {
     this.logger = new Logger();
   }
@@ -62,6 +64,7 @@ export class ArticleService {
     const model = await this.articleRepository.update({ id, article });
 
     await this.vkService.sendPostToVk();
+    await this.telegramService.sendMessage();
 
     return model;
   }
