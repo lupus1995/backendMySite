@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
+import { VkService } from 'src/utils/vk/vk.service';
 
 @Injectable()
 export class ArticleService {
@@ -12,6 +13,7 @@ export class ArticleService {
   constructor(
     private articleRepository: ArticleRepository,
     private imageService: ImageService,
+    private vkService: VkService,
   ) {
     this.logger = new Logger();
   }
@@ -30,6 +32,7 @@ export class ArticleService {
     };
 
     const article = await this.articleRepository.create(model);
+
     return article;
   }
 
@@ -57,6 +60,8 @@ export class ArticleService {
     });
 
     const model = await this.articleRepository.update({ id, article });
+
+    await this.vkService.sendPostToVk();
 
     return model;
   }
