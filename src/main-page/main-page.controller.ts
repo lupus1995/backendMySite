@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Post,
   Put,
@@ -59,5 +60,11 @@ export class MainPageController {
       id,
       createMainPageDto: mainPageDto,
     });
+  }
+
+  @Get(':size/:name')
+  @Header('Content-Type', 'image/jpeg')
+  getImage(@Param('size') size: string, @Param('name') name: string) {
+    return this.mainPageService.getImage({ size, nameImage: name });
   }
 }

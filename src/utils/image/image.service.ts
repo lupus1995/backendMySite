@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, StreamableFile } from '@nestjs/common';
 import { SharpService } from 'nestjs-sharp';
 import * as fs from 'fs';
 import { sizes, sizes2x } from './constants';
+import { createReadStream } from 'fs';
 
 // вспомогательный модуль для сохранения и нарезки картинок в нужный размер, их выдачи на запрос
 @Injectable()
@@ -185,5 +186,23 @@ export class ImageService {
         fs.unlinkSync(path);
       }
     });
+  }
+
+  getFile({
+    nameImage,
+    rootFolder,
+    size,
+  }: {
+    nameImage: string;
+    rootFolder: string;
+    size: string;
+  }): StreamableFile {
+    const nameImageWithoutMime = this.getImageWithoutMimeType(nameImage);
+    const mimeType = this.getMimeTypeFromNameFile(nameImage);
+    const imagePath = `${rootFolder}/${size}/${nameImageWithoutMime}@${size}.${mimeType}`;
+
+    const file = createReadStream(imagePath);
+
+    return new StreamableFile(file);
   }
 }

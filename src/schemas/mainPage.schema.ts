@@ -23,6 +23,12 @@ export class MainPage {
 
   @Prop()
   aboutMePhoto: string;
+
+  @Prop()
+  descriptionPage: Language;
+
+  @Prop()
+  keyWordsPage: Language;
 }
 
 export const MainPageSchema = SchemaFactory.createForClass(MainPage);

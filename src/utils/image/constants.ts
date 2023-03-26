@@ -2,6 +2,10 @@ export const sizes = [
   {
     size: 480,
   },
+  // для вк
+  {
+    size: 510,
+  },
   {
     size: 720,
   },

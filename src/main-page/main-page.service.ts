@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  StreamableFile,
+} from '@nestjs/common';
 import { CreateMainPageDto } from './main-page.dto';
 import { ImageService } from '../utils/image/image.service';
 import { MainPageRepository } from './main-page.repository';
@@ -113,6 +119,20 @@ export class MainPageService {
   getImages({ imageName }: { imageName: string }) {
     return this.imageService.convertFilesToBase64ByName({
       nameFile: imageName,
+      rootFolder: this.rootFolder,
+    });
+  }
+
+  getImage({
+    nameImage,
+    size,
+  }: {
+    nameImage: string;
+    size: string;
+  }): StreamableFile {
+    return this.imageService.getFile({
+      nameImage,
+      size,
       rootFolder: this.rootFolder,
     });
   }

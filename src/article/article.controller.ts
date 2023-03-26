@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Post,
   Put,
@@ -89,5 +90,11 @@ export class ArticleController {
       id,
       createArticle: createArticleDto,
     });
+  }
+
+  @Get(':id/thumbnail')
+  @Header('Content-Type', 'image/jpeg')
+  async getFile(@Param('id') id: string) {
+    return await this.articleService.getFile({ id });
   }
 }

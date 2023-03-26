@@ -35,6 +35,9 @@ export class ArticleService {
 
     const article = await this.articleRepository.create(model);
 
+    // await this.vkService.sendPostToVk();
+    // await this.telegramService.sendMessage();
+
     return article;
   }
 
@@ -62,9 +65,6 @@ export class ArticleService {
     });
 
     const model = await this.articleRepository.update({ id, article });
-
-    await this.vkService.sendPostToVk();
-    await this.telegramService.sendMessage();
 
     return model;
   }
@@ -135,5 +135,15 @@ export class ArticleService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async getFile({ id }: { id: string }) {
+    const article = await this.articleRepository.findById(id);
+
+    return this.imageService.getFile({
+      size: '510',
+      nameImage: article.thumbnail,
+      rootFolder: this.rootFolder,
+    });
   }
 }

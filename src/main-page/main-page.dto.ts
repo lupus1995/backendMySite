@@ -49,4 +49,20 @@ export class CreateMainPageDto {
     description: 'Ссылка на фото в блоке обо мне',
   })
   aboutMePhoto: string;
+
+  @Type(() => LanguageDto)
+  @ValidateNested()
+  @ApiProperty({
+    type: LanguageDto,
+    description: 'Описание страницы для поисковых роботов',
+  })
+  descriptionPage: LanguageDto;
+
+  @Type(() => LanguageDto)
+  @ValidateNested()
+  @ApiProperty({
+    type: LanguageDto,
+    description: 'Ключевые слова страницы для поисковых роботов',
+  })
+  keyWordsPage: LanguageDto;
 }

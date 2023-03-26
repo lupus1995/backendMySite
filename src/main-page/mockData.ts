@@ -19,4 +19,12 @@ export const mainPageCreateData: CreateMainPageDto = {
     ru: 'описание обо мне',
   },
   aboutMePhoto: 'aboutMePhoto',
+  descriptionPage: {
+    en: 'descriptionPage',
+    ru: 'описание страницы',
+  },
+  keyWordsPage: {
+    en: 'keyWordsPage',
+    ru: 'ключевые слова страницы',
+  },
 };
