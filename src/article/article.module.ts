@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleController } from './article.controller';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
 import { Article, ArticleSchema } from 'src/schemas/article.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { ImageModule } from 'src/utils/image/image.module';
 import { ArticleRepository } from './article.repository';
 import { VKModule } from 'src/utils/vk/vk.module';
 import { TelegramModule } from 'src/utils/telegram/telegram.module';
+import { ArticleCron } from './article.cron';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { TelegramModule } from 'src/utils/telegram/telegram.module';
     ImageModule,
     VKModule.forRoot(),
     TelegramModule.forRoot(),
+    ScheduleModule.forRoot(),
   ],
-  providers: [ArticleService, ArticleRepository],
+  providers: [ArticleService, ArticleRepository, ArticleCron],
   controllers: [ArticleController],
 })
 export class ArticleModule {}

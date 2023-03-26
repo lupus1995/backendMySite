@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsBoolean, IsString, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { LanguageDto } from '../../utils/dto/language.dto';
 
 export class CreateArticleDto {
@@ -70,4 +75,20 @@ export class CreateArticleDto {
     description: 'Скрыть опубликованную статью',
   })
   hidePublishedArticle: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiProperty({
+    type: Boolean,
+    description: 'Флаг на публикацию статьи в телеграм',
+  })
+  isPublishedlegram: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiProperty({
+    type: Boolean,
+    description: 'Флаг на публикацию статьи в вк',
+  })
+  isPublishedVK: boolean;
 }

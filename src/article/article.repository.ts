@@ -71,6 +71,18 @@ export class ArticleRepository {
     }
   }
 
+  public async getByDate() {
+    try {
+      return await this.articleModel.find({
+        publishedAt: { $lt: new Date() },
+        isPublishedVK: false,
+        isPublishedlegram: false,
+      });
+    } catch (e) {
+      this.logger.error(e);
+    }
+  }
+
   public async update({
     id,
     article,

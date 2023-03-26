@@ -11,6 +11,7 @@ import {
   Put,
   Query,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateArticleDto } from './dto/article.dto';
 import {
@@ -21,6 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
 import { ArticleGuard } from './article.guard';
+import { ArticleUpdatePipe } from './article.update.pipe';
 
 @Controller('articles')
 export class ArticleController {
@@ -68,6 +70,7 @@ export class ArticleController {
   @UseGuards(AuthGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Создание статьи' })
+  @UsePipes(ArticleUpdatePipe)
   async createArticle(@Body() createArticleDto: CreateArticleDto) {
     return await this.articleService.create({
       createArticle: createArticleDto,

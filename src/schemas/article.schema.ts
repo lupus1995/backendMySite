@@ -32,6 +32,12 @@ export class Article {
 
   @Prop()
   hidePublishedArticle: boolean;
+
+  @Prop()
+  isPublishedlegram: boolean;
+
+  @Prop()
+  isPublishedVK: boolean;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);

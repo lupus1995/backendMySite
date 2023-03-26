@@ -22,4 +22,6 @@ export const articleCreatedData: CreateArticleDto = {
   updatedAt: '',
   publishedAt: '',
   hidePublishedArticle: false,
+  isPublishedlegram: false,
+  isPublishedVK: false,
 };
