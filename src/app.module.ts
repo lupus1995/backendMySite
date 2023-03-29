@@ -10,7 +10,7 @@ import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.mongooseLink),
+    MongooseModule.forRoot(process.env.mongooseLink, { useNewUrlParser: true }),
     MainPageModule,
     ArticleModule,
     AuthModule,
