@@ -7,11 +7,11 @@ export class VkService {
     this.logger = new Logger();
   }
 
-  async sendPostToVk() {
+  async sendPostToVk({ message }: { message: string }) {
     try {
       this.vk.api.wall.post({
         owner_id: -Number(process.env.owner_id),
-        message: 'test message',
+        message,
       });
     } catch (err) {
       this.logger.error(err);

@@ -8,11 +8,11 @@ export class TelegramService {
     this.logger = new Logger();
   }
 
-  async sendMessage() {
+  async sendMessage({ message }: { message: string }) {
     try {
       await this.telegramApi.sendMessage(
         `-${process.env.id_telegram_chanel}`,
-        'test_message',
+        message,
         {},
       );
     } catch (e) {
