@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { MainPageModule } from './main-page/main-page.module';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
 import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
@@ -14,7 +13,6 @@ import { FeedbackModule } from './feedback/feedback.module';
     MainPageModule,
     ArticleModule,
     AuthModule,
-    UserModule,
     FeedbackModule,
   ],
   controllers: [AppController],
