@@ -4,8 +4,12 @@ import { ArticleService } from './article.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { AuthService } from '../auth/auth.service';
+import { VkService } from '../utils/vk/vk.service';
+import { TelegramService } from '../utils/telegram/telegram.service';
 import { CanActivate } from '@nestjs/common';
 import { articleCreatedData } from './mockData';
+import { VKModule } from '../utils/vk/vk.module';
+import { TelegramModule } from '../utils/telegram/telegram.module';
 
 describe('ArticleController', () => {
   const AuthGuardMock: CanActivate = {
@@ -29,9 +33,17 @@ describe('ArticleController', () => {
       return true;
     }),
   }));
+  const vkService = jest.fn().mockReturnValue(() => ({
+    sendPostToVk: jest.fn(),
+  }));
+
+  const telegramService = jest.fn().mockReturnValue(() => ({
+    sendMessage: jest.fn(),
+  }));
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [VKModule.forRoot(), TelegramModule.forRoot()],
       controllers: [ArticleController],
       providers: [
         {
@@ -45,6 +57,14 @@ describe('ArticleController', () => {
         {
           provide: AuthService,
           useFactory: authService,
+        },
+        {
+          provide: VkService,
+          useFactory: vkService,
+        },
+        {
+          provide: TelegramService,
+          useFactory: telegramService,
         },
       ],
     })
@@ -62,9 +82,9 @@ describe('ArticleController', () => {
   });
 
   it('check getArticles', async () => {
-    expect(await controller.getArticles({ offset: 0, limit: 2 })).toStrictEqual(
-      [articleData, articleData],
-    );
+    expect(
+      await controller.getArticles({ offset: 0, limit: 2, hasFilter: true }),
+    ).toStrictEqual([articleData, articleData]);
   });
 
   it('check getArticle', async () => {

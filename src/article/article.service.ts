@@ -4,8 +4,8 @@ import { v4 as uuid } from 'uuid';
 import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
-import { VkService } from 'src/utils/vk/vk.service';
-import { TelegramService } from 'src/utils/telegram/telegram.service';
+import { VkService } from '../utils/vk/vk.service';
+import { TelegramService } from '../utils/telegram/telegram.service';
 
 @Injectable()
 export class ArticleService {
