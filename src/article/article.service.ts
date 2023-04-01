@@ -4,8 +4,6 @@ import { v4 as uuid } from 'uuid';
 import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
-import { VkService } from '../utils/vk/vk.service';
-import { TelegramService } from '../utils/telegram/telegram.service';
 
 @Injectable()
 export class ArticleService {
@@ -14,8 +12,6 @@ export class ArticleService {
   constructor(
     private articleRepository: ArticleRepository,
     private imageService: ImageService,
-    private vkService: VkService,
-    private telegramService: TelegramService,
   ) {
     this.logger = new Logger();
   }
@@ -34,9 +30,6 @@ export class ArticleService {
     };
 
     const article = await this.articleRepository.create(model);
-
-    // await this.vkService.sendPostToVk();
-    // await this.telegramService.sendMessage();
 
     return article;
   }
@@ -90,11 +83,6 @@ export class ArticleService {
   async getArticle({ id }: { id: string }) {
     try {
       const article = await this.articleRepository.findById(id);
-
-      article.thumbnail = this.imageService.convetFileToBase64({
-        nameFile: article.thumbnail,
-        rootFolder: this.rootFolder,
-      });
 
       return article;
     } catch (e) {
