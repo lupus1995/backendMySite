@@ -32,18 +32,6 @@ export class MainPageController {
     return result;
   }
 
-  @Get('imageName')
-  @ApiOkResponse({ description: 'Получить названия картинок' })
-  async getImageName() {
-    return await this.mainPageService.getImageName();
-  }
-
-  @Get(':imageName')
-  @ApiOkResponse({ description: 'Получение нарезанных картинок' })
-  async getImamges(@Param('imageName') imageName: string) {
-    return this.mainPageService.getImages({ imageName });
-  }
-
   @UseGuards(AuthGuard)
   @Put(':id')
   @ApiOkResponse({ description: 'The resource was updated successfully' })

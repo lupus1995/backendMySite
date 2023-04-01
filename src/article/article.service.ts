@@ -115,18 +115,10 @@ export class ArticleService {
     hasFilter = false,
   }: ArticlePaginationDto) {
     try {
-      const articles = await this.articleRepository.getAll({
+      return await this.articleRepository.getAll({
         offset,
         limit,
         hasFilter,
-      });
-      return articles.map((article) => {
-        article.thumbnail = this.imageService.convetFileToBase64({
-          nameFile: article.thumbnail,
-          rootFolder: this.rootFolder,
-        });
-
-        return article;
       });
     } catch (e) {
       this.logger.error(e);

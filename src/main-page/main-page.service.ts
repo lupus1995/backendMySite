@@ -77,16 +77,7 @@ export class MainPageService {
    */
   async get() {
     try {
-      const result = await this.mainPageRepository.get();
-      result.firstBlockBackgroundImage = this.imageService.convetFileToBase64({
-        nameFile: result.firstBlockBackgroundImage,
-        rootFolder: this.rootFolder,
-      });
-      result.aboutMePhoto = this.imageService.convetFileToBase64({
-        nameFile: result.aboutMePhoto,
-        rootFolder: this.rootFolder,
-      });
-      return result;
+      return await this.mainPageRepository.get();
     } catch (e) {
       this.logger.error(e);
       throw new HttpException(
@@ -97,32 +88,8 @@ export class MainPageService {
   }
 
   /**
-   * получить имена картинок
+   * получение прямой ссылки на картинку
    */
-  async getImageName() {
-    try {
-      const result = await this.mainPageRepository.get();
-      const { firstBlockBackgroundImage, aboutMePhoto } = result;
-      return { firstBlockBackgroundImage, aboutMePhoto };
-    } catch (e) {
-      this.logger.error(e);
-      throw new HttpException(
-        'Ошибка получения данных',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  /**
-   * получить конвертированные картинки на сторону фронта
-   */
-  getImages({ imageName }: { imageName: string }) {
-    return this.imageService.convertFilesToBase64ByName({
-      nameFile: imageName,
-      rootFolder: this.rootFolder,
-    });
-  }
-
   getImage({
     nameImage,
     size,
