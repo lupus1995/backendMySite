@@ -10,7 +10,7 @@ export class TelegramService {
 
   async sendMessage({ message }: { message: string }) {
     try {
-      await this.telegramApi.sendMessage(
+      return await this.telegramApi.sendMessage(
         `-${process.env.id_telegram_chanel}`,
         message,
         {},

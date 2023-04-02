@@ -110,7 +110,10 @@ export class ArticleRepository {
     } catch (e) {
       this.logger.error(e);
       await session.abortTransaction();
-      throw new HttpException('Ошибка создания статьи', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Ошибка редактирования статьи',
+        HttpStatus.BAD_REQUEST,
+      );
     } finally {
       session.endSession();
     }

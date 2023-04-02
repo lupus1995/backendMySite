@@ -15,41 +15,37 @@ export class ArticleCron {
     this.logger = new Logger();
   }
 
-  @Cron('* 1 * * * *')
+  @Cron('1 * * * * *')
   async sendPost() {
     const articlesTelegram =
       await this.articleRepository.getByPublichTelegram();
     for (let i = 0; i < articlesTelegram.length; i++) {
       const message = `${process.env.domen}/${articlesTelegram[i]._id}`;
-      await this.telegramService.sendMessage({ message });
+      const result = await this.telegramService.sendMessage({ message });
 
-      await this.articleRepository.update({
-        id: articlesTelegram[i]._id,
-        article: {
-          ...articlesTelegram[i],
-          isPublishedlegram: true,
-          createdAt: new Date(articlesTelegram[i].createdAt).toISOString(),
-          updatedAt: new Date(articlesTelegram[i].updatedAt).toISOString(),
-          publishedAt: new Date(articlesTelegram[i].publishedAt).toISOString(),
-        },
-      });
+      if (new Date(result.date).toISOString()) {
+        articlesTelegram[i].isPublishedlegram = true;
+        await this.articleRepository.update({
+          id: articlesTelegram[i]._id,
+          // @ts-ignore
+          article: articlesTelegram[i],
+        });
+      }
     }
 
     const articlesVk = await this.articleRepository.getByPublichVk();
     for (let i = 0; i < articlesVk.length; i++) {
       const message = `${process.env.domen}/${articlesVk[i]._id}`;
-      await this.telegramService.sendMessage({ message });
+      const result = await this.vkService.sendPostToVk({ message });
 
-      await this.articleRepository.update({
-        id: articlesVk[i]._id,
-        article: {
-          ...articlesVk[i],
-          isPublishedVK: true,
-          createdAt: new Date(articlesVk[i].createdAt).toISOString(),
-          updatedAt: new Date(articlesVk[i].updatedAt).toISOString(),
-          publishedAt: new Date(articlesVk[i].publishedAt).toISOString(),
-        },
-      });
+      if (result.post_id) {
+        articlesVk[i].isPublishedVK = true;
+        await this.articleRepository.update({
+          id: articlesVk[i]._id,
+          // @ts-ignore
+          article: articlesVk[i],
+        });
+      }
     }
   }
 }

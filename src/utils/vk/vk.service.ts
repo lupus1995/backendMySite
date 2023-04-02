@@ -9,7 +9,7 @@ export class VkService {
 
   async sendPostToVk({ message }: { message: string }) {
     try {
-      this.vk.api.wall.post({
+      return await this.vk.api.wall.post({
         owner_id: -Number(process.env.owner_id),
         message,
       });
