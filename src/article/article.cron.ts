@@ -35,7 +35,7 @@ export class ArticleCron {
       });
     }
 
-    const articlesVk = await this.articleRepository.getByPublichTelegram();
+    const articlesVk = await this.articleRepository.getByPublichVk();
     for (let i = 0; i < articlesVk.length; i++) {
       const message = `${process.env.domen}/${articlesVk[i]._id}`;
       await this.telegramService.sendMessage({ message });
