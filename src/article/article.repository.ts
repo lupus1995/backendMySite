@@ -71,12 +71,22 @@ export class ArticleRepository {
     }
   }
 
-  public async getByDate() {
+  public async getByPublichTelegram() {
+    try {
+      return await this.articleModel.find({
+        publishedAt: { $lt: new Date() },
+        isPublishedlegram: false,
+      });
+    } catch (e) {
+      this.logger.error(e);
+    }
+  }
+
+  public async getByPublichVk() {
     try {
       return await this.articleModel.find({
         publishedAt: { $lt: new Date() },
         isPublishedVK: false,
-        isPublishedlegram: false,
       });
     } catch (e) {
       this.logger.error(e);

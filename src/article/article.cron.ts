@@ -17,21 +17,37 @@ export class ArticleCron {
 
   @Cron('* 1 * * * *')
   async sendPost() {
-    const articles = await this.articleRepository.getByDate();
-    for (let i = 0; i < articles.length; i++) {
-      const message = `${process.env.domen}/${articles[i]._id}`;
-      await this.vkService.sendPostToVk({ message });
+    const articlesTelegram =
+      await this.articleRepository.getByPublichTelegram();
+    for (let i = 0; i < articlesTelegram.length; i++) {
+      const message = `${process.env.domen}/${articlesTelegram[i]._id}`;
       await this.telegramService.sendMessage({ message });
 
       await this.articleRepository.update({
-        id: articles[i]._id,
+        id: articlesTelegram[i]._id,
         article: {
-          ...articles[i],
+          ...articlesTelegram[i],
           isPublishedlegram: true,
+          createdAt: new Date(articlesTelegram[i].createdAt).toISOString(),
+          updatedAt: new Date(articlesTelegram[i].updatedAt).toISOString(),
+          publishedAt: new Date(articlesTelegram[i].publishedAt).toISOString(),
+        },
+      });
+    }
+
+    const articlesVk = await this.articleRepository.getByPublichTelegram();
+    for (let i = 0; i < articlesVk.length; i++) {
+      const message = `${process.env.domen}/${articlesVk[i]._id}`;
+      await this.telegramService.sendMessage({ message });
+
+      await this.articleRepository.update({
+        id: articlesVk[i]._id,
+        article: {
+          ...articlesVk[i],
           isPublishedVK: true,
-          createdAt: new Date(articles[i].createdAt).toISOString(),
-          updatedAt: new Date(articles[i].updatedAt).toISOString(),
-          publishedAt: new Date(articles[i].publishedAt).toISOString(),
+          createdAt: new Date(articlesVk[i].createdAt).toISOString(),
+          updatedAt: new Date(articlesVk[i].updatedAt).toISOString(),
+          publishedAt: new Date(articlesVk[i].publishedAt).toISOString(),
         },
       });
     }

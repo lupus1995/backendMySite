@@ -9,6 +9,7 @@ import { ArticleRepository } from './article.repository';
 import { VKModule } from 'src/utils/vk/vk.module';
 import { TelegramModule } from 'src/utils/telegram/telegram.module';
 import { ArticleCron } from './article.cron';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ArticleCron } from './article.cron';
     ImageModule,
     VKModule.forRoot(),
     TelegramModule.forRoot(),
+    ScheduleModule.forRoot(),
   ],
   providers: [ArticleService, ArticleRepository, ArticleCron],
   controllers: [ArticleController],

@@ -6,12 +6,10 @@ import { MainPageModule } from './main-page/main-page.module';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { FeedbackModule } from './feedback/feedback.module';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.mongooseLink, { useNewUrlParser: true }),
-    ScheduleModule.forRoot(),
     MainPageModule,
     ArticleModule,
     AuthModule,
