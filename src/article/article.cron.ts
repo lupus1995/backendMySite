@@ -15,13 +15,22 @@ export class ArticleCron {
     this.logger = new Logger();
   }
 
-  // @Cron('* 1 * * * *')
-  // async sendPost() {
-  //   const articles = await this.articleRepository.getByDate();
-  //   for (let i = 0; i < articles.length; i++) {
-  //     const message = `${process.env.domen}/${articles[i]._id}`;
-  //     await this.vkService.sendPostToVk({ message });
-  //     await this.telegramService.sendMessage({ message });
-  //   }
-  // }
+  @Cron('* 1 * * * *')
+  async sendPost() {
+    const articles = await this.articleRepository.getByDate();
+    for (let i = 0; i < articles.length; i++) {
+      const message = `${process.env.domen}/${articles[i]._id}`;
+      await this.vkService.sendPostToVk({ message });
+      await this.telegramService.sendMessage({ message });
+
+      await this.articleRepository.update({
+        id: articles[i]._id,
+        article: {
+          ...articles[i],
+          isPublishedlegram: true,
+          isPublishedVK: true,
+        },
+      });
+    }
+  }
 }
