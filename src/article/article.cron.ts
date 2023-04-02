@@ -29,6 +29,9 @@ export class ArticleCron {
           ...articles[i],
           isPublishedlegram: true,
           isPublishedVK: true,
+          createdAt: new Date(articles[i].createdAt).toISOString(),
+          updatedAt: new Date(articles[i].updatedAt).toISOString(),
+          publishedAt: new Date(articles[i].publishedAt).toISOString(),
         },
       });
     }
