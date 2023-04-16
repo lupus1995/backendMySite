@@ -36,7 +36,10 @@ export class ArticleCron {
     const articlesVk = await this.articleRepository.getByPublichVk();
     for (let i = 0; i < articlesVk.length; i++) {
       const message = `${process.env.domen}/${articlesVk[i]._id}`;
-      const result = await this.vkService.sendPostToVk({ message });
+      const result = await this.vkService.sendPostToVk({
+        attachments: message,
+        description: articlesVk[i].description.ru,
+      });
 
       if (result.post_id) {
         articlesVk[i].isPublishedVK = true;

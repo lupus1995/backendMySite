@@ -75,6 +75,7 @@ export class ArticleRepository {
     try {
       return await this.articleModel.find({
         publishedAt: { $lt: new Date() },
+        hidePublishedArticle: false,
         isPublishedlegram: false,
       });
     } catch (e) {
@@ -86,6 +87,7 @@ export class ArticleRepository {
     try {
       return await this.articleModel.find({
         publishedAt: { $lt: new Date() },
+        hidePublishedArticle: false,
         isPublishedVK: false,
       });
     } catch (e) {

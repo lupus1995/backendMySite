@@ -1,6 +1,13 @@
-import { Injectable, Logger, StreamableFile } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  StreamableFile,
+} from '@nestjs/common';
 import { SharpService } from 'nestjs-sharp';
 import * as fs from 'fs';
+import isBase64 from 'is-base64';
 import { sizes, sizes2x } from './constants';
 import { createReadStream } from 'fs';
 
@@ -10,6 +17,10 @@ export class ImageService {
   protected readonly logger: Logger;
   constructor(protected sharpService: SharpService) {
     this.logger = new Logger();
+  }
+
+  protected isBase64(string64: string): boolean {
+    return isBase64(string64, { allowMime: true });
   }
 
   // получение имени файла без его расширения
@@ -33,7 +44,7 @@ export class ImageService {
   }
 
   // получаем тип картинки из кода base64
-  getImageType(codeImage: string): string {
+  protected getImageType(codeImage: string): string {
     const imageMime = codeImage.substring(
       codeImage.indexOf(':') + 1,
       codeImage.indexOf(';'),
@@ -54,6 +65,10 @@ export class ImageService {
     nameImage: string;
     rootFolder: string;
   }): Promise<string> {
+    if (!this.isBase64(codeImage)) {
+      return codeImage;
+    }
+
     const base64Image = codeImage.split(';base64,').pop();
 
     if (!fs.existsSync(rootFolder)) {
@@ -61,6 +76,8 @@ export class ImageService {
     }
 
     const imageType = this.getImageType(codeImage);
+    this.logger.debug('imageType');
+    this.logger.debug(imageType);
 
     const imageName = `${nameImage}.${imageType}`;
     const imagePath = `${rootFolder}/${imageName}`;
@@ -200,9 +217,15 @@ export class ImageService {
     const nameImageWithoutMime = this.getImageWithoutMimeType(nameImage);
     const mimeType = this.getMimeTypeFromNameFile(nameImage);
     const imagePath = `${rootFolder}/${size}/${nameImageWithoutMime}@${size}.${mimeType}`;
+    if (this.checkedIsExistPath(imagePath)) {
+      const file = createReadStream(imagePath);
 
-    const file = createReadStream(imagePath);
+      return new StreamableFile(file);
+    }
 
-    return new StreamableFile(file);
+    throw new HttpException(
+      'Такого файла не существует',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }

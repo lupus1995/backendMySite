@@ -61,6 +61,7 @@
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "is-base64": "^1.1.0",
     "jest": "^28.1.2",
     "mongoose": "^6.6.1",
     "nestjs-seeder": "^0.3.0",
