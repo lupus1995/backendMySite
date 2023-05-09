@@ -76,8 +76,6 @@ export class ImageService {
     }
 
     const imageType = this.getImageType(codeImage);
-    this.logger.debug('imageType');
-    this.logger.debug(imageType);
 
     const imageName = `${nameImage}.${imageType}`;
     const imagePath = `${rootFolder}/${imageName}`;

@@ -87,10 +87,6 @@ export class ArticleService {
       return article;
     } catch (e) {
       this.logger.error(e);
-      throw new HttpException(
-        'Ошибка получения статьи',
-        HttpStatus.BAD_REQUEST,
-      );
     }
   }
 
