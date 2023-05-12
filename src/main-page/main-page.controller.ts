@@ -15,8 +15,7 @@ import { MainPageService } from './main-page.service';
 
 @Controller('main-page')
 export class MainPageController {
-  constructor(private mainPageService: MainPageService) {
-  }
+  constructor(private mainPageService: MainPageService) {}
   @UseGuards(AuthGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Данные по главной странице заполнены' })

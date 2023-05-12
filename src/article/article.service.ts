@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from './article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
+import { Article } from 'src/schemas/article.schema';
 
 @Injectable()
 export class ArticleService {
@@ -99,11 +100,19 @@ export class ArticleService {
     hasFilter = false,
   }: ArticlePaginationDto) {
     try {
-      return await this.articleRepository.getAll({
+      const articles = await this.articleRepository.getAll({
         offset,
         limit,
         hasFilter,
       });
+
+      return articles.map((article) => ({
+        description: article.description,
+        publishedAt: article.publishedAt,
+        thumbnail: article.thumbnail,
+        title: article.title,
+        _id: article._id,
+      }));
     } catch (e) {
       this.logger.error(e);
       throw new HttpException(
