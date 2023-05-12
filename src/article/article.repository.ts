@@ -19,7 +19,7 @@ export class ArticleRepository {
     offset = 0,
     limit = 10,
     hasFilter,
-  }: ArticlePaginationDto) {
+  }: ArticlePaginationDto): Promise<ArticleDocument[]> {
     let articles;
     if (hasFilter) {
       articles = await this.articleModel

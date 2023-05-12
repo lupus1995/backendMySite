@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Header,
-  Logger,
   Param,
   Post,
   Put,
@@ -16,10 +15,7 @@ import { MainPageService } from './main-page.service';
 
 @Controller('main-page')
 export class MainPageController {
-  private logger: Logger;
-  constructor(private mainPageService: MainPageService) {
-    this.logger = new Logger();
-  }
+  constructor(private mainPageService: MainPageService) {}
   @UseGuards(AuthGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Данные по главной странице заполнены' })
@@ -33,7 +29,6 @@ export class MainPageController {
   @ApiOkResponse({ description: 'Получение данных для страницы' })
   async getMainPage() {
     const result = await this.mainPageService.get();
-    this.logger.debug(result);
     return result;
   }
 
