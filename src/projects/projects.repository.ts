@@ -1,0 +1,106 @@
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
+import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
+import { ProjectDto } from './project.dto';
+
+@Injectable()
+export class ProjectsRepository {
+  private readonly logger: Logger;
+
+  constructor(
+    @InjectModel(Projects.name) private projectsModel: Model<ProjectsDocument>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {
+    this.logger = new Logger();
+  }
+
+  async create({ project }: { project: ProjectDto }) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+
+    try {
+      const model = new this.projectsModel(project);
+
+      const savedModel = await model.save();
+      await session.commitTransaction();
+      return savedModel;
+    } catch (e) {
+      this.logger.error(e);
+      await session.abortTransaction();
+      throw new HttpException(
+        'Ошибка создания проекта',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async update({ id, project }: { id: string; project: ProjectDto }) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+
+    try {
+      const model = await this.projectsModel.updateOne({ _id: id }, project);
+      return model;
+    } catch (e) {
+      this.logger.error(e);
+      await session.abortTransaction();
+      throw new HttpException(
+        'Ошибка редактирования проекта',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      session.endSession();
+    }
+  }
+
+  public async delete(id: string) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+
+    try {
+      const model = await this.projectsModel.deleteOne({ _id: id });
+      await session.commitTransaction();
+      return model;
+    } catch (e) {
+      this.logger.error(e);
+      await session.abortTransaction();
+      throw new HttpException(
+        'Ошибка удаления проекта',
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      session.endSession();
+    }
+  }
+
+  public async findById(id: string) {
+    try {
+      const model = await this.projectsModel.findById(id);
+      return model;
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new HttpException('Проект не найден', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  public async getAll() {
+    try {
+      const models = await this.projectsModel
+        .find({ hidePublishedArticle: false, publishedAt: { $lt: new Date() } })
+        .sort({ publishedAt: -1 });
+
+      return models;
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new HttpException(
+        'Ошибка при получении проекта',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+}
