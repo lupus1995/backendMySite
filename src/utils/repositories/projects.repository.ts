@@ -1,19 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
+import { ProjectDto } from 'src/projects/dto/project.dto';
 import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
-import { ProjectDto } from './dto/project.dto';
 
 @Injectable()
 export class ProjectsRepository {
-  private readonly logger: Logger;
-
   constructor(
     @InjectModel(Projects.name) private projectsModel: Model<ProjectsDocument>,
     @InjectConnection() private readonly connection: Connection,
-  ) {
-    this.logger = new Logger();
-  }
+    private readonly logger: Logger,
+  ) {}
 
   async create({ project }: { project: ProjectDto }) {
     const session = await this.connection.startSession();

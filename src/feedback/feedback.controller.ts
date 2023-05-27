@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { AuthGuard } from '../auth/auth.guard';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { QueryPaginationDto } from '../utils/dto/query-pagination.dto';
 import { FeedbackDto } from './feedback.dto';
 import { FeedbackService } from './feedback.service';
@@ -31,7 +31,7 @@ export class FeedbackController {
     return await this.feedbakService.createFeedback({ feedback: data });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Get()
   @ApiOkResponse({
     description: 'Получение нескольких сообщеий об обратной связи',
@@ -51,7 +51,7 @@ export class FeedbackController {
     return await this.feedbakService.getFeedback(queryPagination);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @ApiOkResponse({
     description: 'Удаление нескольких отзывов, если они не корректны',
   })

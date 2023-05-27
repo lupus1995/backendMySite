@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { AuthGuard } from './../auth/auth.guard';
+import { AuthGuard } from '../utils/tokens/token.guard';
 import { ArticleService } from './article.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';

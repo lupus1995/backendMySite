@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Feedback, FeedbackDocument } from '../schemas/feedback.schema';
+import { Feedback, FeedbackDocument } from '../../schemas/feedback.schema';
 
 @Injectable()
 export class FeedbackRepository {

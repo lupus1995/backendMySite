@@ -9,14 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { AuthGuard } from '../auth/auth.guard';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { CreateMainPageDto } from './main-page.dto';
 import { MainPageService } from './main-page.service';
 
 @Controller('main-page')
 export class MainPageController {
   constructor(private mainPageService: MainPageService) {}
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Данные по главной странице заполнены' })
   async createMainPage(@Body() mainPageDto: CreateMainPageDto) {
@@ -32,7 +32,7 @@ export class MainPageController {
     return result;
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Put(':id')
   @ApiOkResponse({ description: 'The resource was updated successfully' })
   @ApiParam({

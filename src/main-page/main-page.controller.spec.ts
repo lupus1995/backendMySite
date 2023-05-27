@@ -2,7 +2,7 @@ import { MainPageService } from './main-page.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MainPageController } from './main-page.controller';
 import { CanActivate } from '@nestjs/common';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../utils/tokens/token.guard';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
 import { mainPageCreateData } from './mockData';

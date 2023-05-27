@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { FeedbackRepository } from './feedback.repository';
+import { FeedbackRepository } from '../utils/repositories/feedback.repository';
 import { FeedbackService } from './feedback.service';
 import {
   feedbackData,

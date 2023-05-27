@@ -1,18 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { User, UserDocument } from '../schemas/user.schema';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignUpDto } from 'src/auth/dto/sign-up.dto';
+import { User, UserDocument } from 'src/schemas/user.schema';
 
 @Injectable()
 export class AuthRepository {
-  private readonly logger: Logger;
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectConnection() private readonly connection: Connection,
-  ) {
-    this.logger = new Logger();
-  }
+    private readonly logger: Logger,
+  ) {}
 
   public async findOne(username: string) {
     return await this.userModel.findOne({ username }).exec();

@@ -5,10 +5,14 @@ import { AuthService } from './auth.service';
 import { AuthorizationDto } from './dto/authorization.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
+import { TokensService } from 'src/utils/tokens/tokens.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tokensService: TokensService,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Создание пользователя' })
   @Post('signup')
@@ -26,13 +30,13 @@ export class AuthController {
   @ApiParam({ type: 'string', name: 'token', description: 'Access токен' })
   @ApiOkResponse({ description: 'Проверка access токена' })
   checkAccessToken(@Headers() { authorization }: AuthorizationDto) {
-    return this.authService.checkToken({ token: authorization });
+    return this.tokensService.checkToken({ token: authorization });
   }
 
   @Post('refresh')
   @ApiParam({ type: 'string', name: 'token', description: 'Refresh токен' })
   @ApiOkResponse({ description: 'Обновление пары токенов пользователя' })
   refresh(@Headers() { authorization }: AuthorizationDto) {
-    return this.authService.refreshTokens({ token: authorization });
+    return this.tokensService.refreshTokens({ token: authorization });
   }
 }

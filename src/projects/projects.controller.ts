@@ -17,7 +17,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { TokenGuard } from 'src/utils/tokens/token.guard';
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
 
@@ -36,14 +36,14 @@ export class ProjectsController {
     return this.projectsService.getProjects(hasFilter);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Get(':id')
   @ApiOkResponse({ description: 'Получение одного проекта' })
   async getProject(@Param('id') id: string) {
     return await this.projectsService.getProject({ id });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Delete(':id')
   @ApiOkResponse({ description: 'Удаление проекта' })
   @ApiParam({ type: 'string', name: 'id', description: 'Id проекта' })
@@ -51,7 +51,7 @@ export class ProjectsController {
     return await this.projectsService.delete({ id });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Создание проекта' })
   async createArticle(@Body() project: ProjectDto) {
@@ -60,7 +60,7 @@ export class ProjectsController {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Put(':id')
   @ApiOkResponse({ description: 'Обновление проекта' })
   @ApiParam({

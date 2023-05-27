@@ -1,19 +1,17 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Article, ArticleDocument } from '../schemas/article.schema';
-import { ArticlePaginationDto } from './dto/article-pagination.dto';
-import { CreateArticleDto } from './dto/article.dto';
+import { Article, ArticleDocument } from '../../schemas/article.schema';
+import { ArticlePaginationDto } from '../../article/dto/article-pagination.dto';
+import { CreateArticleDto } from '../../article/dto/article.dto';
 
 @Injectable()
 export class ArticleRepository {
-  private readonly logger: Logger;
   constructor(
     @InjectModel(Article.name) private articleModel: Model<ArticleDocument>,
     @InjectConnection() private readonly connection: Connection,
-  ) {
-    this.logger = new Logger();
-  }
+    private readonly logger: Logger,
+  ) {}
 
   public async getAll({
     offset = 0,

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { ProjectsRepository } from './projects.repository';
 import { ImageService } from '../utils/image/image.service';
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from '../utils/dto/has-filter.dto';
+import { ProjectsRepository } from 'src/utils/repositories/projects.repository';
 
 @Injectable()
 export class ProjectsService {

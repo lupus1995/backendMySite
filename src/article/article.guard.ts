@@ -4,18 +4,18 @@ import {
   HttpStatus,
   Inject,
 } from '@nestjs/common';
-import { AuthService } from '../auth/auth.service';
-import { AuthGuard } from '../auth/auth.guard';
-import { ArticleRepository } from './article.repository';
+import { TokenGuard } from '../utils/tokens/token.guard';
+import { ArticleRepository } from '../utils/repositories/article.repository';
 import { isAfter } from 'date-fns';
+import { TokensService } from 'src/utils/tokens/tokens.service';
 
-export class ArticleGuard extends AuthGuard {
+export class ArticleGuard extends TokenGuard {
   constructor(
-    @Inject(AuthService) private readonly authService: AuthService,
+    @Inject(TokensService) private readonly tokensService: TokensService,
     @Inject(ArticleRepository)
     private readonly articleRepository: ArticleRepository,
   ) {
-    super(authService);
+    super(tokensService);
   }
   // @ts-ignore
   async canActivate(context: ExecutionContext): Promise<boolean> {

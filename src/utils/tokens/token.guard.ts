@@ -1,10 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { IncomingMessage } from 'http';
-import { AuthService } from './auth.service';
+import { TokensService } from 'src/utils/tokens/tokens.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+export class TokenGuard implements CanActivate {
+  constructor(private readonly tokensService: TokensService) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = this.getRequest<
@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
     >(context); // you could use FastifyRequest here too
     try {
       const token = this.getToken(request);
-      return this.authService.checkToken({ token });
+      return this.tokensService.checkToken({ token });
     } catch (e) {
       return false;
     }

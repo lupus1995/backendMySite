@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { ImageService } from '../utils/image/image.service';
-import { ArticleRepository } from './article.repository';
+import { ArticleRepository } from '../utils/repositories/article.repository';
 import { ArticleService } from './article.service';
 import { articleCreatedData } from './mockData';
 

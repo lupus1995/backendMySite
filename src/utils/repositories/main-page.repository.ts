@@ -1,17 +1,15 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { MainPage, MainPageDocument } from '../schemas/mainPage.schema';
-import { CreateMainPageDto } from './main-page.dto';
+import { CreateMainPageDto } from 'src/main-page/main-page.dto';
+import { MainPage, MainPageDocument } from 'src/schemas/mainPage.schema';
 @Injectable()
 export class MainPageRepository {
-  private readonly logger: Logger;
   constructor(
     @InjectModel(MainPage.name) private mainPageModel: Model<MainPageDocument>,
     @InjectConnection() private readonly connection: Connection,
-  ) {
-    this.logger = new Logger();
-  }
+    private readonly logger: Logger,
+  ) {}
 
   public async create({
     createMainPageDto,

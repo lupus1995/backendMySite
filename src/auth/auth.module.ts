@@ -1,27 +1,16 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../schemas/user.schema';
 import { AuthController } from './auth.controller';
-import { AuthRepository } from './auth.repository';
 import { AuthService } from './auth.service';
 import { CustomUsernameValidation } from './rules/exists-username.rule';
 import { CustomLoginValidation } from './rules/login.rule';
-import secrets from '../secrets';
+import { RepositoriesModule } from 'src/utils/repositories/repositories.module';
+import { TokensModule } from 'src/utils/tokens/tokens.module';
 
 @Module({
-  imports: [
-    JwtModule.register({ secret: secrets.jwtSecret }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-  ],
+  imports: [TokensModule, RepositoriesModule],
   controllers: [AuthController],
-  providers: [
-    CustomUsernameValidation,
-    CustomLoginValidation,
-    AuthRepository,
-    AuthService,
-  ],
-  exports: [JwtModule, AuthService],
+  providers: [CustomUsernameValidation, CustomLoginValidation, AuthService],
 })
 export class AuthModule {}
