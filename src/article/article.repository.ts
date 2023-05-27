@@ -65,7 +65,7 @@ export class ArticleRepository {
       this.logger.error(e);
 
       throw new HttpException(
-        'Ошибка редактирования статьи',
+        'Ошибка получения статьи',
         HttpStatus.BAD_REQUEST,
       );
     }

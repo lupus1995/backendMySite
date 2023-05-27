@@ -17,6 +17,7 @@ export class ArticleGuard extends AuthGuard {
     const id = this.getId(context);
     const article = await this.articleRepository.findById(id);
 
+    // если статья должна публиковаться после текущей даты, то посмотреть ее может только авторизованный пользователь
     if (isAfter(new Date(article.publishedAt), new Date())) {
       return super.canActivate(context);
     }

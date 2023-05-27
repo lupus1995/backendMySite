@@ -33,7 +33,6 @@ export class MainPageController {
   @ApiOkResponse({ description: 'Получение данных для страницы' })
   async getMainPage() {
     const result = await this.mainPageService.get();
-    this.logger.debug(result);
     return result;
   }
 
