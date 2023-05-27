@@ -1,19 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { ProjectsRepository } from './projects.repository';
 import { ImageService } from '../utils/image/image.service';
-import { ProjectDto } from './project.dto';
+import { ProjectDto } from './dto/project.dto';
+import { HasFilterDto } from '../utils/dto/has-filter.dto';
 
 @Injectable()
 export class ProjectsService {
-  private logger: Logger;
   private rootFolder = './images';
   constructor(
     private projectsRepository: ProjectsRepository,
     private imageService: ImageService,
-  ) {
-    this.logger = new Logger();
-  }
+  ) {}
 
   /**
    * создание проекта
@@ -78,8 +76,8 @@ export class ProjectsService {
   /**
    * получение нескольких статей
    */
-  async getProjects() {
-    const projects = await this.projectsRepository.getAll();
+  async getProjects({ hasFilter }: HasFilterDto) {
+    const projects = await this.projectsRepository.getAll({ hasFilter });
 
     return projects;
   }
@@ -92,5 +90,11 @@ export class ProjectsService {
       nameImage: project.thumbnail,
       rootFolder: this.rootFolder,
     });
+  }
+
+  async getProject({ id }: { id: string }) {
+    const project = await this.projectsRepository.findById(id);
+
+    return project;
   }
 }

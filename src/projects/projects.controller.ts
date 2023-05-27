@@ -7,21 +7,40 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { ProjectDto } from './project.dto';
+import { ProjectDto } from './dto/project.dto';
+import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Получение нескольких статей' })
-  async getProjects() {
-    return this.projectsService.getProjects();
+  @ApiOkResponse({ description: 'Получение всех проектов' })
+  @ApiQuery({
+    type: 'boolean',
+    name: 'hasFilter',
+    description: 'Скрывать ранее опубликованные проекты',
+  })
+  async getProjects(@Query() hasFilter: HasFilterDto) {
+    return this.projectsService.getProjects(hasFilter);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  @ApiOkResponse({ description: 'Получение одного проекта' })
+  async getProject(@Param('id') id: string) {
+    return await this.projectsService.getProject({ id });
   }
 
   @UseGuards(AuthGuard)

@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsBoolean } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsBoolean, ValidateNested } from 'class-validator';
+import { LanguageDto } from 'src/utils/dto/language.dto';
 
 export class ProjectDto {
   @IsString()
@@ -23,12 +25,13 @@ export class ProjectDto {
   })
   publishedAt: string;
 
-  @IsString()
+  @Type(() => LanguageDto)
+  @ValidateNested()
   @ApiProperty({
-    type: String,
+    type: LanguageDto,
     description: 'Название проекта',
   })
-  title: string;
+  title: LanguageDto;
 
   @IsString()
   @ApiProperty({
@@ -37,12 +40,13 @@ export class ProjectDto {
   })
   thumbnail: string;
 
-  @IsString()
+  @Type(() => LanguageDto)
+  @ValidateNested()
   @ApiProperty({
-    type: String,
+    type: LanguageDto,
     description: 'Описание проекта',
   })
-  description: string;
+  description: LanguageDto;
 
   @IsString()
   @ApiProperty({
@@ -50,6 +54,14 @@ export class ProjectDto {
     description: 'Ссылка на проект, по которойдолжен отрисовать проект',
   })
   linkToProjectOnUi: string;
+
+  @Type(() => LanguageDto)
+  @ValidateNested()
+  @ApiProperty({
+    type: LanguageDto,
+    description: 'Ключевые слова для сео оптимизации',
+  })
+  keyWords: LanguageDto;
 
   @IsBoolean()
   @ApiProperty({

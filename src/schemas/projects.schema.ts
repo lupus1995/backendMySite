@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Language } from './language.schema';
 
 export type ProjectsDocument = Projects & Document;
 
@@ -14,16 +15,19 @@ export class Projects {
   publishedAt: Date;
 
   @Prop()
-  title: string;
+  title: Language;
 
   @Prop()
   thumbnail: string;
 
   @Prop()
-  description: string;
+  description: Language;
 
   @Prop()
   linkToProjectOnUi: string;
+
+  @Prop()
+  keyWords: Language;
 
   @Prop()
   hidePublished: boolean;

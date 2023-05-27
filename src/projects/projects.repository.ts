@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
-import { ProjectDto } from './project.dto';
+import { ProjectDto } from './dto/project.dto';
 
 @Injectable()
 export class ProjectsRepository {
@@ -87,13 +87,25 @@ export class ProjectsRepository {
     }
   }
 
-  public async getAll() {
+  public async getAll({
+    hasFilter,
+  }: {
+    hasFilter: boolean;
+  }): Promise<ProjectsDocument[]> {
     try {
-      const models = await this.projectsModel
-        .find({ hidePublishedArticle: false, publishedAt: { $lt: new Date() } })
-        .sort({ publishedAt: -1 });
+      let projects: ProjectsDocument[];
+      if (hasFilter) {
+        projects = await this.projectsModel
+          .find({
+            hidePublishedArticle: false,
+            publishedAt: { $lt: new Date() },
+          })
+          .sort({ publishedAt: -1 });
+      } else {
+        projects = await this.projectsModel.find().sort({ publishedAt: -1 });
+      }
 
-      return models;
+      return projects;
     } catch (e) {
       this.logger.error(e);
 
