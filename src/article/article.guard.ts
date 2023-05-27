@@ -1,4 +1,9 @@
-import { ExecutionContext, Inject } from '@nestjs/common';
+import {
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Inject,
+} from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { ArticleRepository } from './article.repository';
@@ -17,10 +22,18 @@ export class ArticleGuard extends AuthGuard {
     const id = this.getId(context);
     const article = await this.articleRepository.findById(id);
 
+    if (article === null) {
+      throw new HttpException(
+        'Ошибка получения статьи',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     // если статья должна публиковаться после текущей даты, то посмотреть ее может только авторизованный пользователь
-    if (isAfter(new Date(article.publishedAt), new Date())) {
+    if (isAfter(new Date(article?.publishedAt), new Date())) {
       return super.canActivate(context);
     }
+
     return true;
   }
 
