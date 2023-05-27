@@ -1,15 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsOptional, IsBoolean } from 'class-validator';
+import { IntersectionType } from '@nestjs/swagger';
 import { QueryPaginationDto } from '../../utils/dto/query-pagination.dto';
+import { HasFilterDto } from '../../utils/dto/has-filter.dto';
 
-export class ArticlePaginationDto extends QueryPaginationDto {
-  @ApiProperty({
-    type: Boolean,
-    description: 'Нужно ли фильтровать статьи',
-  })
-  @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => value === 'true')
-  hasFilter: boolean;
-}
+export class ArticlePaginationDto extends IntersectionType(
+  QueryPaginationDto,
+  HasFilterDto,
+) {}
