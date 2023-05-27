@@ -29,6 +29,7 @@ export class ArticleGuard extends AuthGuard {
       );
     }
 
+    // если статья должна публиковаться после текущей даты, то посмотреть ее может только авторизованный пользователь
     if (isAfter(new Date(article?.publishedAt), new Date())) {
       return super.canActivate(context);
     }
