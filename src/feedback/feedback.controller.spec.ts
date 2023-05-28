@@ -1,7 +1,7 @@
 import { CanActivate } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TestingModule, Test } from '@nestjs/testing';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../utils/tokens/token.guard';
 import { AuthService } from '../auth/auth.service';
 import { FeedbackController } from './feedback.controller';
 import { FeedbackDto } from './feedback.dto';

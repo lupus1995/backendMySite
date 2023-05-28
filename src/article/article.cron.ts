@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TelegramService } from 'src/utils/telegram/telegram.service';
 import { VkService } from 'src/utils/vk/vk.service';
-import { ArticleRepository } from './article.repository';
+import { ArticleRepository } from '../utils/repositories/article.repository';
 
 @Injectable()
 export class ArticleCron {

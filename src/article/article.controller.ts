@@ -1,4 +1,4 @@
-import { AuthGuard } from './../auth/auth.guard';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { ArticleService } from './article.service';
 import {
   Body,
@@ -59,7 +59,7 @@ export class ArticleController {
     return await this.articleService.getArticle({ id });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Delete(':id')
   @ApiOkResponse({ description: 'Удаление статьи' })
   @ApiParam({ type: 'string', name: 'id', description: 'Id статьи' })
@@ -67,7 +67,7 @@ export class ArticleController {
     return await this.articleService.delete({ id });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Создание статьи' })
   @UsePipes(ArticleUpdatePipe)
@@ -77,7 +77,7 @@ export class ArticleController {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Put(':id')
   @ApiOkResponse({ description: 'The resource was updated successfully' })
   @ApiParam({

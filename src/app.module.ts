@@ -7,6 +7,7 @@ import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { ProjectsModule } from './projects/projects.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProjectsModule } from './projects/projects.module';
     AuthModule,
     FeedbackModule,
     ProjectsModule,
+    SitemapModule,
   ],
   controllers: [AppController],
   providers: [AppService],

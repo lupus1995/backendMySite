@@ -1,10 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { Model, Connection } from 'mongoose';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../utils/tokens/token.guard';
 import { AuthRepository } from '../auth/auth.repository';
 import { AuthService } from '../auth/auth.service';
 import { ArticleGuard } from './article.guard';
-import { ArticleRepository } from './article.repository';
+import { ArticleRepository } from '../utils/repositories/article.repository';
 
 class Context {
   private headers;

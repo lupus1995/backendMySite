@@ -7,18 +7,16 @@ import {
 } from '@nestjs/common';
 import { CreateMainPageDto } from './main-page.dto';
 import { ImageService } from '../utils/image/image.service';
-import { MainPageRepository } from './main-page.repository';
+import { MainPageRepository } from 'src/utils/repositories/main-page.repository';
 
 @Injectable()
 export class MainPageService {
-  private readonly logger: Logger;
   private rootFolder = './images';
   constructor(
     private imageService: ImageService,
     private readonly mainPageRepository: MainPageRepository,
-  ) {
-    this.logger = new Logger();
-  }
+    private readonly logger: Logger,
+  ) {}
 
   /**
    * Создание объекта, в котором будут хранится данные по главной странице
@@ -67,7 +65,7 @@ export class MainPageService {
     });
 
     return await this.mainPageRepository.update({
-      createMainPageDto: data,
+      data,
       id,
     });
   }
@@ -77,7 +75,7 @@ export class MainPageService {
    */
   async get() {
     try {
-      return await this.mainPageRepository.get();
+      return await this.mainPageRepository.findById();
     } catch (e) {
       this.logger.error(e);
       throw new HttpException(

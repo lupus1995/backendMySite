@@ -1,84 +1,71 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
+import { ProjectDto } from 'src/projects/dto/project.dto';
 import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
-import { ProjectDto } from './dto/project.dto';
+import { BaseRepository } from './base-repository';
 
 @Injectable()
-export class ProjectsRepository {
-  private readonly logger: Logger;
-
+export class ProjectsRepository extends BaseRepository<ProjectsDocument> {
   constructor(
-    @InjectModel(Projects.name) private projectsModel: Model<ProjectsDocument>,
-    @InjectConnection() private readonly connection: Connection,
+    @InjectModel(Projects.name) protected model: Model<ProjectsDocument>,
+    @InjectConnection() protected readonly connection: Connection,
+    protected readonly logger: Logger,
   ) {
-    this.logger = new Logger();
+    super(model, connection, logger);
   }
 
   async create({ project }: { project: ProjectDto }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const model = new this.projectsModel(project);
-
-      const savedModel = await model.save();
-      await session.commitTransaction();
+    const execute = async () => {
+      const newModel = new this.model(project);
+      const savedModel = await newModel.save();
       return savedModel;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
+    };
+
+    const handleError = () => {
       throw new HttpException(
         'Ошибка создания проекта',
         HttpStatus.BAD_REQUEST,
       );
-    } finally {
-      session.endSession();
-    }
+    };
+
+    this.transaction(execute, handleError);
   }
 
-  async update({ id, project }: { id: string; project: ProjectDto }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const model = await this.projectsModel.updateOne({ _id: id }, project);
+  async update({ id, data }: { id: string; data: ProjectDto }) {
+    const execute = async () => {
+      const model = await this.model.updateOne({ _id: id }, data);
       return model;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
+    };
+    const handleError = () => {
       throw new HttpException(
         'Ошибка редактирования проекта',
         HttpStatus.BAD_REQUEST,
       );
-    } finally {
-      session.endSession();
-    }
+    };
+
+    return await this.transaction(execute, handleError);
   }
 
   public async delete(id: string) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
+    const execute = async () => {
+      const project = await this.model.deleteOne({ _id: id });
+      return project;
+    };
 
-    try {
-      const model = await this.projectsModel.deleteOne({ _id: id });
-      await session.commitTransaction();
-      return model;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
+    const handleError = () => {
       throw new HttpException(
         'Ошибка удаления проекта',
         HttpStatus.BAD_REQUEST,
       );
-    } finally {
-      session.endSession();
-    }
+    };
+
+    return await this.transaction(execute, handleError);
   }
 
   public async findById(id: string) {
     try {
-      const model = await this.projectsModel.findById(id);
+      const model = await this.model.findById(id);
       return model;
     } catch (e) {
       this.logger.error(e);
@@ -95,14 +82,14 @@ export class ProjectsRepository {
     try {
       let projects: ProjectsDocument[];
       if (hasFilter) {
-        projects = await this.projectsModel
+        projects = await this.model
           .find({
             hidePublishedArticle: false,
             publishedAt: { $lt: new Date() },
           })
           .sort({ publishedAt: -1 });
       } else {
-        projects = await this.projectsModel.find().sort({ publishedAt: -1 });
+        projects = await this.model.find().sort({ publishedAt: -1 });
       }
 
       return projects;

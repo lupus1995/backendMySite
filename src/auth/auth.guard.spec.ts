@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Model, Connection } from 'mongoose';
 import { AuthRepository } from './auth.repository';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from '../utils/tokens/token.guard';
 import { ExecutionContext } from '@nestjs/common';
 
 class Context {
