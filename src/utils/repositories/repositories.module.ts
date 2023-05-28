@@ -10,6 +10,7 @@ import { User, UserSchema } from 'src/schemas/user.schema';
 import { Article, ArticleSchema } from 'src/schemas/article.schema';
 import { FeedbackRepository } from './feedback.repository';
 import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
+import { SitemapRepository } from './sitemap.repository';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
     MainPageRepository,
     ProjectsRepository,
     FeedbackRepository,
+    SitemapRepository,
     Logger,
   ],
   exports: [
@@ -35,6 +37,7 @@ import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
     MainPageRepository,
     ProjectsRepository,
     FeedbackRepository,
+    SitemapRepository,
     Logger,
   ],
 })

@@ -4,7 +4,6 @@ import { v4 as uuid } from 'uuid';
 import { CreateArticleDto } from './dto/article.dto';
 import { ArticleRepository } from '../utils/repositories/article.repository';
 import { ArticlePaginationDto } from './dto/article-pagination.dto';
-import { Article } from 'src/schemas/article.schema';
 
 @Injectable()
 export class ArticleService {
