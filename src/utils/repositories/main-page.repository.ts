@@ -3,67 +3,65 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { CreateMainPageDto } from 'src/main-page/main-page.dto';
 import { MainPage, MainPageDocument } from 'src/schemas/mainPage.schema';
+import { BaseRepository } from './base-repository';
+import { HasFilterDto } from '../dto/has-filter.dto';
+import { QueryPaginationDto } from '../dto/query-pagination.dto';
 @Injectable()
-export class MainPageRepository {
+export class MainPageRepository extends BaseRepository<MainPageDocument> {
   constructor(
-    @InjectModel(MainPage.name) private mainPageModel: Model<MainPageDocument>,
-    @InjectConnection() private readonly connection: Connection,
-    private readonly logger: Logger,
-  ) {}
+    @InjectModel(MainPage.name) protected model: Model<MainPageDocument>,
+    @InjectConnection() protected readonly connection: Connection,
+    protected readonly logger: Logger,
+  ) {
+    super(model, connection, logger);
+  }
 
   public async create({
     createMainPageDto,
   }: {
     createMainPageDto: CreateMainPageDto;
   }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const model = new this.mainPageModel(createMainPageDto);
-      const savedModel = await model.save();
-      await session.commitTransaction();
+    const execute = async () => {
+      const newModel = new this.model(createMainPageDto);
+      const savedModel = await newModel.save();
       return savedModel;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
+    };
+
+    const handleError = () => {
       throw new HttpException('Ошибка создания статьи', HttpStatus.BAD_REQUEST);
-    } finally {
-      session.endSession();
-    }
+    };
+
+    return await this.transaction(execute, handleError);
   }
 
-  public async update({
-    createMainPageDto,
-    id,
-  }: {
-    createMainPageDto: CreateMainPageDto;
-    id: string;
-  }) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const model = await this.mainPageModel.updateOne(
-        { id },
-        createMainPageDto,
-      );
-
-      await session.commitTransaction();
+  public async update({ data, id }) {
+    const execute = async () => {
+      const model = await this.model.updateOne({ id }, data);
       return model;
-    } catch (e) {
-      this.logger.error(e);
-      await session.abortTransaction();
+    };
+
+    const handleError = () => {
       throw new HttpException(
         'Ошибка редактирования данных',
         HttpStatus.BAD_REQUEST,
       );
-    } finally {
-      session.endSession();
-    }
+    };
+
+    return await this.transaction(execute, handleError);
   }
 
-  public async get() {
-    return await this.mainPageModel.findOne().exec();
+  public async findById() {
+    return await this.model.findOne().exec();
+  }
+
+  getAll({
+    offset,
+    limit,
+    hasFilter,
+  }: HasFilterDto & QueryPaginationDto): Promise<unknown[]> {
+    throw new Error('Method not implemented.');
+  }
+  delete(id: string | string[]): Promise<unknown> {
+    throw new Error('Method not implemented.');
   }
 }

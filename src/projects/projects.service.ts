@@ -49,7 +49,7 @@ export class ProjectsService {
 
     const model = await this.projectsRepository.update({
       id,
-      project: {
+      data: {
         ...project,
         thumbnail,
       },

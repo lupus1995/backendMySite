@@ -2,16 +2,19 @@ import { Logger } from '@nestjs/common';
 import { Model, Connection } from 'mongoose';
 import { HasFilterDto } from '../dto/has-filter.dto';
 import { QueryPaginationDto } from '../dto/query-pagination.dto';
+import { TransAction } from './transaction';
 
-export abstract class BaseRepository<T> {
+export abstract class BaseRepository<T> extends TransAction {
   constructor(
-    private model: Model<T>,
-    private connection: Connection,
-    private logger: Logger,
-  ) {}
+    protected model: Model<T>,
+    protected connection: Connection,
+    protected logger: Logger,
+  ) {
+    super(connection, logger);
+  }
 
   // поиск по заданому параметру, сам параметр в зависимости от модели может отличаться
-  abstract findOne(query: string): Promise<unknown>;
+  // abstract findOne(query: string): Promise<unknown>;
 
   // поиск по id
   abstract findById(id: string): Promise<unknown>;
@@ -35,5 +38,5 @@ export abstract class BaseRepository<T> {
     data: unknown;
   }): Promise<unknown>;
 
-  abstract delete(id: string): Promise<unknown>;
+  abstract delete(id: string | string[]): Promise<unknown>;
 }

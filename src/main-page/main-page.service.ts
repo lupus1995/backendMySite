@@ -65,7 +65,7 @@ export class MainPageService {
     });
 
     return await this.mainPageRepository.update({
-      createMainPageDto: data,
+      data,
       id,
     });
   }
@@ -75,7 +75,7 @@ export class MainPageService {
    */
   async get() {
     try {
-      return await this.mainPageRepository.get();
+      return await this.mainPageRepository.findById();
     } catch (e) {
       this.logger.error(e);
       throw new HttpException(

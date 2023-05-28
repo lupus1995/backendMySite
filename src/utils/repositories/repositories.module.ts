@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { ArticleRepository } from './article.repository';
-import { AuthRepository } from './auth.repository';
+import { UserRepository } from './user.repository';
 import { MainPageRepository } from './main-page.repository';
 import { ProjectsRepository } from './projects.repository';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -23,7 +23,7 @@ import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
   ],
   providers: [
     ArticleRepository,
-    AuthRepository,
+    UserRepository,
     MainPageRepository,
     ProjectsRepository,
     FeedbackRepository,
@@ -31,7 +31,7 @@ import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
   ],
   exports: [
     ArticleRepository,
-    AuthRepository,
+    UserRepository,
     MainPageRepository,
     ProjectsRepository,
     FeedbackRepository,

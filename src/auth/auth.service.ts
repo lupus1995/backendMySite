@@ -1,21 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { SignUpDto } from './dto/sign-up.dto';
-import { AuthRepository } from 'src/utils/repositories/auth.repository';
+import { UserRepository } from 'src/utils/repositories/user.repository';
 import { TokensService } from 'src/utils/tokens/tokens.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly tokensService: TokensService,
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   /**
    * поиск уникального пользователя по имени
    */
   public async uniqUsername({ username }: { username: string }) {
-    return await this.authRepository.findOne(username);
+    return await this.userRepository.findOne(username);
   }
 
   /**
@@ -24,7 +24,7 @@ export class AuthService {
   public async signup(
     user: SignUpDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    await this.authRepository.create({
+    await this.userRepository.create({
       ...user,
       password: await argon2.hash(user.password),
     });

@@ -58,7 +58,7 @@ export class ArticleService {
       rootFolder: this.rootFolder,
     });
 
-    const model = await this.articleRepository.update({ id, article });
+    const model = await this.articleRepository.update({ id, data: article });
 
     return model;
   }

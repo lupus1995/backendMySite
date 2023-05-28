@@ -28,7 +28,7 @@ export class FeedbackService {
     offset: number;
     limit: number;
   }) {
-    return await this.feedbackRepository.get({
+    return await this.feedbackRepository.getAll({
       offset,
       limit,
     });
@@ -36,6 +36,6 @@ export class FeedbackService {
 
   // удаление сообщение с обратной связью
   async deletedFeedback({ ids }: { ids: string[] }) {
-    return await this.feedbackRepository.delete({ ids });
+    return await this.feedbackRepository.delete(ids);
   }
 }
