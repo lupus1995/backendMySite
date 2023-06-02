@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TelegramService } from 'src/utils/telegram/telegram.service';
 import { VkService } from 'src/utils/vk/vk.service';
@@ -6,14 +6,11 @@ import { ArticleRepository } from '../utils/repositories/article.repository';
 
 @Injectable()
 export class ArticleCron {
-  private readonly logger: Logger;
   constructor(
     private articleRepository: ArticleRepository,
     private vkService: VkService,
     private telegramService: TelegramService,
-  ) {
-    this.logger = new Logger();
-  }
+  ) {}
 
   @Cron('1 * * * * *')
   async sendPost() {
@@ -28,7 +25,7 @@ export class ArticleCron {
         await this.articleRepository.update({
           id: articlesTelegram[i]._id,
           // @ts-ignore
-          article: articlesTelegram[i],
+          data: articlesTelegram[i],
         });
       }
     }
@@ -46,7 +43,7 @@ export class ArticleCron {
         await this.articleRepository.update({
           id: articlesVk[i]._id,
           // @ts-ignore
-          article: articlesVk[i],
+          data: articlesVk[i],
         });
       }
     }
