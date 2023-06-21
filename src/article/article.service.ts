@@ -22,9 +22,9 @@ export class ArticleService {
   async create({ createArticle }: { createArticle: CreateArticleDto }) {
     const model = {
       ...createArticle,
-      thumbnail: await this.imageService.saveImage({
-        codeImage: createArticle.thumbnail,
-        nameImage: uuid(),
+      thumbnail: await this.imageService.saveImageBase64({
+        code: createArticle.thumbnail,
+        name: uuid(),
         rootFolder: this.rootFolder,
       }),
     };
@@ -51,9 +51,9 @@ export class ArticleService {
       0,
       currentArticle.thumbnail.indexOf('.'),
     );
-    article.thumbnail = await this.imageService.saveImage({
-      codeImage: article.thumbnail,
-      nameImage: nameFile,
+    article.thumbnail = await this.imageService.saveImageBase64({
+      code: article.thumbnail,
+      name: nameFile,
       rootFolder: this.rootFolder,
     });
 
@@ -121,11 +121,11 @@ export class ArticleService {
     }
   }
 
-  async getFile({ id }: { id: string }) {
+  async getFile({ id, size }: { id: string; size: string }) {
     const article = await this.articleRepository.findById(id);
 
     return this.imageService.getFile({
-      size: '510',
+      size,
       nameImage: article.thumbnail,
       rootFolder: this.rootFolder,
     });

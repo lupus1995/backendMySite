@@ -6,13 +6,12 @@ import { Article } from 'src/schemas/article.schema';
 
 @Injectable()
 export class AticleSeeder implements Seeder {
-  private logger: Logger;
   constructor(
     @InjectModel(Article.name) private readonly article: Model<Article>,
-  ) {
-    this.logger = new Logger();
-  }
+    private logger: Logger,
+  ) {}
 
+  // обновление статуса статей по публикации в вконтакте и телеграмм
   async seed(): Promise<any> {
     await this.article.updateMany(
       {

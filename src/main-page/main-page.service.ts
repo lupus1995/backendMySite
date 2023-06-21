@@ -28,14 +28,14 @@ export class MainPageService {
   }) {
     const model = { ...createMainPageDto };
 
-    model.firstBlockBackgroundImage = await this.imageService.saveImage({
-      codeImage: model.firstBlockBackgroundImage,
-      nameImage: 'firstBlockBackgroundImage',
+    model.firstBlockBackgroundImage = await this.imageService.saveImageBase64({
+      code: model.firstBlockBackgroundImage,
+      name: 'firstBlockBackgroundImage',
       rootFolder: this.rootFolder,
     });
-    model.aboutMePhoto = await this.imageService.saveImage({
-      codeImage: model.aboutMePhoto,
-      nameImage: 'aboutMePhoto',
+    model.aboutMePhoto = await this.imageService.saveImageBase64({
+      code: model.aboutMePhoto,
+      name: 'aboutMePhoto',
       rootFolder: this.rootFolder,
     });
 
@@ -53,14 +53,14 @@ export class MainPageService {
     id: string;
   }) {
     const data = { ...createMainPageDto };
-    data.firstBlockBackgroundImage = await this.imageService.saveImage({
-      codeImage: data.firstBlockBackgroundImage,
-      nameImage: 'firstBlockBackgroundImage',
+    data.firstBlockBackgroundImage = await this.imageService.saveImageBase64({
+      code: data.firstBlockBackgroundImage,
+      name: 'firstBlockBackgroundImage',
       rootFolder: this.rootFolder,
     });
-    data.aboutMePhoto = await this.imageService.saveImage({
-      codeImage: data.aboutMePhoto,
-      nameImage: 'aboutMePhoto',
+    data.aboutMePhoto = await this.imageService.saveImageBase64({
+      code: data.aboutMePhoto,
+      name: 'aboutMePhoto',
       rootFolder: this.rootFolder,
     });
 

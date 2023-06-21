@@ -1,10 +1,11 @@
+export enum sizesSocMedia {
+  VK = 1280,
+  TELEGRAM = 510,
+}
+
 export const sizes = [
   {
     size: 480,
-  },
-  // для вк
-  {
-    size: 510,
   },
   {
     size: 720,
@@ -20,6 +21,15 @@ export const sizes = [
   },
   {
     size: 2560,
+  },
+
+  // для вк
+  {
+    size: sizesSocMedia.VK,
+  },
+  // для телеграмм
+  {
+    size: sizesSocMedia.TELEGRAM,
   },
 ];
 

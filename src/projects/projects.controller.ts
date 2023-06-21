@@ -75,9 +75,9 @@ export class ProjectsController {
     });
   }
 
-  @Get(':id/thumbnail')
+  @Get(':id/:size/thumbnail')
   @Header('Content-Type', 'image/jpeg')
-  async getFile(@Param('id') id: string) {
-    return await this.projectsService.getFile({ id });
+  async getFile(@Param('id') id: string, @Param('size') size: string) {
+    return await this.projectsService.getFile({ id, size });
   }
 }

@@ -14,9 +14,16 @@ import { createReadStream } from 'fs';
 // вспомогательный модуль для сохранения и нарезки картинок в нужный размер, их выдачи на запрос
 @Injectable()
 export class ImageService {
-  protected readonly logger: Logger;
-  constructor(protected sharpService: SharpService) {
-    this.logger = new Logger();
+  private supportImageMimes = ['jpeg', 'png'];
+  constructor(
+    protected sharpService: SharpService,
+    protected readonly logger: Logger,
+  ) {}
+
+  protected createRootFolder(rootFolder: string) {
+    if (!fs.existsSync(rootFolder)) {
+      fs.mkdirSync(rootFolder);
+    }
   }
 
   protected isBase64(string64: string): boolean {
@@ -44,151 +51,162 @@ export class ImageService {
   }
 
   // получаем тип картинки из кода base64
-  protected getImageType(codeImage: string): string {
-    const imageMime = codeImage.substring(
-      codeImage.indexOf(':') + 1,
-      codeImage.indexOf(';'),
-    );
+  protected getImageMime({
+    fromImage,
+    image,
+  }: {
+    fromImage: 'path' | 'base64';
+    image: string;
+  }): string {
+    switch (fromImage) {
+      case 'path': {
+        const imageMime = this.getMimeTypeFromNameFile(image);
 
-    const imageType = imageMime.substring(imageMime.indexOf('/') + 1);
+        return imageMime;
+      }
 
-    return imageType;
+      case 'base64':
+      default: {
+        this.logger.debug(image);
+        const imageMimeFromBase64 = image.substring(
+          image.indexOf(':') + 1,
+          image.indexOf(';'),
+        );
+
+        const imageMime = imageMimeFromBase64.substring(
+          imageMimeFromBase64.indexOf('/') + 1,
+        );
+
+        return imageMime;
+      }
+    }
   }
 
-  // сохраняем и нарезаем картинку под необходимые размеры
-  async saveImage({
-    codeImage,
-    nameImage,
+  protected async cropImage({
+    imageName,
     rootFolder,
+    imageToPath,
   }: {
-    codeImage: string;
-    nameImage: string;
+    imageName: string;
     rootFolder: string;
-  }): Promise<string> {
-    if (!this.isBase64(codeImage)) {
-      return codeImage;
-    }
+    imageToPath: string;
+  }) {
+    const imageMime = this.getImageMime({
+      image: imageName,
+      fromImage: 'path',
+    });
 
-    const base64Image = codeImage.split(';base64,').pop();
-
-    if (!fs.existsSync(rootFolder)) {
-      fs.mkdirSync(rootFolder);
-    }
-
-    const imageType = this.getImageType(codeImage);
-
-    const imageName = `${nameImage}.${imageType}`;
-    const imagePath = `${rootFolder}/${imageName}`;
-
-    if (base64Image) {
-      fs.writeFileSync(imagePath, base64Image, { encoding: 'base64' });
-    }
+    const imageWithoutMimeType = this.getImageWithoutMimeType(imageName);
 
     const arrSize = [...sizes, ...sizes2x];
-
     for (let i = 0; i <= arrSize.length - 1; i++) {
       if (!fs.existsSync(`${rootFolder}/${arrSize[i].size}`)) {
         fs.mkdirSync(`${rootFolder}/${arrSize[i].size}`);
       }
 
-      switch (imageType) {
+      switch (imageMime) {
         case 'jpeg': {
           await this.sharpService
-            .edit(imagePath)
+            .edit(imageToPath)
             .resize(arrSize[i].size)
             .jpeg({ quality: 100, progressive: true })
             .toFile(
-              `${rootFolder}/${arrSize[i].size}/${nameImage}@${arrSize[i].size}.${imageType}`,
+              `${rootFolder}/${arrSize[i].size}/${imageWithoutMimeType}@${arrSize[i].size}.${imageMime}`,
             );
           break;
         }
 
         case 'png': {
           await this.sharpService
-            .edit(imagePath)
+            .edit(imageToPath)
             .resize(arrSize[i].size)
             .png({ quality: 100, progressive: true })
             .toFile(
-              `${rootFolder}/${arrSize[i].size}/${nameImage}@${arrSize[i].size}.${imageType}`,
+              `${rootFolder}/${arrSize[i].size}/${imageWithoutMimeType}@${arrSize[i].size}.${imageMime}`,
             );
           break;
         }
       }
     }
+  }
+
+  // сохраняем и нарезаем картинку под необходимые размеры для кодированной картинки в формате base64
+  // функция используется для сохранения картинок, которые приходят закодированные в base64 с ui
+  async saveImageBase64({
+    code,
+    name,
+    rootFolder,
+  }: {
+    code: string;
+    name: string;
+    rootFolder: string;
+  }): Promise<string> {
+    if (!this.isBase64(code)) {
+      return code;
+    }
+
+    const base64Image = code.split(';base64,').pop();
+
+    this.createRootFolder(rootFolder);
+
+    const imageMime = this.getImageMime({ image: code, fromImage: 'base64' });
+
+    this.logger.debug(imageMime);
+
+    if (!this.supportImageMimes.includes(imageMime)) {
+      throw new HttpException(
+        `Изображение с расширение ${imageMime} не поддерживается!`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const imageName = `${name}.${imageMime}`;
+    const imageToPath = `${rootFolder}/${imageName}`;
+
+    if (base64Image) {
+      fs.writeFileSync(imageToPath, base64Image, { encoding: 'base64' });
+    }
+
+    this.cropImage({
+      imageName,
+      rootFolder,
+      imageToPath,
+    });
 
     return imageName;
   }
 
-  // конвертируем файл в base64
-  convetFileToBase64({
-    nameFile,
+  saveImageFromPath({
+    name,
     rootFolder,
   }: {
-    nameFile: string;
+    name: string;
     rootFolder: string;
-  }): string {
-    const mimeType = this.getMimeTypeFromNameFile(nameFile);
-    const path = `${rootFolder}/${nameFile}`;
-    if (this.checkedIsExistPath(path)) {
-      return (
-        `data:image/${mimeType};base64,` +
-        fs.readFileSync(path).toString('base64')
-      );
-    } else {
-      return '';
-    }
-  }
+  }) {
+    this.createRootFolder(rootFolder);
+    const imageToPath = `${rootFolder}/${name}`;
 
-  // конвертируем файлы в base64
-  convertFilesToBase64ByName({
-    nameFile,
-    rootFolder,
-  }: {
-    nameFile: string;
-    rootFolder: string;
-  }): {
-    size: number;
-    file: string;
-  }[] {
-    const nameImageWithoutMime = this.getImageWithoutMimeType(nameFile);
-    const mimeType = this.getMimeTypeFromNameFile(nameFile);
-
-    const arrSize = [...sizes, ...sizes2x];
-
-    const result = arrSize
-      .filter((item) => {
-        const path = `${rootFolder}/${item.size}/${nameImageWithoutMime}@${item.size}.${mimeType}`;
-
-        return this.checkedIsExistPath(path);
-      })
-      .map((item) => {
-        return {
-          size: item.size,
-          file:
-            `data:image/${mimeType};base64,` +
-            fs
-              .readFileSync(
-                `${rootFolder}/${item.size}/${nameImageWithoutMime}@${item.size}.${mimeType}`,
-              )
-              .toString('base64'),
-        };
-      });
-
-    return result;
+    this.cropImage({
+      imageName: name,
+      rootFolder,
+      imageToPath,
+    });
   }
 
   // удаление файлов после удаления статьи
   deletedFiles({
     nameImage,
     rootFolder,
+    isDeleteOriginFile = true,
   }: {
     nameImage: string;
     rootFolder: string;
+    isDeleteOriginFile?: boolean;
   }): void {
     const imagePath = `${rootFolder}/${nameImage}`;
     const mimeType = this.getMimeTypeFromNameFile(nameImage);
 
-    if (this.checkedIsExistPath(imagePath)) {
+    if (this.checkedIsExistPath(imagePath) && isDeleteOriginFile) {
       fs.unlinkSync(imagePath);
     }
 
@@ -203,6 +221,9 @@ export class ImageService {
     });
   }
 
+  // генерация картинок по ссылке
+  // используется для социальных сетей вк и телеграм
+  // на данный момент для вк используется ширина 1280, для телеграмма - 510
   getFile({
     nameImage,
     rootFolder,

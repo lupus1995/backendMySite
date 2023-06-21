@@ -19,9 +19,9 @@ export class ProjectsService {
   async create({ createProject }: { createProject: ProjectDto }) {
     const model = {
       ...createProject,
-      thumbnail: await this.imageService.saveImage({
-        codeImage: createProject.thumbnail,
-        nameImage: uuid(),
+      thumbnail: await this.imageService.saveImageBase64({
+        code: createProject.thumbnail,
+        name: uuid(),
         rootFolder: this.rootFolder,
       }),
     };
@@ -41,9 +41,9 @@ export class ProjectsService {
       0,
       currentArticle.thumbnail.indexOf('.'),
     );
-    const thumbnail = await this.imageService.saveImage({
-      codeImage: project.thumbnail,
-      nameImage: nameFile,
+    const thumbnail = await this.imageService.saveImageBase64({
+      code: project.thumbnail,
+      name: nameFile,
       rootFolder: this.rootFolder,
     });
 
@@ -82,11 +82,11 @@ export class ProjectsService {
     return projects;
   }
 
-  async getFile({ id }: { id: string }) {
+  async getFile({ id, size }: { id: string; size: string }) {
     const project = await this.projectsRepository.findById(id);
 
     return this.imageService.getFile({
-      size: '510',
+      size,
       nameImage: project.thumbnail,
       rootFolder: this.rootFolder,
     });
