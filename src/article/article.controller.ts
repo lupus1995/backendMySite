@@ -96,7 +96,7 @@ export class ArticleController {
   }
 
   @ApiOkResponse({ description: 'Получение картинки для социальных сетей' })
-  @Get(':id/thumbnail')
+  @Get(':size/:id/thumbnail')
   @Header('Content-Type', 'image/jpeg')
   async getFile(@Param('id') id: string, @Param('size') size: string) {
     return await this.articleService.getFile({ id, size });
