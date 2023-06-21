@@ -12,7 +12,7 @@ dotenv.config();
 
 seeder({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/nest'),
+    MongooseModule.forRoot(process.env.mongooseLink),
     MongooseModule.forFeature([
       { name: Article.name, schema: ArticleSchema },
       { name: MainPage.name, schema: MainPageSchema },
