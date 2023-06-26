@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Авторский блог Александра Панфилова. Это репозиторий для бекенд части моего блога.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Целью блога является публикация моих статей на моем авторском [сайте](https://webforself.ru), а также тестирование своих теорий в вебе, обучение новым технолгиям и практикам на сайте.
 
-## Description
+Этот репозиторий представляет собой базу по опубликованным статьям, в которых я описываю свой опыт и результаты своих экспериментов. Также на сайте есть раздел с проектами, который будет содержать в себе мои петпроекты и их результат.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Консольные команды и инструкция по запуску
 
-## Installation
-
+Для разработки проекта необходимо запустить следующую команду:
 ```bash
-$ npm install
+npm run start:dev
+```
+После ее запуска можно вести разработку проекта.
+
+Для продакшн версии проекта я использую следующие команды
+```bash
+npm run build
+
+node dist/main.js
+```
+Первая сделает сборку проекта, вторая - его запустит.
+
+запускает установку husky
+```bash
+npm run prepare
 ```
 
-## Running the app
-
+добавляет хук на коммит перед тем как он будет добавлен
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run add:pre-commit
 ```
 
-## Test
+Команды npm run prepare и npm run add:pre-commit должны быть запущены один раз, после этого их не надо повторно запускать.
 
-```bash
-# unit tests
-$ npm run test
+## Описание проекта
 
-# e2e tests
-$ npm run test:e2e
+На проекте на стороне бекенда используется фрейморк nestjs. Все рабочие файлы содержатся в папке src. Саму работу роутинга и порядок работы файлов здесь описывать не буду, для этого воспользуйтесь курсами или документацией данного фреймворка. Моя задача: перечислить в данном файле модули, которые использует проект и описать для чего они нужны.
 
-# test coverage
-$ npm run test:cov
-```
+- article - модуль статей, отвечаюший за сущность статей и все что с этим связано;
+- auth - модуль авторизации, отвечающий за авторизацию и сессии на юай;
+- feedback - модуль обратной связи, отвечающий за сохранение обратной связи от пользователя на сайте и вывод самих отзывов в административной панели;
+- main-page - модуль главной страницы, отвечающий за два первых блока на главной странице;
+- projects - модуль, отвечающий за превью и короткое описание для моих пет проектов
+- schemas - содержит в себе описание коллекций для базы данных. В данный момент на проекте используется база данных mongodb;
+- seeder - модуль для запуска контроллеров nestjs в консоле. Ранее такой возможности не было в выбраном мною фреймворке, но благодаря плагину seeder такая возможность появилась. Как добавить seeder в проект и его возможности использования хорошо описаны на его сайте;
+- sitemap - модуль, который отвечает за сбор опубликованных статей и проектов, которые на стороне юая генерируют карту сайта для ботов яндекса;
+- utils - папка со вспомогательными модулями;
+- image - вспомогательный модуль для сохранения, удаления, отдачи картинок на юай в проекте;
+- repositories - вспомогательный модуль, отвечающий за общение с базой данных;
+- telegram - вспомогательный модуль, отвечающий за публикации ссылок на статьи в телеграм канале;
+- tokens - вспомогательный модуль, отвечающий за генерацию, обновление и проверку токенов;
+- vk - вспомогательный модуль, отвечающий за публикацию ссылок на статьи в группе вконтакте.
 
-## Support
+- app - главный модуль в проекте, объединяет в себе все основные модули
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Конфигурационные файлы
 
-## Stay in touch
+- env - константы, которые зависят от окружения. Файл необходимо создать после клонирования проекта с гитхаба. Далее идет список переменных, которые необходимы для работы проекта
+- - jwtSecret - секрет, через который будет хешироваться пароль пользователей
+- - telegramToken - токен телеграм
+- - vkAccessToken - токен вконтакте
+- - owner_id - айди группы вк
+- - id_telegram_chanel - айди телеграм канала
+- - mongooseLink - ссылка на подключение к базе данных mongodb
+- - domen - указываем ссылку на статьи в телеграме и вконтакте
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- gitignore - игнорирование файлов для публикации на гите;
 
-## License
+- nest-cli - настройка управления комманд и консоли для фреймворка nest;
 
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- package.json - скрипты, зависимости для проекта и кратная информация о нем;
+
+- tsconfig - настройка языка программирования typescript;
+- eslintrc - файл с описанием правил написания кода на javascript и typescript
+
+- readme - описание проекта и все что с ним связано.
