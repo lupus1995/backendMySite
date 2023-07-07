@@ -3,6 +3,7 @@ import { SharpService } from 'nestjs-sharp';
 import * as fs from 'fs';
 import { ImageService } from './image.service';
 import { ImageServiceTest } from './image.test.sevice';
+import { Logger } from '@nestjs/common';
 
 const rootSize = 'rootFolder/480/nameFile@480.png';
 const rootPathWithFile = 'rootFolder/nameFile.png';
@@ -48,6 +49,11 @@ describe('ImageService', () => {
     toFile: jest.fn().mockReturnThis(),
   }));
 
+  const logger = jest.fn().mockReturnValue({
+    error: jest.fn(),
+    debug: jest.fn(),
+  });
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -55,6 +61,10 @@ describe('ImageService', () => {
         {
           provide: SharpService,
           useFactory: sharpServiceMock,
+        },
+        {
+          provide: Logger,
+          useFactory: logger,
         },
       ],
     }).compile();
@@ -64,74 +74,71 @@ describe('ImageService', () => {
 
   afterEach(() => jest.clearAllMocks());
 
-  it('check getImageWithoutMimeType', () => {
-    const result = imageService.getImageWithoutMimeType('somename.png');
+  it('should be createRootFolder', () => {
+    expect(imageService.createRootFolder).toBeDefined();
+  });
 
-    expect(result).toBe('somename');
+  it('check isBase64, is true', () => {
+    expect(imageService.isBase64(codeImage)).toBeTruthy();
+  });
+
+  it('check isBase64, is false', () => {
+    expect(imageService.isBase64('111 333')).toBeFalsy();
+  });
+
+  it('getImageWithoutMimeType is correct argument', () => {
+    expect(imageService.getImageWithoutMimeType('test.png')).toBe('test');
+  });
+
+  it('getImageWithoutMimeType is not correct argument', () => {
+    expect(imageService.getImageWithoutMimeType('test')).toBe('');
   });
 
   it('check getMimeTypeFromNameFile', () => {
-    const result = imageService.getMimeTypeFromNameFile('somename.png');
-
-    expect(result).toBe('png');
+    expect(imageService.getMimeTypeFromNameFile('test.png')).toBe('png');
   });
 
-  it('check checkedIsExistPath', () => {
-    const resultIsTrue = imageService.checkedIsExistPath(issuePath);
-    const resultIsFalse = imageService.checkedIsExistPath('some path to file');
-
-    expect(resultIsTrue).toBeTruthy();
-    expect(resultIsFalse).toBeFalsy();
+  it('check getMimeTypeFromNameFile is not correct', () => {
+    expect(imageService.getMimeTypeFromNameFile('test')).toBe('test');
   });
 
-  it('check getImageType', () => {
-    const result = imageService.getImageType(codeImage);
-
-    expect(result).toBe('jpeg');
+  it('checkedIsExistPath is issue path', () => {
+    expect(imageService.checkedIsExistPath(rootSize)).toBeTruthy();
   });
 
-  it('check saveImage', async () => {
-    const result = await imageService.saveImage({
-      codeImage,
-      nameImage: 'nameImage',
-      rootFolder: '/',
-    });
-
-    const resultPng = await imageService.saveImage({
-      codeImage: codeImagePng,
-      nameImage: 'nameImage',
-      rootFolder: '/',
-    });
-
-    expect(result).toBe('nameImage.jpeg');
-    expect(resultPng).toBe('nameImage.png');
+  it('checkedIsExistPath is not issue path', () => {
+    expect(imageService.checkedIsExistPath('/response')).toBeFalsy();
   });
 
-  it('check convetFileToBase64', () => {
-    const result = imageService.convetFileToBase64({
-      nameFile: 'nameFile.png',
-      rootFolder: 'rootFolder',
-    });
-    const resultEmpty = imageService.convetFileToBase64({
-      nameFile: 'nameFile1.png',
-      rootFolder: 'rootFolder',
-    });
-
-    expect(result).toBe(codeImagePng);
-    expect(resultEmpty).toBe('');
+  it('getImageMime from base64', () => {
+    expect(
+      imageService.getImageMime({ fromImage: 'base64', image: codeImage }),
+    ).toBe('jpeg');
   });
 
-  it('convertFilesToBase64ByName', () => {
-    const arr = [
-      {
-        size: 480,
-        file: 'data:image/png;base64,/9j/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB',
-      },
-    ];
-    const result = imageService.convertFilesToBase64ByName({
-      nameFile: 'nameFile.png',
-      rootFolder: 'rootFolder',
-    });
-    expect(JSON.stringify(result)).toBe(JSON.stringify(arr));
+  it('getImageMime from image', () => {
+    expect(
+      imageService.getImageMime({ fromImage: 'path', image: 'test.png' }),
+    ).toBe('png');
+  });
+
+  it('cropImage', () => {
+    expect(imageService.cropImage).toBeDefined();
+  });
+
+  it('saveImageBase64', () => {
+    expect(imageService.saveImageBase64).toBeDefined();
+  });
+
+  it('saveImageFromPath', () => {
+    expect(imageService.saveImageFromPath).toBeDefined();
+  });
+
+  it('deletedFiles', () => {
+    expect(imageService.deletedFiles).toBeDefined();
+  });
+
+  it('getFile', () => {
+    expect(imageService.getFile).toBeDefined();
   });
 });

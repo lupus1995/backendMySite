@@ -20,12 +20,14 @@ export class ImageService {
     protected readonly logger: Logger,
   ) {}
 
+  // создание корневой папки, если таковой нет
   protected createRootFolder(rootFolder: string) {
     if (!fs.existsSync(rootFolder)) {
       fs.mkdirSync(rootFolder);
     }
   }
 
+  // проверка, что картинка зашифрована в base64
   protected isBase64(string64: string): boolean {
     return isBase64(string64, { allowMime: true });
   }
@@ -82,6 +84,7 @@ export class ImageService {
     }
   }
 
+  // нарезка картинки
   protected async cropImage({
     imageName,
     rootFolder,
@@ -176,6 +179,7 @@ export class ImageService {
     return imageName;
   }
 
+  // сохраняем картинку,если на вход пришел готовый файл в не зашифрованном виде
   saveImageFromPath({
     name,
     rootFolder,
