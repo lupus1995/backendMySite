@@ -1,24 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ArticleService } from './article.service';
-import { ArticleController } from './article.controller';
-import { ImageModule } from 'src/utils/image/image.module';
-import { VKModule } from 'src/utils/vk/vk.module';
-import { TelegramModule } from 'src/utils/telegram/telegram.module';
-import { ArticleCron } from './article.cron';
-import { ScheduleModule } from '@nestjs/schedule';
-import { RepositoriesModule } from 'src/utils/repositories/repositories.module';
-import { TokensModule } from 'src/utils/tokens/tokens.module';
+import { ArticleUIModule } from './ui/article.ui.module';
+import { ArticleCronModule } from './cron/artucle.cron.module';
 
 @Module({
-  imports: [
-    TokensModule,
-    RepositoriesModule,
-    ImageModule,
-    VKModule.forRoot(),
-    TelegramModule.forRoot(),
-    ScheduleModule.forRoot(),
-  ],
-  providers: [ArticleService, ArticleCron],
-  controllers: [ArticleController],
+  imports: [ArticleUIModule, ArticleCronModule],
 })
 export class ArticleModule {}

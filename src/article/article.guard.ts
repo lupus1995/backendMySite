@@ -7,7 +7,7 @@ import {
 import { TokenGuard } from '../utils/tokens/token.guard';
 import { ArticleRepository } from '../utils/repositories/article.repository';
 import { isAfter } from 'date-fns';
-import { TokensService } from 'src/utils/tokens/tokens.service';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 export class ArticleGuard extends TokenGuard {
   constructor(
@@ -22,11 +22,8 @@ export class ArticleGuard extends TokenGuard {
     const id = this.getId(context);
     const article = await this.articleRepository.findById(id);
 
-    if (article === null) {
-      throw new HttpException(
-        'Ошибка получения статьи',
-        HttpStatus.BAD_REQUEST,
-      );
+    if (!article) {
+      return false;
     }
 
     // если статья должна публиковаться после текущей даты, то посмотреть ее может только авторизованный пользователь
@@ -40,7 +37,7 @@ export class ArticleGuard extends TokenGuard {
   getId(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const params = request.params;
-    const id = params.id;
+    const id = params?.id || '';
 
     return id;
   }

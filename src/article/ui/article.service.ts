@@ -1,25 +1,28 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { ImageService } from '../utils/image/image.service';
+import { ImageService } from '../../utils/image/image.service';
 import { v4 as uuid } from 'uuid';
-import { CreateArticleDto } from './dto/article.dto';
-import { ArticleRepository } from '../utils/repositories/article.repository';
-import { ArticlePaginationDto } from './dto/article-pagination.dto';
+import { CreateArticleDto } from '../dto/article.dto';
+import { ArticleRepository } from '../../utils/repositories/article.repository';
+import { ArticlePaginationDto } from '../dto/article-pagination.dto';
+import { Article } from '../../schemas/article.schema';
 
 @Injectable()
 export class ArticleService {
-  private readonly logger: Logger;
   private rootFolder = './images';
   constructor(
     private articleRepository: ArticleRepository,
     private imageService: ImageService,
-  ) {
-    this.logger = new Logger();
-  }
+    private logger: Logger,
+  ) {}
 
   /**
    * создание статьи
    */
-  async create({ createArticle }: { createArticle: CreateArticleDto }) {
+  async create({
+    createArticle,
+  }: {
+    createArticle: CreateArticleDto;
+  }): Promise<Article | void> {
     const model = {
       ...createArticle,
       thumbnail: await this.imageService.saveImageBase64({
