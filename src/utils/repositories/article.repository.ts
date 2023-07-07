@@ -39,7 +39,7 @@ export class ArticleRepository extends SocialRepository<ArticleDocument> {
     return articles;
   }
 
-  public async create(article: CreateArticleDto) {
+  public async create(article: CreateArticleDto): Promise<Article | void> {
     const execute = async () => {
       const model = new this.model(article);
 
@@ -52,7 +52,7 @@ export class ArticleRepository extends SocialRepository<ArticleDocument> {
       throw new HttpException('Ошибка создания статьи', HttpStatus.BAD_REQUEST);
     };
 
-    return await this.transaction(execute, handleError);
+    await this.transaction(execute, handleError);
   }
 
   public async findById(id: string) {

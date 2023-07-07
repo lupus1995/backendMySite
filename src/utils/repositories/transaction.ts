@@ -1,13 +1,18 @@
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
+@Injectable()
 export class TransAction {
-  constructor(protected connection: Connection, protected logger: Logger) {}
+  constructor(
+    @InjectConnection() protected connection: Connection,
+    protected logger: Logger,
+  ) {}
 
-  async transaction(
-    execute: (arg?: unknown) => unknown,
+  async transaction<T = unknown>(
+    execute: (arg?: unknown) => T,
     callbackError: () => void,
-  ) {
+  ): Promise<T> {
     const session = await this.connection.startSession();
     session.startTransaction();
 

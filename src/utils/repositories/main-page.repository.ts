@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { CreateMainPageDto } from 'src/main-page/main-page.dto';
-import { MainPage, MainPageDocument } from 'src/schemas/mainPage.schema';
+import { CreateMainPageDto } from '../../main-page/main-page.dto';
+import { MainPage, MainPageDocument } from '../../schemas/mainPage.schema';
 import { BaseRepository } from './base-repository';
 import { HasFilterDto } from '../dto/has-filter.dto';
 import { QueryPaginationDto } from '../dto/query-pagination.dto';
@@ -34,7 +34,7 @@ export class MainPageRepository extends BaseRepository<MainPageDocument> {
     return await this.transaction(execute, handleError);
   }
 
-  public async update({ data, id }) {
+  public async update({ data, id }: { data: CreateMainPageDto; id: string }) {
     const execute = async () => {
       const model = await this.model.updateOne({ id }, data);
       return model;
@@ -51,7 +51,7 @@ export class MainPageRepository extends BaseRepository<MainPageDocument> {
   }
 
   public async findById() {
-    return await this.model.findOne().exec();
+    return await this.model.findOne();
   }
 
   getAll({

@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { ProjectDto } from 'src/projects/dto/project.dto';
-import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
+import { ProjectDto } from '../../projects/dto/project.dto';
+import { Projects, ProjectsDocument } from '../../schemas/projects.schema';
 import { BaseRepository } from './base-repository';
 
 @Injectable()
@@ -47,7 +47,7 @@ export class ProjectsRepository extends BaseRepository<ProjectsDocument> {
     return await this.transaction(execute, handleError);
   }
 
-  public async delete(id: string) {
+  public async delete(id: string): Promise<Projects | unknown> {
     const execute = async () => {
       const project = await this.model.deleteOne({ _id: id });
       return project;

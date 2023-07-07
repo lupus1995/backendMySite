@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { SignUpDto } from 'src/auth/dto/sign-up.dto';
-import { User, UserDocument } from 'src/schemas/user.schema';
+import { SignUpDto } from '../../auth/dto/sign-up.dto';
+import { User, UserDocument } from '../../schemas/user.schema';
 import { TransAction } from './transaction';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UserRepository extends TransAction {
   }
 
   public async findOne(username: string) {
-    return await this.model.findOne({ username }).exec();
+    return await this.model.findOne({ username });
   }
 
   public async create(user: SignUpDto) {

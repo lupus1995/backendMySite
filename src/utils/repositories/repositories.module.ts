@@ -4,23 +4,13 @@ import { UserRepository } from './user.repository';
 import { MainPageRepository } from './main-page.repository';
 import { ProjectsRepository } from './projects.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Projects, ProjectsSchema } from 'src/schemas/projects.schema';
-import { MainPage, MainPageSchema } from 'src/schemas/mainPage.schema';
-import { User, UserSchema } from 'src/schemas/user.schema';
-import { Article, ArticleSchema } from 'src/schemas/article.schema';
 import { FeedbackRepository } from './feedback.repository';
-import { Feedback, FeedbackSchema } from 'src/schemas/feedback.schema';
 import { SitemapRepository } from './sitemap.repository';
+import { ARTICLE, PROJECTS, MAIN_PAGE, USER, FEEDBACK } from './constants';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Projects.name, schema: ProjectsSchema },
-      { name: MainPage.name, schema: MainPageSchema },
-      { name: User.name, schema: UserSchema },
-      { name: Article.name, schema: ArticleSchema },
-      { name: Feedback.name, schema: FeedbackSchema },
-    ]),
+    MongooseModule.forFeature([ARTICLE, PROJECTS, MAIN_PAGE, USER, FEEDBACK]),
   ],
   providers: [
     ArticleRepository,

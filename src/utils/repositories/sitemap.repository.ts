@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Article, ArticleDocument } from 'src/schemas/article.schema';
-import { Projects, ProjectsDocument } from 'src/schemas/projects.schema';
+import { Article, ArticleDocument } from '../../schemas/article.schema';
+import { Projects, ProjectsDocument } from '../../schemas/projects.schema';
 
 @Injectable()
 export class SitemapRepository {

@@ -3,6 +3,7 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { Feedback, FeedbackDocument } from '../../schemas/feedback.schema';
 import { BaseRepository } from './base-repository';
+import { QueryPaginationDto } from '../dto/query-pagination.dto';
 
 @Injectable()
 export class FeedbackRepository extends BaseRepository<FeedbackDocument> {
@@ -61,13 +62,7 @@ export class FeedbackRepository extends BaseRepository<FeedbackDocument> {
     return await this.transaction(execute, handleError);
   }
 
-  public async getAll({
-    offset = 0,
-    limit = 10,
-  }: {
-    offset: number;
-    limit: number;
-  }) {
+  public async getAll({ offset = 0, limit = 10 }: QueryPaginationDto) {
     try {
       return await this.model.find().skip(offset).limit(limit);
     } catch (e) {
