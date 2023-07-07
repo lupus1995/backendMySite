@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type LAnguageDocument = Language & Document;
+export type LanguageDocument = Language & Document;
 
 @Schema()
 export class Language {
