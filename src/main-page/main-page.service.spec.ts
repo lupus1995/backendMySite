@@ -1,15 +1,16 @@
 import { Test } from '@nestjs/testing';
 import { ImageService } from '../utils/image/image.service';
-import { MainPageRepository } from './main-page.repository';
 import { MainPageService } from './main-page.service';
 import { mainPageCreateData } from './mockData';
+import { MainPageRepository } from '../utils/repositories/main-page.repository';
+import { Logger } from '@nestjs/common';
 
 describe('main page service', () => {
   let mainPageService: MainPageService;
 
   const mainPageRepositoryMock = jest.fn().mockReturnValue({
     create: jest.fn().mockReturnValue(mainPageCreateData),
-    get: jest.fn().mockReturnValue({
+    get: jest.fn().mockResolvedValue({
       ...mainPageCreateData,
       aboutMePhoto: 'convetFileToBase64',
       firstBlockBackgroundImage: 'convetFileToBase64',
@@ -19,14 +20,21 @@ describe('main page service', () => {
       ...mainPageCreateData,
       _id: 'id',
     }),
+    findById: jest.fn().mockReturnValue('findById'),
+  });
+
+  const loggerMock = jest.fn().mockReturnValue({
+    error: jest.fn(),
   });
 
   const imageServiceMock = jest.fn().mockReturnValue({
     saveImage: jest.fn().mockReturnValue('save image'),
+    saveImageBase64: jest.fn().mockReturnValue('saveImageBase64'),
     convetFileToBase64: jest.fn().mockReturnValue('convetFileToBase64'),
     convertFilesToBase64ByName: jest
       .fn()
       .mockReturnValue('convertFilesToBase64ByName'),
+    getFile: jest.fn().mockReturnValue('getFile'),
   });
 
   beforeEach(async () => {
@@ -36,6 +44,10 @@ describe('main page service', () => {
         {
           provide: ImageService,
           useFactory: imageServiceMock,
+        },
+        {
+          provide: Logger,
+          useValue: loggerMock,
         },
         {
           provide: MainPageRepository,
@@ -66,29 +78,15 @@ describe('main page service', () => {
     expect(result).toStrictEqual({ ...mainPageCreateData, _id: 'id' });
   });
 
-  it('get', async () => {
+  it('get page', async () => {
     const result = await mainPageService.get();
 
-    expect(result).toStrictEqual({
-      ...mainPageCreateData,
-      aboutMePhoto: 'convetFileToBase64',
-      firstBlockBackgroundImage: 'convetFileToBase64',
-      _id: 'id',
-    });
+    expect(result).toStrictEqual('findById');
   });
 
-  it('getImageName', async () => {
-    const result = await mainPageService.getImageName();
+  it('getImage', () => {
+    const result = mainPageService.getImage({ nameImage: 'name', size: '510' });
 
-    expect(result).toStrictEqual({
-      firstBlockBackgroundImage: 'convetFileToBase64',
-      aboutMePhoto: 'convetFileToBase64',
-    });
-  });
-
-  it('getImages', () => {
-    const result = mainPageService.getImages({ imageName: 'imageName' });
-
-    expect(result).toBe('convertFilesToBase64ByName');
+    expect(result).toBe('getFile');
   });
 });

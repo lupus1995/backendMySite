@@ -2,13 +2,13 @@ import { MainPageService } from './main-page.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MainPageController } from './main-page.controller';
 import { CanActivate } from '@nestjs/common';
-import { AuthGuard } from '../utils/tokens/token.guard';
-import { JwtService } from '@nestjs/jwt';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { AuthService } from '../auth/auth.service';
 import { mainPageCreateData } from './mockData';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 describe('MainPageController', () => {
-  const AuthGuardMock: CanActivate = {
+  const TokenGuardMock: CanActivate = {
     canActivate: jest.fn().mockReturnValue(false),
   };
 
@@ -21,8 +21,7 @@ describe('MainPageController', () => {
     create: jest.fn(() => mainPageData),
     update: jest.fn(() => mainPageData),
     get: jest.fn(() => mainPageData),
-    getImageName: jest.fn().mockReturnValue('getImageName'),
-    getImages: jest.fn().mockReturnValue('getImages'),
+    getImage: jest.fn().mockReturnValue('getImage'),
   }));
 
   const authService = jest.fn().mockReturnValue(() => ({
@@ -41,7 +40,7 @@ describe('MainPageController', () => {
           useFactory: mainPageService,
         },
         {
-          provide: JwtService,
+          provide: TokensService,
           useValue: {},
         },
         {
@@ -50,8 +49,8 @@ describe('MainPageController', () => {
         },
       ],
     })
-      .overrideProvider(AuthGuard)
-      .useValue(AuthGuardMock)
+      .overrideProvider(TokenGuard)
+      .useValue(TokenGuardMock)
       .compile();
 
     controller = module.get<MainPageController>(MainPageController);
@@ -73,11 +72,7 @@ describe('MainPageController', () => {
     );
   });
 
-  it('getImageName', async () => {
-    expect(await controller.getImageName()).toBe('getImageName');
-  });
-
-  it('getImamges', async () => {
-    expect(await controller.getImamges('imageName')).toBe('getImages');
+  it('check getImage', () => {
+    expect(controller.getImage('510', 'name')).toBe('getImage');
   });
 });

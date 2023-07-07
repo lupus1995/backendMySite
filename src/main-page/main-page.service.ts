@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { CreateMainPageDto } from './main-page.dto';
 import { ImageService } from '../utils/image/image.service';
-import { MainPageRepository } from 'src/utils/repositories/main-page.repository';
+import { MainPageRepository } from '../utils/repositories/main-page.repository';
 
 @Injectable()
 export class MainPageService {
