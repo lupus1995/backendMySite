@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsString, IsBoolean, ValidateNested } from 'class-validator';
-import { LanguageDto } from 'src/utils/dto/language.dto';
+import { LanguageDto } from '../../utils/dto/language.dto';
 
 export class ProjectDto {
   @IsString()

@@ -17,9 +17,9 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { TokenGuard } from 'src/utils/tokens/token.guard';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { ProjectDto } from './dto/project.dto';
-import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
+import { HasFilterDto } from '../utils/dto/has-filter.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -47,14 +47,14 @@ export class ProjectsController {
   @Delete(':id')
   @ApiOkResponse({ description: 'Удаление проекта' })
   @ApiParam({ type: 'string', name: 'id', description: 'Id проекта' })
-  async deleteArticle(@Param('id') id: string) {
+  async deleteProject(@Param('id') id: string) {
     return await this.projectsService.delete({ id });
   }
 
   @UseGuards(TokenGuard)
   @Post()
   @ApiCreatedResponse({ description: 'Создание проекта' })
-  async createArticle(@Body() project: ProjectDto) {
+  async createProject(@Body() project: ProjectDto) {
     return await this.projectsService.create({
       createProject: project,
     });
@@ -68,7 +68,7 @@ export class ProjectsController {
     name: 'id',
     description: 'Редактирование объекта с данными страницы',
   })
-  async updateArticle(@Param('id') id: string, @Body() project: ProjectDto) {
+  async updateProject(@Param('id') id: string, @Body() project: ProjectDto) {
     return await this.projectsService.update({
       id,
       project,

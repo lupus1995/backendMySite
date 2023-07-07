@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { ImageService } from '../utils/image/image.service';
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from '../utils/dto/has-filter.dto';
-import { ProjectsRepository } from 'src/utils/repositories/projects.repository';
+import { ProjectsRepository } from '../utils/repositories/projects.repository';
 
 @Injectable()
 export class ProjectsService {
