@@ -1,7 +1,6 @@
 import { CanActivate } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { TestingModule, Test } from '@nestjs/testing';
-import { AuthGuard } from '../utils/tokens/token.guard';
+import { TokenGuard } from '../utils/tokens/token.guard';
 import { AuthService } from '../auth/auth.service';
 import { FeedbackController } from './feedback.controller';
 import { FeedbackDto } from './feedback.dto';
@@ -11,6 +10,7 @@ import {
   feedbackDataSuccess,
   feedbackDataError,
 } from './mockData';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 describe('feedback controller', () => {
   let controller: FeedbackController;
@@ -26,7 +26,7 @@ describe('feedback controller', () => {
     deletedFeedback: jest.fn(),
   });
 
-  const AuthGuardMock: CanActivate = {
+  const TokenGuardMock: CanActivate = {
     canActivate: jest.fn().mockReturnValue(false),
   };
 
@@ -45,7 +45,7 @@ describe('feedback controller', () => {
           useFactory: feedbackService,
         },
         {
-          provide: JwtService,
+          provide: TokensService,
           useValue: {},
         },
         {
@@ -54,8 +54,8 @@ describe('feedback controller', () => {
         },
       ],
     })
-      .overrideProvider(AuthGuard)
-      .useValue(AuthGuardMock)
+      .overrideProvider(TokenGuard)
+      .useValue(TokenGuardMock)
       .compile();
 
     controller = module.get<FeedbackController>(FeedbackController);

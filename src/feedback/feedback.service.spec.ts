@@ -12,8 +12,8 @@ describe('feedback service', () => {
 
   const feedbackRepositoryMock = jest.fn().mockReturnValue({
     create: jest.fn().mockReturnValue(feedbackData),
-    get: jest.fn().mockReturnValue([feedbackData]),
-    delete: jest.fn(),
+    getAll: jest.fn().mockReturnValue([feedbackData]),
+    delete: jest.fn().mockReturnValue('delete'),
   });
 
   beforeEach(async () => {
@@ -55,5 +55,11 @@ describe('feedback service', () => {
     });
 
     expect(result).toStrictEqual([feedbackData]);
+  });
+
+  it('deletedFeedback', async () => {
+    const result = await feedbackService.deletedFeedback({ ids: [] });
+
+    expect(result).toBe('delete');
   });
 });
