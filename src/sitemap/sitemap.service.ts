@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SitemapRepository } from 'src/utils/repositories/sitemap.repository';
+import { SitemapRepository } from '../utils/repositories/sitemap.repository';
 
 @Injectable()
 export class SitemapService {
