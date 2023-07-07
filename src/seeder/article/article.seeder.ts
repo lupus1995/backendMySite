@@ -1,30 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Seeder } from 'nestjs-seeder';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Article } from 'src/schemas/article.schema';
+import { ArticleSeedRepository } from './article.seed.repository';
 
 @Injectable()
 export class AticleSeeder implements Seeder {
   constructor(
-    @InjectModel(Article.name) private readonly article: Model<Article>,
+    private articleSeedRepository: ArticleSeedRepository,
     private logger: Logger,
   ) {}
 
   // обновление статуса статей по публикации в вконтакте и телеграмм
-  async seed(): Promise<any> {
-    await this.article.updateMany(
-      {
-        isPublishedVK: undefined,
-        isPublishedlegram: undefined,
-      },
-      {
-        $set: {
-          isPublishedVK: true,
-          isPublishedlegram: true,
-        },
-      },
-    );
+  async seed(): Promise<void> {
+    await this.articleSeedRepository.updateMany();
   }
 
   async drop() {
