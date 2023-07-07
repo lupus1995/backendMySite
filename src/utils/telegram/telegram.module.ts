@@ -1,4 +1,4 @@
-import { Module, Provider } from '@nestjs/common';
+import { Logger, Module, Provider } from '@nestjs/common';
 import Telegram from 'node-telegram-bot-api';
 import { TelegramService } from './telegram.service';
 
@@ -11,14 +11,15 @@ export class TelegramModule {
       provide: TelegramService,
       useFactory: () => {
         const telegram = new Telegram(process.env.telegramToken);
+        const logger = new Logger();
 
-        return new TelegramService(telegram);
+        return new TelegramService(telegram, logger);
       },
     };
 
     return {
       module: TelegramModule,
-      providers: [TelegramProvider],
+      providers: [TelegramProvider, Logger],
       exports: [TelegramProvider],
       global: false,
     };

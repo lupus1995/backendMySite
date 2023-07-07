@@ -3,10 +3,7 @@ import Telegram from 'node-telegram-bot-api';
 
 @Injectable()
 export class TelegramService {
-  private logger;
-  constructor(private telegramApi: Telegram) {
-    this.logger = new Logger();
-  }
+  constructor(private telegramApi: Telegram, private logger: Logger) {}
 
   async sendMessage({ message }: { message: string }) {
     try {
