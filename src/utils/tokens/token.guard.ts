@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { IncomingMessage } from 'http';
-import { TokensService } from 'src/utils/tokens/tokens.service';
+import { TokensService } from './tokens.service';
 
 @Injectable()
 export class TokenGuard implements CanActivate {
