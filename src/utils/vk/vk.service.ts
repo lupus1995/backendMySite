@@ -2,10 +2,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { VK } from 'vk-io';
 
 export class VkService {
-  private logger;
-  constructor(@Inject() private vk: VK) {
-    this.logger = new Logger();
-  }
+  constructor(@Inject() private vk: VK, private logger: Logger) {}
 
   async sendPostToVk({
     attachments,

@@ -1,4 +1,4 @@
-import { DynamicModule, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Logger, Module, Provider } from '@nestjs/common';
 import { VK } from 'vk-io';
 import * as dotenv from 'dotenv';
 
@@ -14,17 +14,18 @@ export class VKModule {
     const VKProvider: Provider = {
       provide: VkService,
       useFactory: () => {
+        const logger = new Logger();
         const vk = new VK({
           token: process.env.vkAccessToken,
         });
 
-        return new VkService(vk);
+        return new VkService(vk, logger);
       },
     };
 
     return {
       module: VKModule,
-      providers: [VKProvider],
+      providers: [VKProvider, Logger],
       exports: [VKProvider],
       global: false,
     };
