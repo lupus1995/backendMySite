@@ -7,7 +7,6 @@ export class AuthPipe implements PipeTransform {
     const errors: string[] = [];
 
     if (!this.valueHasPassAndConfPass(value)) {
-      // throw new Error('You must provide a number.');
       throw new BadRequestException('Invalid Request Body');
     }
 

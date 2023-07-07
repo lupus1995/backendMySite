@@ -1,12 +1,14 @@
 import { JwtService } from '@nestjs/jwt';
 import { Connection, Model } from 'mongoose';
-import { AuthRepository } from '../auth.repository';
 import { AuthService } from '../auth.service';
 import { CustomLoginValidation } from './login.rule';
+import { UserRepository } from '../../utils/repositories/user.repository';
+import { TokensService } from '../../utils/tokens/tokens.service';
+import { Logger } from '@nestjs/common';
 
-jest.mock('../auth.repository', () => {
+jest.mock('../../utils/repositories/user.repository', () => {
   return {
-    AuthRepository: jest.fn().mockImplementation(() => {
+    UserRepository: jest.fn().mockImplementation(() => {
       return { findOne: jest.fn() };
     }),
   };
@@ -39,9 +41,11 @@ describe('login rule', () => {
 
     const model = new Model();
     const connection = new Connection();
-    const authRepository = new AuthRepository(model, connection);
+    const logger = new Logger();
+    const userRepository = new UserRepository(model, connection, logger);
+    const tokensService = new TokensService(jwtService);
 
-    const authService = new AuthService(jwtService, authRepository);
+    const authService = new AuthService(tokensService, userRepository);
     rule = new CustomLoginValidation(authService);
   });
 

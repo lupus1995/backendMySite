@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthorizationDto } from './dto/authorization.dto';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
-import { TokensService } from 'src/utils/tokens/tokens.service';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 @Controller('auth')
 export class AuthController {

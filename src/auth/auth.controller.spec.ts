@@ -1,17 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { TokensService } from '../utils/tokens/tokens.service';
+
+const tokens = {
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+};
+
+const tokenServiceMock = jest.fn().mockReturnValue({
+  checkToken: jest.fn().mockReturnValue(true),
+  refreshTokens: jest.fn().mockReturnValue(tokens),
+  checkAccessToken: jest.fn().mockReturnValue(tokens),
+});
 
 describe('AuthController', () => {
   let controller: AuthController;
   const loginData = {
     username: 'username',
     password: 'password',
-  };
-
-  const tokens = {
-    accessToken: 'accessToken',
-    refreshToken: 'refreshToken',
   };
 
   const createUser = {
@@ -35,6 +42,10 @@ describe('AuthController', () => {
           provide: AuthService,
           useFactory: authServiceMock,
         },
+        {
+          provide: TokensService,
+          useFactory: tokenServiceMock,
+        },
       ],
     }).compile();
 
@@ -50,11 +61,13 @@ describe('AuthController', () => {
   });
 
   it('access', () => {
-    expect(controller.checkAccessToken({ authorization: 'token' })).toBe(
-      tokens,
-    );
+    expect(
+      controller.checkAccessToken({ authorization: 'token' }),
+    ).toBeTruthy();
   });
 
   it('check refresh', () =>
-    expect(controller.refresh({ authorization: 'token' })).toBe(tokens));
+    expect(controller.refresh({ authorization: 'token' })).toStrictEqual(
+      tokens,
+    ));
 });

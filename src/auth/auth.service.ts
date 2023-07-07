@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { SignUpDto } from './dto/sign-up.dto';
-import { UserRepository } from 'src/utils/repositories/user.repository';
-import { TokensService } from 'src/utils/tokens/tokens.service';
+import { UserRepository } from '../utils/repositories/user.repository';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 @Injectable()
 export class AuthService {

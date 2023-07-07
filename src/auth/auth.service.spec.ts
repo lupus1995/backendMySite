@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as argon2 from 'argon2';
-import { AuthRepository } from './auth.repository';
 import { AuthService } from './auth.service';
-import { AuthTestService } from './auth.test.service';
+import { UserRepository } from '../utils/repositories/user.repository';
+import { TokensService } from '../utils/tokens/tokens.service';
 
 jest.mock('argon2', () => {
   const module = jest.requireActual('argon2');
@@ -16,28 +15,14 @@ jest.mock('argon2', () => {
 });
 
 describe('auth service', () => {
-  let authService: AuthTestService;
+  let authService: AuthService;
 
-  const jwtServiceMock = jest.fn().mockReturnValue({
-    sign: jest.fn().mockReturnValue('token'),
-    verify: jest.fn((token) => {
-      if (
-        token === 'refresh token success' ||
-        token === 'check token success'
-      ) {
-        return { sub: true };
-      }
-
-      if (token === 'refresh token error' || token === 'check token error') {
-        return { sub: false };
-      }
-
-      return true;
-    }),
+  const tokensServiceMock = jest.fn().mockReturnValue({
+    generateTokens: jest.fn().mockReturnValue('generateTokens'),
   });
 
-  const authRepositoryMock = jest.fn().mockReturnValue({
-    findOne: jest.fn().mockReturnValue('uniqUsername'),
+  const userRepositoryMock = jest.fn().mockReturnValue({
+    findOne: jest.fn().mockReturnValue('findOne'),
     create: jest.fn().mockReturnValue('create'),
   });
 
@@ -46,12 +31,12 @@ describe('auth service', () => {
       providers: [
         AuthService,
         {
-          provide: JwtService,
-          useFactory: jwtServiceMock,
+          provide: UserRepository,
+          useFactory: userRepositoryMock,
         },
         {
-          provide: AuthRepository,
-          useFactory: authRepositoryMock,
+          provide: TokensService,
+          useFactory: tokensServiceMock,
         },
       ],
     }).compile();
@@ -61,25 +46,10 @@ describe('auth service', () => {
 
   afterEach(() => jest.clearAllMocks());
 
-  it('generateTokens', () => {
-    const result = authService.generateTokens({ username: 'username' });
-
-    expect(result).toStrictEqual({
-      accessToken: 'token',
-      refreshToken: 'token',
-    });
-  });
-
-  it('check authException', () => {
-    const result = () => authService.authException();
-
-    expect(result).toThrow(HttpException);
-  });
-
   it('uniqUsername', async () => {
     const result = await authService.uniqUsername({ username: 'username' });
 
-    expect(result).toBe('uniqUsername');
+    expect(result).toBe('findOne');
   });
 
   it('signup', async () => {
@@ -89,10 +59,7 @@ describe('auth service', () => {
       confirmPassword: 'password',
     });
 
-    expect(result).toStrictEqual({
-      accessToken: 'token',
-      refreshToken: 'token',
-    });
+    expect(result).toBe('generateTokens');
   });
 
   it('login success', async () => {
@@ -105,10 +72,7 @@ describe('auth service', () => {
       password: 'password',
     });
 
-    expect(result).toStrictEqual({
-      accessToken: 'token',
-      refreshToken: 'token',
-    });
+    expect(result).toBe('generateTokens');
   });
 
   it('login error', async () => {
@@ -125,46 +89,5 @@ describe('auth service', () => {
     await expect(result).rejects.toThrow(
       new HttpException('Логин или пароль некорректы', HttpStatus.FORBIDDEN),
     );
-  });
-
-  it('refreshTokens success', async () => {
-    const result = await authService.refreshTokens({
-      token: 'refresh token success',
-    });
-
-    expect(result).toStrictEqual({
-      accessToken: 'token',
-      refreshToken: 'token',
-    });
-  });
-
-  it('refreshTokens error', async () => {
-    const result = () =>
-      authService.refreshTokens({
-        token: 'refresh token error',
-      });
-
-    await expect(result).rejects.toThrow(
-      new HttpException(
-        'Для просмотра страницы необходимо авторизоваться',
-        HttpStatus.FORBIDDEN,
-      ),
-    );
-  });
-
-  it('check success', async () => {
-    const result = await authService.checkToken({
-      token: 'check token success',
-    });
-
-    expect(result).toBe(true);
-  });
-
-  it('check error', async () => {
-    const result = authService.checkToken({
-      token: 'check token error',
-    });
-
-    expect(result).toBe(false);
   });
 });

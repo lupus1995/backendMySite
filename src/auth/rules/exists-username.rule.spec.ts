@@ -1,16 +1,13 @@
 import { JwtService } from '@nestjs/jwt';
 import { Connection, Model } from 'mongoose';
-import { AuthRepository } from '../auth.repository';
 import { AuthService } from '../auth.service';
 import { CustomUsernameValidation } from './exists-username.rule';
+import { TokensService } from '../../utils/tokens/tokens.service';
+import { UserRepository } from '../../utils/repositories/user.repository';
+import { Logger } from '@nestjs/common';
 
-jest.mock('../auth.repository', () => {
-  return {
-    AuthRepository: jest.fn().mockImplementation(() => {
-      return { findOne: jest.fn() };
-    }),
-  };
-});
+jest.mock('../../utils/tokens/tokens.service');
+jest.mock('../../utils/repositories/user.repository');
 
 jest.mock('../auth.service', () => {
   return {
@@ -32,6 +29,7 @@ jest.mock('mongoose', () => {
   return {
     Model: jest.fn().mockImplementation(),
     Connection: jest.fn().mockImplementation(),
+    Schema: jest.fn().mockImplementation(),
   };
 });
 
@@ -41,9 +39,11 @@ describe('exist user rule', () => {
 
     const model = new Model();
     const connection = new Connection();
-    const authRepository = new AuthRepository(model, connection);
+    const logger = new Logger();
+    const userService = new UserRepository(model, connection, logger);
+    const tokenService = new TokensService(jwtService);
 
-    const authService = new AuthService(jwtService, authRepository);
+    const authService = new AuthService(tokenService, userService);
     const rule = new CustomUsernameValidation(authService);
 
     expect(await rule.validate('user')).toBe(true);
@@ -54,9 +54,11 @@ describe('exist user rule', () => {
 
     const model = new Model();
     const connection = new Connection();
-    const authRepository = new AuthRepository(model, connection);
+    const logger = new Logger();
+    const userService = new UserRepository(model, connection, logger);
+    const tokenService = new TokensService(jwtService);
 
-    const authService = new AuthService(jwtService, authRepository);
+    const authService = new AuthService(tokenService, userService);
     const rule = new CustomUsernameValidation(authService);
 
     expect(await rule.validate('username')).toBe(false);
