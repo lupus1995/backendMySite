@@ -1,31 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { Seeder } from 'nestjs-seeder';
-import { Article } from 'src/schemas/article.schema';
-import { MainPage } from 'src/schemas/mainPage.schema';
-import { Projects } from 'src/schemas/projects.schema';
-import { ImageService } from 'src/utils/image/image.service';
+import { Article } from '../../schemas/article.schema';
+import { Projects } from '../../schemas/projects.schema';
+import { ImageService } from '../../utils/image/image.service';
+import { ImageSeedRepository } from './image.seed.repository';
 
 @Injectable()
 export class ImageSeeder implements Seeder {
   private rootFolder = './images';
   constructor(
-    @InjectModel(Article.name) private readonly article: Model<Article>,
-    @InjectModel(MainPage.name) private readonly mainPage: Model<MainPage>,
-    @InjectModel(Projects.name) private readonly projects: Model<Projects>,
+    private imageSeedRepository: ImageSeedRepository,
     private imageService: ImageService,
     private logger: Logger,
   ) {}
 
   // получение информации об названии картинок из базы данных
   private async getData(): Promise<string[]> {
-    const articles = await this.article.find();
-    this.logger.log('Статьи получены из базы данных');
-    const mainPage = await this.mainPage.find();
-    this.logger.log('Главная страница получена из базы данных');
-    const projects = await this.projects.find();
-    this.logger.log('Проекты получены из базы данных');
+    const { articles, projects, mainPage } =
+      await this.imageSeedRepository.getData();
 
     const articlesImages = articles.map(
       (article: Article) => article.thumbnail,

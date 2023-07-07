@@ -7,6 +7,7 @@ import { MainPage, MainPageSchema } from 'src/schemas/mainPage.schema';
 import { Projects, ProjectsSchema } from 'src/schemas/projects.schema';
 import { ImageModule } from 'src/utils/image/image.module';
 import { ImageSeeder } from './images.seeder';
+import { ImageSeedRepository } from './image.seed.repository';
 
 dotenv.config();
 
@@ -20,5 +21,5 @@ seeder({
     ]),
     ImageModule,
   ],
-  providers: [Logger],
+  providers: [Logger, ImageSeedRepository],
 }).run([ImageSeeder]);
