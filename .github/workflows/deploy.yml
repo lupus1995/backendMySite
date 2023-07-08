@@ -2,7 +2,7 @@ name: Deploy to remote server
 
 on:
   push:
-    branches: [nextjs]
+    branches: [main]
 
 jobs:
   deploy:
@@ -18,16 +18,17 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             whoami
-            mkdir clientNew && cd clientNew
+            mkdir serverNew && cd serverNew
             eval `ssh-agent -s`
             ssh-add /root/.ssh/git
-            git clone git@github.com:lupus1995/admin-my-site.git .
-            cp ../client/.env .env
+            git clone git@github.com:lupus1995/backendMySite.git .
+            cp ../server/.env .env
+            cp -a ../server/images/. ./images
             npm i
             npm run build
             cd ../
-            rm -rf ./client
-            mv clientNew client
-            pm2 restart nextjs
+            rm -rf ./server
+            mv serverNew server
+            pm2 restart nestjs
 
 
