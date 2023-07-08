@@ -1,0 +1,33 @@
+name: Deploy to remote server
+
+on:
+  push:
+    branches: [nextjs]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v0.1.10
+        with: 
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH }}
+          port: ${{ secrets.PORT }}
+          script: |
+            whoami
+            mkdir clientNew && cd clientNew
+            eval `ssh-agent -s`
+            ssh-add /root/.ssh/git
+            git clone git@github.com:lupus1995/admin-my-site.git .
+            cp ../client/.env .env
+            npm i
+            npm run build
+            cd ../
+            rm -rf ./client
+            mv clientNew client
+            pm2 restart nextjs
+
+
