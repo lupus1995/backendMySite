@@ -3,7 +3,7 @@ import { ArticleGuard } from './article.guard';
 import { JwtService } from '@nestjs/jwt';
 import { ArticleRepository } from '../utils/repositories/article.repository';
 import { Model, Connection } from 'mongoose';
-import { ExecutionContext, HttpException, Logger } from '@nestjs/common';
+import { ExecutionContext, Logger } from '@nestjs/common';
 import { addDays, subDays } from 'date-fns';
 
 class Context {

@@ -10,8 +10,6 @@ const rootPathWithFile = 'rootFolder/nameFile.png';
 const issuePath = 'issuePath';
 const codeImage =
   'data:image/jpeg;base64,/9j/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB';
-const codeImagePng =
-  'data:image/png;base64,/9j/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB';
 const codeImageWithoutMimeType =
   '/9j/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB';
 
