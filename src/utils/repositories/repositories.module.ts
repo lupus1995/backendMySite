@@ -7,10 +7,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FeedbackRepository } from './feedback.repository';
 import { SitemapRepository } from './sitemap.repository';
 import { ARTICLE, PROJECTS, MAIN_PAGE, USER, FEEDBACK } from './constants';
+import { MONGOOSE_LINK_NEST } from 'src/constants';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([ARTICLE, PROJECTS, MAIN_PAGE, USER, FEEDBACK]),
+    MongooseModule.forFeature(
+      [ARTICLE, PROJECTS, MAIN_PAGE, USER, FEEDBACK],
+      MONGOOSE_LINK_NEST,
+    ),
   ],
   providers: [
     ArticleRepository,
