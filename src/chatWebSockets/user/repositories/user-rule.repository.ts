@@ -9,7 +9,8 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 @Injectable()
 export class UserRuleRepository extends TransAction {
   constructor(
-    @InjectModel(User.name) protected user: Model<UserDocument>,
+    @InjectModel(User.name, MONGOOSE_LINK_SOCKETS)
+    protected user: Model<UserDocument>,
     @InjectConnection(MONGOOSE_LINK_SOCKETS) protected connection: Connection,
     protected logger: Logger,
   ) {

@@ -10,7 +10,8 @@ import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 @Injectable()
 export class UserRepository extends BaseRepository<UserDocument> {
   constructor(
-    @InjectModel(User.name) protected model: Model<UserDocument>,
+    @InjectModel(User.name, MONGOOSE_LINK_SOCKETS)
+    protected model: Model<UserDocument>,
     @InjectConnection(MONGOOSE_LINK_SOCKETS)
     protected readonly connection: Connection,
     protected readonly logger: Logger,
