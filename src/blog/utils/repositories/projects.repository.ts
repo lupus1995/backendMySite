@@ -5,6 +5,8 @@ import { ProjectDto } from '../../projects/dto/project.dto';
 import { Projects, ProjectsDocument } from '../../schemas/projects.schema';
 import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { HasFilterDto } from '../../../utils/dto/has-filter.dto';
+import { QueryPaginationDto } from '../../../utils/dto/query-pagination.dto';
 
 @Injectable()
 export class ProjectsRepository extends BaseRepository<ProjectsDocument> {
@@ -79,9 +81,11 @@ export class ProjectsRepository extends BaseRepository<ProjectsDocument> {
 
   public async getAll({
     hasFilter,
-  }: {
-    hasFilter: boolean;
-  }): Promise<ProjectsDocument[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    offset,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    limit,
+  }: HasFilterDto & QueryPaginationDto): Promise<ProjectsDocument[]> {
     try {
       let projects: ProjectsDocument[];
       if (hasFilter) {

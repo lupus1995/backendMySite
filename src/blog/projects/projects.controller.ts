@@ -33,7 +33,12 @@ export class ProjectsController {
     description: 'Скрывать ранее опубликованные проекты',
   })
   async getProjects(@Query() hasFilter: HasFilterDto) {
-    return this.projectsService.getProjects(hasFilter);
+    return this.projectsService.getProjects({
+      ...hasFilter,
+      // на данный момент установил limit offset, потому что только один проект имею
+      limit: 0,
+      offset: 0,
+    });
   }
 
   @UseGuards(TokenGuard)

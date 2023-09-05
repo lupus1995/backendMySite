@@ -64,7 +64,11 @@ describe('ProjectsService', () => {
     expect(result).toBe('delete');
   });
   it('getProjects', async () => {
-    const result = await service.getProjects({ hasFilter: false });
+    const result = await service.getProjects({
+      hasFilter: false,
+      limit: 0,
+      offset: 0,
+    });
 
     expect(result).toBe('getAll');
   });

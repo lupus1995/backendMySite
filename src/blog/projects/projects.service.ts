@@ -4,6 +4,7 @@ import { ImageService } from '../utils/image/image.service';
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from '../../utils/dto/has-filter.dto';
 import { ProjectsRepository } from '../utils/repositories/projects.repository';
+import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -76,8 +77,16 @@ export class ProjectsService {
   /**
    * получение нескольких статей
    */
-  async getProjects({ hasFilter }: HasFilterDto) {
-    const projects = await this.projectsRepository.getAll({ hasFilter });
+  async getProjects({
+    hasFilter,
+    limit,
+    offset,
+  }: HasFilterDto & QueryPaginationDto) {
+    const projects = await this.projectsRepository.getAll({
+      hasFilter,
+      limit,
+      offset,
+    });
 
     return projects;
   }
