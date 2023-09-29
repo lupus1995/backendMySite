@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { User, UserDocument } from '../user.schema';
 import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
 import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class UserRepository extends BaseRepository<UserDocument> {
@@ -19,30 +19,16 @@ export class UserRepository extends BaseRepository<UserDocument> {
     super(model, connection, logger);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  create(data: unknown): Promise<unknown> {
+    throw new Error('Method not implemented.');
+  }
+
   // поиск пользователя по id
   async findById(id: string): Promise<UserDocument> {
     return await this.model.findById(id);
   }
 
-  // создание пользователя
-  async create(user: User) {
-    const execute = async () => {
-      const model = new this.model(user);
-
-      const savedModel = await model.save();
-
-      return savedModel;
-    };
-
-    const handleError = () => {
-      throw new HttpException(
-        'Ошибка создания пользователя чата',
-        HttpStatus.BAD_REQUEST,
-      );
-    };
-
-    return await this.transaction(execute, handleError);
-  }
   // получения списка пользователей
   async getAll({
     offset,
