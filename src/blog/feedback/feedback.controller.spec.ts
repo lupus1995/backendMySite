@@ -1,7 +1,7 @@
 import { CanActivate } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
-import { TokenGuard } from '../utils/tokens/token.guard';
-import { AuthService } from '../auth/auth.service';
+import { TokenGuard } from '../../utils/tokens/token.guard';
+import { AuthService } from '../../auth/auth.service';
 import { FeedbackController } from './feedback.controller';
 import { FeedbackDto } from './feedback.dto';
 import { FeedbackService } from './feedback.service';
@@ -10,7 +10,7 @@ import {
   feedbackDataSuccess,
   feedbackDataError,
 } from './mockData';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { TokensService } from '../../utils/tokens/tokens.service';
 
 describe('feedback controller', () => {
   let controller: FeedbackController;

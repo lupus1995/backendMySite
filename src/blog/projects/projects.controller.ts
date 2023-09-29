@@ -17,9 +17,9 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { TokenGuard } from '../utils/tokens/token.guard';
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from '../../utils/dto/has-filter.dto';
+import { TokenGuard } from '../../utils/tokens/token.guard';
 
 @Controller('projects')
 export class ProjectsController {

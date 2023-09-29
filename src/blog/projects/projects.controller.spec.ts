@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { TokensService } from '../../utils/tokens/tokens.service';
 import { CanActivate } from '@nestjs/common';
-import { TokenGuard } from '../utils/tokens/token.guard';
+import { TokenGuard } from '../../utils/tokens/token.guard';
 import { ProjectDto } from './dto/project.dto';
 
 describe('ProjectsController', () => {

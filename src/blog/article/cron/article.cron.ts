@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TelegramService } from '../../utils/telegram/telegram.service';
 import { VkService } from '../../utils/vk/vk.service';
-import { ArticleRepository } from '../../utils/repositories/article.repository';
+import { ArticleRepository } from 'src/blog/utils/repositories/article.repository';
 
 // не получилось написать тесты на крон таску из-за нижеописанной ошибки
 // You need to run with a version of node that supports ES Modules in the VM API

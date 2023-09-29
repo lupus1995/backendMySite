@@ -3,9 +3,9 @@ import { ArticleController } from './article.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ArticleGuard } from '../article.guard';
-import { TokenGuard } from '../../utils/tokens/token.guard';
-import { TokensService } from '../../utils/tokens/tokens.service';
-import { ArticleRepository } from '../../utils/repositories/article.repository';
+import { TokenGuard } from '../../../utils/tokens/token.guard';
+import { TokensService } from '../../../utils/tokens/tokens.service';
+import { ArticleRepository } from 'src/blog/utils/repositories/ArticleRepository';
 import { CreateArticleDto } from '../dto/article.dto';
 
 const articleGuardMock: CanActivate = {

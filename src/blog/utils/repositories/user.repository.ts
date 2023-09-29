@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { SignUpDto } from '../../auth/dto/sign-up.dto';
-import { User, UserDocument } from '../../schemas/user.schema';
 import { TransAction } from '../../../utils/repositories/transaction';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { User, UserDocument } from '../../../utils/schemas/blog/user.schema';
 
 @Injectable()
 export class UserRepository extends TransAction {
@@ -22,7 +21,7 @@ export class UserRepository extends TransAction {
     return await this.model.findOne({ username });
   }
 
-  public async create(user: SignUpDto) {
+  public async create(user: User) {
     const execute = async () => {
       const newUser = new this.model(user);
 

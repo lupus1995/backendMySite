@@ -3,11 +3,14 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { CreateMainPageDto } from '../../main-page/main-page.dto';
-import { MainPage, MainPageDocument } from '../../schemas/mainPage.schema';
 import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { HasFilterDto } from '../../../utils/dto/has-filter.dto';
 import { QueryPaginationDto } from '../../../utils/dto/query-pagination.dto';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
+import {
+  MainPage,
+  MainPageDocument,
+} from '../../../utils/schemas/blog/mainPage.schema';
 
 @Injectable()
 export class MainPageRepository extends BaseRepository<MainPageDocument> {

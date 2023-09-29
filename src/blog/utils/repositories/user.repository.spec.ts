@@ -1,4 +1,3 @@
-import { User } from '../../schemas/user.schema';
 import { UserRepository } from './user.repository';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -9,6 +8,7 @@ import {
 } from '../../../utils/repositories/mockData';
 import { Logger } from '@nestjs/common';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { User } from '../../../utils/schemas/blog/user.schema';
 
 describe('UserRepository', () => {
   let userRepository: UserRepository;

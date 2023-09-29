@@ -1,4 +1,3 @@
-import { TokenGuard } from '../../utils/tokens/token.guard';
 import { ArticleService } from './article.service';
 import {
   Body,
@@ -23,6 +22,7 @@ import {
 import { ArticlePaginationDto } from '../dto/article-pagination.dto';
 import { ArticleGuard } from '../article.guard';
 import { ArticleUpdatePipe } from '../article.update.pipe';
+import { TokenGuard } from '../../../utils/tokens/token.guard';
 
 @Controller('articles')
 export class ArticleController {

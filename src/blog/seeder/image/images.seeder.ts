@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Seeder } from 'nestjs-seeder';
-import { Article } from '../../schemas/article.schema';
-import { Projects } from '../../schemas/projects.schema';
+import { Article } from '../../../utils/schemas/blog/article.schema';
+import { Projects } from '../../../utils/schemas/blog/projects.schema';
 import { ImageService } from '../../utils/image/image.service';
 import { ImageSeedRepository } from './image.seed.repository';
 

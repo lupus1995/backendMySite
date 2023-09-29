@@ -7,7 +7,7 @@ import {
   model,
   logger,
 } from '../../../utils/repositories/mockData';
-import { Feedback } from '../../schemas/feedback.schema';
+import { Feedback } from '../../../utils/schemas/blog/feedback.schema';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
 
 describe('FeedbackRepository', () => {

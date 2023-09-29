@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
-import { Article } from '../../schemas/article.schema';
+import { Article } from '../../../utils/schemas/blog/article.schema';
 import { ArticleSeedRepository } from './article.seed.repository';
 
 describe('ArticleSeedRepository', () => {

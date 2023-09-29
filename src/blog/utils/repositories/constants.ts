@@ -1,8 +1,17 @@
-import { Projects, ProjectsSchema } from 'src/blog/schemas/projects.schema';
-import { MainPage, MainPageSchema } from 'src/blog/schemas/mainPage.schema';
-import { User, UserSchema } from 'src/blog/schemas/user.schema';
-import { Article, ArticleSchema } from 'src/blog/schemas/article.schema';
-import { Feedback, FeedbackSchema } from 'src/blog/schemas/feedback.schema';
+import { Article, ArticleSchema } from 'src/utils/schemas/blog/article.schema';
+import {
+  Feedback,
+  FeedbackSchema,
+} from 'src/utils/schemas/blog/feedback.schema';
+import {
+  MainPage,
+  MainPageSchema,
+} from 'src/utils/schemas/blog/mainPage.schema';
+import {
+  Projects,
+  ProjectsSchema,
+} from 'src/utils/schemas/blog/projects.schema';
+import { User, UserSchema } from 'src/utils/schemas/blog/user.schema';
 
 export const ARTICLE = { name: Article.name, schema: ArticleSchema };
 export const PROJECTS = { name: Projects.name, schema: ProjectsSchema };

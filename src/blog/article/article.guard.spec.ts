@@ -1,7 +1,7 @@
-import { TokensService } from '../utils/tokens/tokens.service';
+import { TokensService } from '../../utils/tokens/tokens.service';
 import { ArticleGuard } from './article.guard';
 import { JwtService } from '@nestjs/jwt';
-import { ArticleRepository } from '../utils/repositories/article.repository';
+import { ArticleRepository } from '../utils/repositories/ArticleRepository';
 import { Model, Connection } from 'mongoose';
 import { ExecutionContext, Logger } from '@nestjs/common';
 import { addDays, subDays } from 'date-fns';
@@ -28,8 +28,8 @@ jest.mock('../utils/repositories/article.repository', () => {
   };
 });
 
-jest.mock('../utils/tokens/tokens.service', () => {
-  const module = jest.requireActual('../utils/tokens/tokens.service');
+jest.mock('../../utils/tokens/tokens.service', () => {
+  const module = jest.requireActual('../../utils/tokens/tokens.service');
 
   return {
     ...module,

@@ -1,10 +1,13 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Feedback, FeedbackDocument } from '../../schemas/feedback.schema';
 import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { QueryPaginationDto } from '../../../utils/dto/query-pagination.dto';
 import { MONGOOSE_LINK_NEST } from '../../../constants';
+import {
+  Feedback,
+  FeedbackDocument,
+} from '../../../utils/schemas/blog/feedback.schema';
 
 @Injectable()
 export class FeedbackRepository extends BaseRepository<FeedbackDocument> {

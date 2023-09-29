@@ -1,4 +1,4 @@
-import { Projects } from '../../schemas/projects.schema';
+import { Projects } from '../../../utils/schemas/blog/projects.schema';
 import { ProjectsRepository } from './projects.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';

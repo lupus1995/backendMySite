@@ -1,8 +1,8 @@
 import { ExecutionContext, Inject } from '@nestjs/common';
-import { TokenGuard } from '../utils/tokens/token.guard';
-import { ArticleRepository } from '../utils/repositories/article.repository';
 import { isAfter } from 'date-fns';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { TokenGuard } from '../../utils/tokens/token.guard';
+import { TokensService } from '../../utils/tokens/tokens.service';
+import { ArticleRepository } from '../utils/repositories/article.repository';
 
 export class ArticleGuard extends TokenGuard {
   constructor(

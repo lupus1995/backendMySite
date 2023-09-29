@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { TokenGuard } from '../utils/tokens/token.guard';
 import { CreateMainPageDto } from './main-page.dto';
 import { MainPageService } from './main-page.service';
+import { TokenGuard } from '../../utils/tokens/token.guard';
 
 @Controller('main-page')
 export class MainPageController {

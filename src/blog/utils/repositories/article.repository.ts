@@ -1,7 +1,10 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Article, ArticleDocument } from '../../schemas/article.schema';
+import {
+  Article,
+  ArticleDocument,
+} from '../../../utils/schemas/blog/article.schema';
 import { ArticlePaginationDto } from '../../article/dto/article-pagination.dto';
 import { CreateArticleDto } from '../../article/dto/article.dto';
 import { SocialRepository } from './social-repository';

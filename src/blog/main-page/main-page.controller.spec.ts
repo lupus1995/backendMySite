@@ -2,10 +2,10 @@ import { MainPageService } from './main-page.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MainPageController } from './main-page.controller';
 import { CanActivate } from '@nestjs/common';
-import { TokenGuard } from '../utils/tokens/token.guard';
-import { AuthService } from '../auth/auth.service';
+import { TokenGuard } from '../../utils/tokens/token.guard';
+import { AuthService } from '../../auth/auth.service';
 import { mainPageCreateData } from './mockData';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { TokensService } from '../../utils/tokens/tokens.service';
 
 describe('MainPageController', () => {
   const TokenGuardMock: CanActivate = {

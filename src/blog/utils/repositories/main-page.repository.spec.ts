@@ -9,7 +9,7 @@ import {
   model,
 } from '../../../utils/repositories/mockData';
 import { CreateMainPageDto } from '../../main-page/main-page.dto';
-import { MainPage } from '../../schemas/mainPage.schema';
+import { MainPage } from '../../../utils/schemas/blog/mainPage.schema';
 
 describe('MainPageRepository', () => {
   let mainPageRepository: MainPageRepository;

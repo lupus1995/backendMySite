@@ -1,10 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Article, ArticleDocument } from '../../schemas/article.schema';
-import { MainPage } from '../../schemas/mainPage.schema';
-import { Projects } from '../../schemas/projects.schema';
+import {
+  Article,
+  ArticleDocument,
+} from '../../../utils/schemas/blog/article.schema';
+import { Projects } from '../../../utils/schemas/blog/projects.schema';
 import { TransAction } from '../../../utils/repositories/transaction';
+import { MainPage } from '../../../utils/schemas/blog/mainPage.schema';
 
 @Injectable()
 export class ImageSeedRepository extends TransAction {

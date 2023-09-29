@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ImageService } from '../../utils/image/image.service';
-import { ArticleRepository } from '../../utils/repositories/article.repository';
+import { ArticleRepository } from 'src/blog/utils/repositories/ArticleRepository';
 import { Logger } from '@nestjs/common';
 import { CreateArticleDto } from '../dto/article.dto';
 

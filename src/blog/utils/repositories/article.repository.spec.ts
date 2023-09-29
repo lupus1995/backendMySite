@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Article } from '../../schemas/article.schema';
-import { ArticleRepository } from './article.repository';
+import { Article } from '../../../utils/schemas/blog/article.schema';
+import { ArticleRepository } from './ArticleRepository';
 import { CreateArticleDto } from '../../article/dto/article.dto';
 import {
   connection,

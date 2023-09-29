@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Article } from '../../schemas/article.schema';
-import { MainPage } from '../../schemas/mainPage.schema';
-import { Projects } from '../../schemas/projects.schema';
+import { Article } from '../../../utils/schemas/blog/article.schema';
+import { MainPage } from '../../../utils/schemas/blog/mainPage.schema';
+import { Projects } from '../../../utils/schemas/blog/projects.schema';
 import { ImageSeedRepository } from './image.seed.repository';
 
 describe('ImageSeedRepository', () => {
