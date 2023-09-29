@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { BaseRepository } from 'src/utils/repositories/base-repository';
-import { Message, MessageDocument } from './message.schema';
+import {
+  Message,
+  MessageDocument,
+} from '../../utils/schemas/web-sockets/message.schema';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
