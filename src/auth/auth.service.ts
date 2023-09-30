@@ -10,27 +10,12 @@ export class AuthService implements AuthInterface {
   constructor(
     private authBlogService: AuthBlogService,
     private authWebSocketsService: AuthWebSocketsService,
-    private logger: Logger,
   ) {
     this.services = {
       [AUTH_SERVICES.BLOG]: authBlogService,
       [AUTH_SERVICES.WEB_SOCKETS]: authWebSocketsService,
     };
   }
-
-  /**
-   * поиск уникального пользователя по имени
-   */
-  async uniqUsername({
-    username,
-    type,
-  }: {
-    username: string;
-    type: AUTH_SERVICES;
-  }) {
-    return this.services[type].uniqUsername({ username });
-  }
-
   /**
    * регистрация нового пользователя
    */
