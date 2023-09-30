@@ -6,6 +6,7 @@ import { AuthInterface } from '../../auth-interface';
 import { SignUpBlogInterface } from '../../dto/sign-up-blog.dto';
 import { UserBlogRepository } from '../../repositories/user-blog.repository';
 import { ResponseService } from 'src/utils/response/response.service';
+import { AuthBlogFindDataService } from './auth-blog-find-data.service';
 
 @Injectable()
 export class AuthBlogService implements AuthInterface {
@@ -13,17 +14,9 @@ export class AuthBlogService implements AuthInterface {
     private readonly tokensService: TokensService,
     private readonly userRepository: UserBlogRepository,
     private readonly authValidate: AuthBlogValidateService,
-    private readonly logger: Logger,
     private readonly responseServise: ResponseService,
+    private readonly authFindData: AuthBlogFindDataService,
   ) {}
-
-  /**
-   * поиск уникального пользователя по имени
-   */
-  public async uniqUsername({ username }: { username: string }) {
-    return await this.userRepository.findOne(username);
-  }
-
   /**
    * регистрация пользователя
    */
@@ -62,7 +55,7 @@ export class AuthBlogService implements AuthInterface {
   }) {
     const errors = this.authValidate.validateLogin({ username, password });
     if (errors.length === 0) {
-      const user = await this.uniqUsername({ username });
+      const user = await this.authFindData.uniqUsername({ username });
       const tokens = this.tokensService.generateTokens({
         username: user.username,
       });

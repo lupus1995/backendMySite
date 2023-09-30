@@ -2,20 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { validateSync } from 'class-validator';
 import { SignUpBlogInterface, SignUpBlogDto } from '../../dto/sign-up-blog.dto';
 import { LoginDto, LoginInterface } from '../../dto/login.dto';
-import { UserBlogRepository } from '../../repositories/user-blog.repository';
 import { AuthValidate } from '../auth-validate.interface';
 
 @Injectable()
 export class AuthBlogValidateService extends AuthValidate {
-  constructor(private userRepository: UserBlogRepository) {
+  constructor() {
     super();
-  }
-
-  /**
-   * поиск уникального пользователя по имени
-   */
-  public async uniqUsername({ username }: { username: string }) {
-    return await this.userRepository.findOne(username);
   }
 
   // валидация для регистрации нового пользователя
