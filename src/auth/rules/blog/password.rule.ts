@@ -6,11 +6,12 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 import { AuthBlogService } from 'src/auth/services/auth-blog/auth-blog.service';
+import { AuthBlogFindDataService } from 'src/auth/services/auth-blog/auth-blog-find-data.service';
 
 @ValidatorConstraint({ name: 'passwod', async: true })
 @Injectable()
 export class PasswordRule implements ValidatorConstraintInterface {
-  constructor(protected readonly authBlogService: AuthBlogService) {}
+  constructor(protected readonly authBlogService: AuthBlogFindDataService) {}
 
   async validate(
     value: string,
