@@ -14,5 +14,5 @@ export abstract class AuthValidate {
     user,
   }): ValidationError[] | Promise<ValidationError[]>;
   // валидация авторизации пользователя
-  abstract validateLogin(arg: unknown): ValidationError[];
+  abstract validateLogin(arg: unknown): Promise<ValidationError[]>;
 }

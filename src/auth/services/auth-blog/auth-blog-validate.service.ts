@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { validateSync } from 'class-validator';
+import { validate } from 'class-validator';
 import { SignUpBlogInterface, SignUpBlogDto } from '../../dto/sign-up-blog.dto';
 import { LoginDto, LoginInterface } from '../../dto/login.dto';
 import { AuthValidate } from '../auth-validate.interface';
@@ -11,16 +11,16 @@ export class AuthBlogValidateService extends AuthValidate {
   }
 
   // валидация для регистрации нового пользователя
-  validateSignup({ user }: { user: SignUpBlogInterface }) {
+  async validateSignup({ user }: { user: SignUpBlogInterface }) {
     const validateUser = new SignUpBlogDto(user);
-    const errors = validateSync(validateUser);
+    const errors = await validate(validateUser);
     return errors;
   }
 
   // валидация авторизации пользователя
-  validateLogin({ username, password }: LoginInterface) {
+  async validateLogin({ username, password }: LoginInterface) {
     const loginValidate = new LoginDto({ username, password });
-    const errors = validateSync(loginValidate);
+    const errors = await validate(loginValidate);
     return errors;
   }
 }

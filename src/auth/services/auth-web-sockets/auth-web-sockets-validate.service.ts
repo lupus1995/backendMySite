@@ -37,12 +37,12 @@ export class AuthWebSocketsValidateService extends AuthValidate {
     return errors;
   }
 
-  validateLogin({
+  async validateLogin({
     usernameOrEmail,
     password,
-  }: LoginWebSocket): ValidationError[] {
+  }: LoginWebSocket): Promise<ValidationError[]> {
     const validateLogin = new LoginWebsocketDto({ usernameOrEmail, password });
-    const errors = validateSync(validateLogin);
+    const errors = await validate(validateLogin);
 
     return errors;
   }

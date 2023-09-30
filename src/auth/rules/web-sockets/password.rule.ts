@@ -27,6 +27,11 @@ export class PasswordRule implements ValidatorConstraintInterface {
 
     const password = username?.password || email?.password;
 
+    if (!password) {
+      this.logger.error('Пароль введен неверно');
+      return false;
+    }
+
     const result = await argon2.verify(password, value);
 
     if (!result) {

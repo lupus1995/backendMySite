@@ -21,7 +21,7 @@ export class AuthBlogService implements AuthInterface {
    * регистрация пользователя
    */
   public async signup({ user }: { user: SignUpBlogInterface }) {
-    const errors = this.authValidate.validateSignup({ user });
+    const errors = await this.authValidate.validateSignup({ user });
 
     let data = null;
 
@@ -53,7 +53,10 @@ export class AuthBlogService implements AuthInterface {
     username: string;
     password: string;
   }) {
-    const errors = this.authValidate.validateLogin({ username, password });
+    const errors = await this.authValidate.validateLogin({
+      username,
+      password,
+    });
     if (errors.length === 0) {
       const user = await this.authFindData.uniqUsername({ username });
       const tokens = this.tokensService.generateTokens({

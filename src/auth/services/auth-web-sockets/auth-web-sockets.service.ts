@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { AuthInterface } from '../../auth-interface';
 import { UserWebSocketsRepository } from '../../repositories/user-web-sockets.repository';
@@ -15,12 +15,7 @@ export class AuthWebSocketsService implements AuthInterface {
     private readonly tokensService: TokensService,
     private readonly authWebSocketsValidate: AuthWebSocketsValidateService,
     private readonly responseServise: ResponseService,
-    private readonly logger: Logger,
   ) {}
-
-  uniqUsername({ username }: { username: string }): Promise<unknown> {
-    throw new Error('Method not implemented.');
-  }
   // регистрация пользователя
   async signup({ user }: { user: SignUpWebSocketsI }) {
     const errors = await this.authWebSocketsValidate.validateSignup({ user });
@@ -49,7 +44,7 @@ export class AuthWebSocketsService implements AuthInterface {
   }
 
   async login({ usernameOrEmail, password }: LoginWebSocket) {
-    const errors = this.authWebSocketsValidate.validateLogin({
+    const errors = await this.authWebSocketsValidate.validateLogin({
       usernameOrEmail,
       password,
     });
@@ -60,7 +55,7 @@ export class AuthWebSocketsService implements AuthInterface {
       let user = await this.userRepository.findByEmail({
         email: usernameOrEmail,
       });
-      if (user) {
+      if (!user) {
         user = await this.userRepository.findByUsername({
           username: usernameOrEmail,
         });

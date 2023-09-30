@@ -25,9 +25,9 @@ export class UsernameOrEmailRule implements ValidatorConstraintInterface {
       this.logger.error('Email или username введены неверно');
     }
 
-    return hasError;
+    return !hasError;
   }
-  defaultMessage?(validationArguments?: ValidationArguments): string {
+  defaultMessage?(): string {
     return 'Email, username или пароль введены неверно!';
   }
 }
