@@ -1,5 +1,12 @@
 import { IsArray, IsString } from 'class-validator';
-import { RegistrationDto } from './registration.dto';
+import { RegistrationDto, RegistrationInterface } from './registration.dto';
+
+export interface UserInterface extends RegistrationInterface {
+  patronymic: string;
+  avatar: string;
+  listOfBlockedInterlocutors: string[];
+  listIOfDeletedDialogs: string[];
+}
 
 export class UserDto extends RegistrationDto {
   @IsString()

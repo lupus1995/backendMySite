@@ -3,6 +3,14 @@ import { IsEmail, IsString, Validate } from 'class-validator';
 import { UniqUsernameRule } from '../rules/uniq-username.rule';
 import { UniqEmailRule } from '../rules/uniq-email.rule';
 
+export interface RegistrationInterface {
+  lastname: string;
+  firstname: string;
+  password: string;
+  username: string;
+  email: string;
+}
+
 export class RegistrationDto {
   @IsString()
   @ApiProperty({

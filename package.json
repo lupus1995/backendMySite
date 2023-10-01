@@ -22,6 +22,7 @@
     "add:pre-commit": "husky add .husky/pre-commit 'npm run lint && npm run test'"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.1.0",
     "@nestjs/common": "^9.3.12",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.3.12",

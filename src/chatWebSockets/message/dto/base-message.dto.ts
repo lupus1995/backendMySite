@@ -2,6 +2,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEnum } from 'class-validator';
 import { TYPE_MESSAGE } from '../enums/type-message';
 
+export interface MessageInterface {
+  from: string;
+  to: string;
+  typeMessage: string;
+  value: string;
+  createdAt: string;
+  updatedAt: string;
+  image: string;
+  isArchive: string;
+  linkToImage: string;
+  linkToAudio: string;
+}
+
 export class BaseMessageDto {
   @IsString()
   @ApiProperty({

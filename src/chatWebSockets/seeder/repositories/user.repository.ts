@@ -6,7 +6,7 @@ import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
-import { UserInterface } from '../dto/user.dto';
+import { UserInterface, UserType } from '../interfaces';
 
 @Injectable()
 export class UserRepository extends BaseRepository<UserDocument> {
@@ -21,17 +21,10 @@ export class UserRepository extends BaseRepository<UserDocument> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async create(data: UserInterface | UserInterface[]) {
-    const execute = async () => {
-      let newUsers: UserDocument[] | UserDocument;
-      if (Array.isArray(data)) {
-        newUsers = data.map((item) => new this.model(item));
-      } else {
-        newUsers = new this.model(data);
-      }
-
+  async create(data: UserInterface[]) {
+    const execute = async (): Promise<UserType[]> => {
+      const newUsers = data.map((item) => new this.model(item));
       const models = await this.model.create(newUsers);
-
       return models;
     };
 
