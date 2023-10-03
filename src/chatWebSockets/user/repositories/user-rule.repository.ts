@@ -19,11 +19,11 @@ export class UserRuleRepository extends TransAction {
 
   // поиск пользователя по email
   async findByEmail({ email }: { email: string }) {
-    return await this.user.find({ email });
+    return await this.user.findOne({ email });
   }
 
   // поиск пользователя по username
   async findByUsername({ username }: { username: string }) {
-    return await this.user.find({ username });
+    return await this.user.findOne({ username });
   }
 }

@@ -50,13 +50,17 @@ export class UserRepository extends BaseRepository<UserDocument> {
     return await this.model.findById(id);
   }
 
+  async findAllByTo(to: string | string[]) {
+    return await this.model.find({ _id: to });
+  }
+
   // получения списка пользователей
   async getAll({
+    userId,
     offset,
     limit,
     hasFilter = true,
-  }: HasFilterDto & QueryPaginationDto) {
-    // TODO настроить фильтр после описания требований
+  }: { userId: string } & HasFilterDto & QueryPaginationDto) {
     if (hasFilter) {
       const users = await this.model.find().skip(offset).limit(limit);
 
