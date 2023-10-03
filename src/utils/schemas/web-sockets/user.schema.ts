@@ -1,4 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+
+export type UserType = Document<unknown, any, UserDocument> &
+  Omit<
+    User &
+      Document & {
+        _id: Types.ObjectId;
+      },
+    never
+  >;
 
 export type UserDocument = User & Document;
 

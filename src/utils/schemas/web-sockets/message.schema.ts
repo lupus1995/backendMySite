@@ -1,5 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
+export type MessageType = Document<unknown, any, MessageDocument> &
+  Omit<
+    Message &
+      Document & {
+        _id: Types.ObjectId;
+      },
+    never
+  >;
 export type MessageDocument = Message & Document;
 
 @Schema()
