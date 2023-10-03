@@ -2,8 +2,9 @@ import { faker } from '@faker-js/faker';
 import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as argon2 from 'argon2';
-import { UserInterface, UserType } from './interfaces';
+import { UserInterface } from './interfaces';
 import { UserRepository } from './repositories/user.repository';
+import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class GenarateUserService {
@@ -41,7 +42,7 @@ export class GenarateUserService {
 
   private generateNewUsers() {
     this.logger.log('Генерация новых пользователей');
-    const data = faker.helpers.multiple(this.prepareNewUser, { count: 40 });
+    const data = faker.helpers.multiple(this.prepareNewUser, { count: 100 });
     this.logger.log('Новые пользователи сгенерированы');
     return data;
   }

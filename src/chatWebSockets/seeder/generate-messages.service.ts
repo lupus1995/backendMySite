@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, Logger } from '@nestjs/common';
 import { MessageRepository } from './repositories/messages.repository';
-import { MessageInterface, UserType } from './interfaces';
+import { MessageInterface } from './interfaces';
+import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class GenerateMessageService {

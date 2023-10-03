@@ -22,8 +22,16 @@ export class MessageRepository extends TransAction {
   }
 
   async create(messages: MessageInterface[]) {
-    const newModels = messages.map((message) => new this.model(message));
+    const execute = async () => {
+      const newModels = messages.map((message) => new this.model(message));
 
-    return await this.model.create(newModels);
+      return await this.model.create(newModels);
+    };
+
+    const handleError = () => {
+      this.logger.error('Ошибка создания сообщения');
+    };
+
+    return this.transaction(execute, handleError);
   }
 }

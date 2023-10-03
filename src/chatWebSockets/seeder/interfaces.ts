@@ -25,12 +25,3 @@ export interface MessageInterface {
   linkToImage: string;
   linkToAudio: string;
 }
-
-export type UserType = Document<unknown, any, UserDocument> &
-  Omit<
-    User &
-      Document & {
-        _id: Types.ObjectId;
-      },
-    never
-  >;
