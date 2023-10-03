@@ -41,6 +41,10 @@ export class TokensService {
     }
   }
 
+  public getUserNameByToken(token: string): string {
+    return this.jwtService.verify(token).sub;
+  }
+
   // проверка токена на его актуальность
   public checkToken({ token }: { token: string }) {
     try {
