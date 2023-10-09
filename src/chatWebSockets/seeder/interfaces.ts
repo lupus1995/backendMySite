@@ -1,6 +1,3 @@
-import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
-import { Document, Types } from 'mongoose';
-
 export interface UserInterface {
   lastname: string;
   firstname: string;
@@ -24,4 +21,15 @@ export interface MessageInterface {
   isArchive: boolean;
   linkToImage: string;
   linkToAudio: string;
+}
+
+interface InterlocutorInterface {
+  interlocutor: string;
+  messageId: string;
+  lastUpdatedAt: string;
+}
+
+export interface InterlocutorsInterface {
+  userId: string;
+  interlocutors: InterlocutorInterface[];
 }

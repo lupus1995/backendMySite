@@ -3,11 +3,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MessageRepository } from './repositories/messages.repository';
 import { MessageInterface } from './interfaces';
 import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
+import { InterlocutorsRepository } from './repositories/interlocutors.repository';
 
 @Injectable()
 export class GenerateMessageService {
   constructor(
     private messagesRepository: MessageRepository,
+    private interlocutorsRepository: InterlocutorsRepository,
     private logger: Logger,
   ) {}
 
@@ -36,9 +38,10 @@ export class GenerateMessageService {
     ];
   }
 
-  private generateMessages(firstUser: UserType, secondUser: UserType) {
+  private async generateMessages(firstUser: UserType, secondUser: UserType) {
+    this.logger.debug(secondUser);
     this.logger.log(
-      `Генерируем черновики сообщений для пары пользователей ${firstUser.username} и ${secondUser.username}`,
+      `Генерируем сообщения для пары пользователей ${firstUser.username} и ${secondUser.username}`,
     );
     const draftMessages = faker.helpers.multiple(
       this.generateOneTwoOneMessages(firstUser, secondUser),
@@ -52,7 +55,22 @@ export class GenerateMessageService {
       messages.push(item[1]);
     });
 
-    return messages;
+    this.logger.log('Сохранение сообщений');
+    const savedMessages = await this.messagesRepository.create(messages);
+
+    const lastMessage = savedMessages[messages.length - 1];
+
+    await this.interlocutorsRepository.updateInterlocutors({
+      userId: firstUser._id,
+      interlocutorId: secondUser._id,
+      messageId: lastMessage._id,
+    });
+
+    await this.interlocutorsRepository.updateInterlocutors({
+      userId: secondUser._id,
+      interlocutorId: firstUser._id,
+      messageId: lastMessage._id,
+    });
   }
 
   async runGenerateMessages(users: UserType[]) {
@@ -62,13 +80,8 @@ export class GenerateMessageService {
     this.logger.log('Формируем собеседников, исключаем главного пользователя');
     const newUsers = users.filter((user) => user._id !== mainUsers._id);
 
-    this.logger.log('Генерация сообщений');
-    let messages: MessageInterface[] = [];
-    newUsers.forEach((item) => {
-      messages = [...messages, ...this.generateMessages(mainUsers, item)];
-    });
-
-    this.logger.log('Сохранение сообщений');
-    await this.messagesRepository.create(messages);
+    for (let i = 0; i <= newUsers.length - 1; i++) {
+      await this.generateMessages(mainUsers, newUsers[i]);
+    }
   }
 }

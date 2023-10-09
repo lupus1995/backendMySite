@@ -13,7 +13,7 @@ export class PasswordRule implements ValidatorConstraintInterface {
   constructor(
     private authFindData: AuthWebsocketsFindDataService,
     private logger: Logger,
-  ){}
+  ) {}
   async validate(
     value: string,
     validationArguments?: ValidationArguments,
