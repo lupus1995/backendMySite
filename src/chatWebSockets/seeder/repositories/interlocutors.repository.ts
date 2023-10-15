@@ -8,6 +8,7 @@ import {
   InterlocutorsDocument,
 } from 'src/utils/schemas/web-sockets/interlocutors.schema';
 import { InterlocutorsInterface } from '../interfaces';
+import { MessageType } from 'src/utils/schemas/web-sockets/message.schema';
 
 @Injectable()
 export class InterlocutorsRepository extends TransAction {
@@ -48,11 +49,11 @@ export class InterlocutorsRepository extends TransAction {
   async updateInterlocutors({
     userId,
     interlocutorId,
-    messageId,
+    message,
   }: {
     userId: string;
     interlocutorId: string;
-    messageId: string;
+    message: MessageType;
   }) {
     this.logger.log('Находим пользователя по его id');
     const data = await this.model.findOne({ userId });
@@ -60,16 +61,22 @@ export class InterlocutorsRepository extends TransAction {
     const updatedIndex = data.interlocutors.findIndex(
       (item) => item.interlocutorId === interlocutorId,
     );
-    if (updatedIndex) {
+
+    if (updatedIndex !== -1) {
       data.interlocutors[updatedIndex] = {
         ...data.interlocutors[updatedIndex],
-        messageId,
+        messageId: message._id,
+        createdAt: message.createdAt,
       };
     } else {
-      data.interlocutors.push({
-        interlocutorId,
-        messageId,
-      });
+      data.interlocutors = [
+        ...data.interlocutors,
+        {
+          interlocutorId,
+          messageId: message._id,
+          createdAt: message.createdAt,
+        },
+      ];
     }
 
     this.logger.log('Сохраняем обновленные данные о собеседниках пользователя');

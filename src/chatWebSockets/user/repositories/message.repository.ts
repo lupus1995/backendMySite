@@ -22,35 +22,13 @@ export class MessageRepository extends TransAction {
     super(connection, logger);
   }
 
-  async findInterlocutors({
-    user,
-    limit,
-    offset,
-  }: { user: UserType } & QueryPaginationDto) {
+  async getMessages(messageIds: string[]) {
     const execute = async () => {
-      return await this.messageModel.aggregate([
-        {
-          $sort: { createdAt: -1 },
-        },
-        {
-          $group: { _id: null, uniqueValues: { $addToSet: '$to' } },
-        },
-        {
-          $limit: limit,
-        },
-        {
-          $skip: offset,
-        },
-      ]);
-      // .distinct('to', { from: user._id })
-      // .find({ from: user._id }, 'to')
-      // .sort({ createdAt: -1 })
-      // .skip(offset)
-      // .limit(limit);
+      return await this.messageModel.find({ _id: messageIds });
     };
 
     const handleError = () => {
-      this.logger.error('ошибка поиска сообщений по отправителю');
+      this.logger.debug('Ошибка получения сообщений');
     };
 
     return await this.transaction(execute, handleError);

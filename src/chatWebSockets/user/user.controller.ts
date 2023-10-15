@@ -32,12 +32,12 @@ export class UserController {
   @ApiCreatedResponse({
     description: 'Получение получение списка собеседников',
   })
-  getInterlocutor(
+  async getInterlocutor(
     @Headers('authorization') authorization: string,
     @Query() { limit, offset }: QueryPaginationDto,
   ) {
     const username = this.tokenService.getUserNameByToken(authorization);
-    const interlocutors = this.userService.getInterlocutors({
+    const interlocutors = await this.userService.getInterlocutors({
       username,
       limit,
       offset,

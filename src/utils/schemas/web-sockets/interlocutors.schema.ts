@@ -17,6 +17,8 @@ class Interlocutor {
   interlocutorId: string;
   @Prop()
   messageId: string;
+  @Prop()
+  createdAt: Date;
 }
 
 @Schema()

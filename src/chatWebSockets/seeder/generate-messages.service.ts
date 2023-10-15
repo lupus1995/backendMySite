@@ -39,7 +39,6 @@ export class GenerateMessageService {
   }
 
   private async generateMessages(firstUser: UserType, secondUser: UserType) {
-    this.logger.debug(secondUser);
     this.logger.log(
       `Генерируем сообщения для пары пользователей ${firstUser.username} и ${secondUser.username}`,
     );
@@ -63,13 +62,13 @@ export class GenerateMessageService {
     await this.interlocutorsRepository.updateInterlocutors({
       userId: firstUser._id,
       interlocutorId: secondUser._id,
-      messageId: lastMessage._id,
+      message: lastMessage,
     });
 
     await this.interlocutorsRepository.updateInterlocutors({
       userId: secondUser._id,
       interlocutorId: firstUser._id,
-      messageId: lastMessage._id,
+      message: lastMessage,
     });
   }
 
