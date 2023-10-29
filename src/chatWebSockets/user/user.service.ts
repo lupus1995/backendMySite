@@ -3,18 +3,13 @@ import { UserRepository } from './repositories/user.repository';
 import { UserRuleRepository } from './repositories/user-rule.repository';
 import { RegistrationDto } from './dto/registration.dto';
 import { User, UserType } from 'src/utils/schemas/web-sockets/user.schema';
-import { MessageRepository } from './repositories/message.repository';
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
-import { InterlocutorsRepository } from './repositories/interlocutors.repository';
-import { MessageType } from 'src/utils/schemas/web-sockets/message.schema';
+import { InterlocutorType } from 'src/utils/schemas/web-sockets/interlocutors.schema';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepository: UserRepository,
     private userRuleRepository: UserRuleRepository,
-    private interlocutorsRepository: InterlocutorsRepository,
-    private messageRepository: MessageRepository,
     private logger: Logger,
   ) {}
 
@@ -26,47 +21,12 @@ export class UserService {
     return await this.userRuleRepository.findByUsername({ username });
   }
 
-  async getInterlocutors({
-    username,
-    limit,
-    offset,
-  }: {
-    username: string;
-  } & QueryPaginationDto) {
-    const user = await this.findByUsername({ username });
-    const interlocutorData =
-      await this.interlocutorsRepository.getInterlocutors({
-        userId: user._id,
-        limit,
-        offset,
-      });
+  async getUserFromInterlocutor(interlocutors: InterlocutorType[]) {
+    const usersIds = interlocutors.map((item) => item.interlocutorId);
 
-    const messageIds = interlocutorData.interlocutors.map(
-      (item) => item.messageId,
-    );
+    const users = await this.userRepository.findAllByTo(usersIds);
 
-    const messages: MessageType[] = await this.messageRepository.getMessages(
-      messageIds,
-    );
-
-    const userIds = interlocutorData.interlocutors.map(
-      (item) => item.interlocutorId,
-    );
-
-    const users = await this.userRepository.findAllByTo(userIds);
-
-    const interlocutors: {
-      interlocutor: UserType;
-      message: MessageType;
-    }[] = interlocutorData.interlocutors.map((item, index) => {
-      return {
-        interlocutor: users[index],
-        message: messages[index],
-        id: users[index]._id,
-      };
-    });
-
-    return interlocutors;
+    return users;
   }
 
   async createUser({ data }: { data: RegistrationDto }) {
@@ -81,17 +41,13 @@ export class UserService {
     await this.userRepository.create(user);
   }
 
-  async updateUser({ id, data }: { id: string; data: User }) {
-    // TODO настроить сохранение аватарки после разделения модуля блога и чата
-    return await this.userRepository.update({ id, data });
-  }
+  async searchUsers({ users, search }: { users: UserType[]; search: string }) {
+    const filterUsers = users.filter((user) => {
+      const name = `${user.firstname} ${user.lastname} ${user.patronymic}`;
 
-  async getUser(id: string) {
-    return await this.userRepository.findById(id);
-  }
+      return name.search(search) !== -1 || user.username.search(search) !== -1;
+    });
 
-  async deleteUser(id: string) {
-    // TODO настроить удаление аватарки после разделения модуля блога и чата
-    return await this.userRepository.delete(id);
+    return filterUsers;
   }
 }

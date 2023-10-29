@@ -19,22 +19,8 @@ export class InterlocutorsRepository extends TransAction {
     super(connection, logger);
   }
 
-  async getInterlocutors({
-    userId,
-    offset,
-    limit,
-  }: {
-    userId: string;
-    offset: number;
-    limit: number;
-  }) {
+  async getAllInterlocutors({ userId }: { userId: string }) {
     const interlocutor = await this.interlocutorsModel.findOne({ userId });
-
-    interlocutor.interlocutors = interlocutor.interlocutors
-      .sort((a, b) => {
-        return b.createdAt.getTime() - a.createdAt.getTime();
-      })
-      .splice(offset * limit, limit);
 
     return interlocutor;
   }

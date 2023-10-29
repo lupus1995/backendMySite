@@ -10,6 +10,7 @@ export type InterlocutorsType = Document<unknown, any, Interlocutors> &
     never
   >;
 export type InterlocutorsDocument = Interlocutors & Document;
+export type InterlocutorType = Interlocutor;
 
 @Schema()
 class Interlocutor {

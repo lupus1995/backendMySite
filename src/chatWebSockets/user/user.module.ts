@@ -11,6 +11,9 @@ import { MessageRepository } from './repositories/message.repository';
 import { MESSAGE } from 'src/utils/schemas/web-sockets/message.schema';
 import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/interlocutors.schema';
 import { InterlocutorsRepository } from './repositories/interlocutors.repository';
+import { InterlocutorService } from './interlocutor.service';
+import { MessageService } from './message.service';
+import { PrepareDataService } from './prepareData.service';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { InterlocutorsRepository } from './repositories/interlocutors.repository
     UserRepository,
     MessageRepository,
     Logger,
+    InterlocutorService,
+    MessageService,
+    PrepareDataService,
     UserService,
   ],
 })
