@@ -21,15 +21,5 @@ export interface MessageInterface {
   isArchive: boolean;
   linkToImage: string;
   linkToAudio: string;
-}
-
-interface InterlocutorInterface {
-  interlocutor: string;
-  messageId: string;
-  lastUpdatedAt: string;
-}
-
-export interface InterlocutorsInterface {
-  userId: string;
-  interlocutors: InterlocutorInterface[];
+  roomId?: string;
 }

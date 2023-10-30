@@ -10,8 +10,8 @@ import { GenarateUserService } from './generate-user.service';
 import { GenerateMessageService } from './generate-messages.service';
 import { MessageRepository } from './repositories/messages.repository';
 import { MESSAGE } from 'src/utils/schemas/web-sockets/message.schema';
-import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/interlocutors.schema';
-import { InterlocutorsRepository } from './repositories/interlocutors.repository';
+import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/rooms.schema';
+import { RoomsRepository } from './repositories/rooms.repository';
 
 dotenv.config();
 
@@ -27,9 +27,9 @@ seeder({
   ],
   providers: [
     UserSeeder,
-    InterlocutorsRepository,
     UserRepository,
     MessageRepository,
+    RoomsRepository,
     Logger,
     GenarateUserService,
     GenerateMessageService,
