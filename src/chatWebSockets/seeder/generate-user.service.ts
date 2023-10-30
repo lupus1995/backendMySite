@@ -5,15 +5,10 @@ import * as argon2 from 'argon2';
 import { UserInterface } from './interfaces';
 import { UserRepository } from './repositories/user.repository';
 import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
-import { InterlocutorsRepository } from './repositories/interlocutors.repository';
 
 @Injectable()
 export class GenarateUserService {
-  constructor(
-    private userRepository: UserRepository,
-    private logger: Logger,
-    private interlocutorsRepository: InterlocutorsRepository,
-  ) {}
+  constructor(private userRepository: UserRepository, private logger: Logger) {}
   private createLogFile(data: UserInterface[]) {
     const writeStream = fs.createWriteStream('names.txt');
     data.forEach((item) => {
@@ -63,9 +58,6 @@ export class GenarateUserService {
     this.logger.log('Занесение новых пользователей в базу данных');
     const userDocuments: UserType[] = await this.userRepository.create(users);
     this.logger.log('Новые пользователи занесены в базу данных');
-
-    const ids = userDocuments.map((item) => item.id);
-    await this.interlocutorsRepository.addInterlocutors(ids);
 
     return userDocuments;
   }
