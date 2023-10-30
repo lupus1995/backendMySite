@@ -1,34 +1,25 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  Post,
-  Put,
   Query,
   UseGuards,
   Headers,
   Logger,
 } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
-import { RegistrationDto } from './dto/registration.dto';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
 import { TokenGuard } from 'src/utils/tokens/token.guard';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 import { TokensService } from 'src/utils/tokens/tokens.service';
-import { InterlocutorService } from './interlocutor.service';
 import { MessageService } from './message.service';
-import { PrepareDataService } from './prepareData.service';
+import { RoomsService } from './rooms.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private userService: UserService,
-    private interlocutorsService: InterlocutorService,
+    private roomsService: RoomsService,
     private messageService: MessageService,
-    private prapereDataService: PrepareDataService,
     private logger: Logger,
     private tokenService: TokensService,
   ) {}
@@ -44,27 +35,28 @@ export class UserController {
   ) {
     const username = this.tokenService.getUserNameByToken(authorization);
     const user = await this.userService.findByUsername({ username });
-    const draftInterlocutors =
-      await this.interlocutorsService.getDraftInterlocutors({
-        userId: user._id,
-        limit,
-        offset,
-      });
 
-    const messages = await this.messageService.getMessageFromIntelocutor(
-      draftInterlocutors.interlocutors,
-    );
+    const draftData = await this.roomsService.getRooms({ userId: user._id });
 
-    const users = await this.userService.getUserFromInterlocutor(
-      draftInterlocutors.interlocutors,
-    );
-
-    const interlocutors = this.prapereDataService.prepareInterlocutors({
-      users,
-      messages,
+    const dataWithMessage = await this.messageService.getMessages({
+      roomsIds: draftData.map((item) => item._id),
+      limit,
+      offset,
     });
 
-    return interlocutors;
+    const dataWithInterlocutor = await this.userService.findInterlocutors({
+      data: draftData,
+      currentUser: user,
+    });
+
+    const data = dataWithMessage.map((itemMessage) => ({
+      ...itemMessage,
+      interlocutor: dataWithInterlocutor.find(
+        (itemInterlocutor) => itemMessage.id === itemInterlocutor.id,
+      )?.interlocutor,
+    }));
+
+    return data;
   }
 
   @UseGuards(TokenGuard)
@@ -80,30 +72,27 @@ export class UserController {
     const username = this.tokenService.getUserNameByToken(authorization);
     const user = await this.userService.findByUsername({ username });
 
-    const { interlocutors } =
-      await this.interlocutorsService.getAllInterlocutors({
-        userId: user._id,
-      });
+    const draftData = await this.roomsService.getRooms({ userId: user._id });
 
-    const users = await this.userService.getUserFromInterlocutor(interlocutors);
+    const users = await this.userService.findInterlocutors({
+      data: draftData,
+      currentUser: user,
+      search,
+    });
 
-    const filterUsers = await this.userService.searchUsers({ users, search });
+    const dataWithMessage = await this.messageService.getMessages({
+      roomsIds: users.map((item) => item.id),
+      limit,
+      offset,
+    });
 
-    const filterMessage =
-      await this.messageService.getMessagesFromFilterInterlocutor({
-        interlocutors,
-        users: filterUsers,
-        limit,
-        offset,
-      });
+    const data = users.map((itemInterlocutor) => ({
+      ...itemInterlocutor,
+      message: dataWithMessage.find(
+        (itemMessage) => itemMessage.id === itemInterlocutor.id,
+      )?.message,
+    }));
 
-    const searchInterlocutors =
-      this.prapereDataService.prepareSearchInterlocutor({
-        draftInterlocutors: interlocutors,
-        interlocutors: filterUsers,
-        messages: filterMessage,
-      });
-
-    return searchInterlocutors;
+    return data;
   }
 }

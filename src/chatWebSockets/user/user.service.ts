@@ -2,8 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
 import { UserRuleRepository } from './repositories/user-rule.repository';
 import { RegistrationDto } from './dto/registration.dto';
-import { User, UserType } from 'src/utils/schemas/web-sockets/user.schema';
-import { InterlocutorType } from 'src/utils/schemas/web-sockets/interlocutors.schema';
+import {
+  User,
+  UserDocument,
+  UserType,
+} from 'src/utils/schemas/web-sockets/user.schema';
+import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
+import { MessageDocument } from 'src/utils/schemas/web-sockets/message.schema';
 
 @Injectable()
 export class UserService {
@@ -21,12 +26,46 @@ export class UserService {
     return await this.userRuleRepository.findByUsername({ username });
   }
 
-  async getUserFromInterlocutor(interlocutors: InterlocutorType[]) {
-    const usersIds = interlocutors.map((item) => item.interlocutorId);
+  // на данный момент в диалоге может участвовать только двое людей
+  // если в дальнейшем будет расширение до групповых переписок,
+  // то необходимо будет ввести типы для общения между собеседниками
+  async findInterlocutors({
+    data,
+    currentUser,
+    search = '',
+  }: {
+    data: RoomsDocument[];
+    currentUser: UserDocument;
+    search?: string;
+  }) {
+    const newData: {
+      interlocutor: UserDocument;
+      id: string;
+    }[] = [];
+    for (let i = 0; i < data.length - 1; i++) {
+      const interlocutorId = data[i].interlocutors.find(
+        (item) => item.toString() !== currentUser._id.toString(),
+      );
+      const interlocutor = await this.userRepository.findById(interlocutorId);
+      newData.push({
+        id: data[i]._id,
+        interlocutor,
+      });
+    }
 
-    const users = await this.userRepository.findAllByTo(usersIds);
+    if (search) {
+      return newData;
+    }
 
-    return users;
+    return newData.filter((item) => {
+      const { interlocutor } = item;
+      const name = `${interlocutor.firstname} ${interlocutor.lastname} ${interlocutor.patronymic}`;
+
+      return (
+        name.search(search) !== -1 ||
+        interlocutor.username.search(search) !== -1
+      );
+    });
   }
 
   async createUser({ data }: { data: RegistrationDto }) {

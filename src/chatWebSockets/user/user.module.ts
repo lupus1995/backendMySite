@@ -9,11 +9,10 @@ import { USER } from 'src/utils/schemas/web-sockets/user.schema';
 import { TokensModule } from 'src/utils/tokens/tokens.module';
 import { MessageRepository } from './repositories/message.repository';
 import { MESSAGE } from 'src/utils/schemas/web-sockets/message.schema';
-import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/interlocutors.schema';
-import { InterlocutorsRepository } from './repositories/interlocutors.repository';
-import { InterlocutorService } from './interlocutor.service';
+import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/rooms.schema';
 import { MessageService } from './message.service';
-import { PrepareDataService } from './prepareData.service';
+import { RoomsRepository } from './repositories/rooms.repository';
+import { RoomsService } from './rooms.service';
 
 @Module({
   imports: [
@@ -25,14 +24,13 @@ import { PrepareDataService } from './prepareData.service';
   controllers: [UserController],
   providers: [
     UserRuleRepository,
-    InterlocutorsRepository,
+    RoomsRepository,
     UserRepository,
     MessageRepository,
     Logger,
-    InterlocutorService,
     MessageService,
-    PrepareDataService,
     UserService,
+    RoomsService,
   ],
 })
 export class UserModule {}
