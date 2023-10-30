@@ -22,9 +22,13 @@ export class MessageRepository extends TransAction {
     super(connection, logger);
   }
 
-  async getMessages(messageIds: string[]) {
-    const execute = async () => {
-      return await this.messageModel.find({ _id: messageIds });
+  async getMessagesByRoomId(roomId: string) {
+    const execute = async (): Promise<MessageDocument> => {
+      return await this.messageModel.findOne(
+        { roomId },
+        {},
+        { sort: { createdAt: -1 }, limit: 1 },
+      );
     };
 
     const handleError = () => {

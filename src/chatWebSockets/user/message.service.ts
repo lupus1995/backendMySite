@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MessageRepository } from './repositories/message.repository';
-import { InterlocutorType } from 'src/utils/schemas/web-sockets/interlocutors.schema';
-import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
+import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+import { MessageDocument } from 'src/utils/schemas/web-sockets/message.schema';
 
 @Injectable()
 export class MessageService {
@@ -11,35 +11,25 @@ export class MessageService {
     private logger: Logger,
   ) {}
 
-  async getMessageFromIntelocutor(interlocutors: InterlocutorType[]) {
-    const messagesIds = interlocutors.map((item) => item.messageId);
-    const messages = await this.messageRepository.getMessages(messagesIds);
-
-    return messages;
-  }
-
-  async getMessagesFromFilterInterlocutor({
-    interlocutors,
-    users,
+  async getMessages({
+    roomsIds,
     limit,
     offset,
-  }: {
-    interlocutors: InterlocutorType[];
-    users: UserType[];
-  } & QueryPaginationDto) {
-    const filterUsersIds: string[] = users.map((item) => item._id.toString());
+  }: { roomsIds: string[] } & QueryPaginationDto) {
+    const data: Array<{ message: MessageDocument; id: string }> = [];
+    for (let i = 0; i < roomsIds.length - 1; i++) {
+      const message = await this.messageRepository.getMessagesByRoomId(
+        roomsIds[i],
+      );
+      data.push({
+        id: roomsIds[i],
+        message,
+      });
+    }
 
-    const draftFilterMessagesIds = interlocutors
-      .filter((item) => filterUsersIds.includes(item.interlocutorId.toString()))
-      .map((item) => item.messageId.toString());
-
-    const messages = await this.messageRepository.getMessages(
-      draftFilterMessagesIds,
-    );
-
-    return messages
+    return data
       .sort((a, b) => {
-        return b.createdAt.getTime() - a.createdAt.getTime();
+        return b.message.createdAt.getTime() - a.message.createdAt.getTime();
       })
       .splice(offset * limit, limit);
   }
