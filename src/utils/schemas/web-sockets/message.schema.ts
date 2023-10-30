@@ -39,6 +39,9 @@ export class Message {
 
   @Prop()
   updatedAt: Date;
+
+  @Prop()
+  roomId: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
