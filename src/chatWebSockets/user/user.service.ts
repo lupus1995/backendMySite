@@ -1,14 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { UserRepository } from './repositories/user.repository';
-import { UserRuleRepository } from './repositories/user-rule.repository';
-import { RegistrationDto } from './dto/registration.dto';
+
+import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
 import {
   User,
   UserDocument,
   UserType,
 } from 'src/utils/schemas/web-sockets/user.schema';
-import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
-import { MessageDocument } from 'src/utils/schemas/web-sockets/message.schema';
+
+import { RegistrationDto } from './dto/registration.dto';
+import { UserRuleRepository } from './repositories/user-rule.repository';
+import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class UserService {

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+
+import { ArticleRepository } from 'src/blog/utils/repositories/article.repository';
+
 import { TelegramService } from '../../utils/telegram/telegram.service';
 import { VkService } from '../../utils/vk/vk.service';
-import { ArticleRepository } from 'src/blog/utils/repositories/article.repository';
 
 // не получилось написать тесты на крон таску из-за нижеописанной ошибки
 // You need to run with a version of node that supports ES Modules in the VM API
@@ -27,6 +29,7 @@ export class ArticleCron {
         articlesTelegram[i].isPublishedlegram = true;
         await this.articleRepository.update({
           id: articlesTelegram[i]._id,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           data: articlesTelegram[i],
         });
@@ -45,6 +48,7 @@ export class ArticleCron {
         articlesVk[i].isPublishedVK = true;
         await this.articleRepository.update({
           id: articlesVk[i]._id,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           data: articlesVk[i],
         });

@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing';
-import { FeedbackRepository } from '../utils/repositories/feedback.repository';
+
 import { FeedbackService } from './feedback.service';
 import {
   feedbackData,
   feedbackDataSuccess,
   feedbackDataError,
 } from './mockData';
+import { FeedbackRepository } from '../utils/repositories/feedback.repository';
 
 describe('feedback service', () => {
   let feedbackService: FeedbackService;

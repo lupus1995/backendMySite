@@ -1,8 +1,9 @@
+import { Logger } from '@nestjs/common';
 import { Connection, Model } from 'mongoose';
-import { AuthBlogValidateService } from '../../services/auth-blog/auth-blog-validate.service';
+
 import { CustomUsernameValidation } from './exists-username.rule';
 import { UserBlogRepository } from '../../repositories/user-blog.repository';
-import { Logger } from '@nestjs/common';
+import { AuthBlogValidateService } from '../../services/auth-blog/auth-blog-validate.service';
 
 jest.mock('../../../utils/tokens/tokens.service');
 jest.mock('../../repositories/user-blog.repository');

@@ -1,7 +1,8 @@
-import Telegram from 'node-telegram-bot-api';
-import { TelegramService } from './telegram.service';
-import { Test, TestingModule } from '@nestjs/testing';
 import { Logger } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import Telegram from 'node-telegram-bot-api';
+
+import { TelegramService } from './telegram.service';
 
 describe('TelegramService', () => {
   let telegramService: TelegramService;

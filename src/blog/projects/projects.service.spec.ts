@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProjectsService } from './projects.service';
-import { ProjectsRepository } from '../utils/repositories/projects.repository';
-import { ImageService } from '../utils/image/image.service';
+
 import { ProjectDto } from './dto/project.dto';
+import { ProjectsService } from './projects.service';
+import { ImageService } from '../utils/image/image.service';
+import { ProjectsRepository } from '../utils/repositories/projects.repository';
 
 describe('ProjectsService', () => {
   let service: ProjectsService;

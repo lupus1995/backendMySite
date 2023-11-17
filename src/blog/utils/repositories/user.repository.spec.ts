@@ -1,13 +1,14 @@
-import { UserRepository } from './user.repository';
+import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { UserRepository } from './user.repository';
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   connection,
   logger,
   model,
 } from '../../../utils/repositories/mockData';
-import { Logger } from '@nestjs/common';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
 import { User } from '../../../utils/schemas/blog/user.schema';
 
 describe('UserRepository', () => {

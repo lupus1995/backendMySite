@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+
 import { SitemapService } from './sitemap.service';
 
 @Controller('sitemap')

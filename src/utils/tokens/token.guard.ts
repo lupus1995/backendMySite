@@ -1,5 +1,7 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { IncomingMessage } from 'http';
+
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+
 import { TokensService } from './tokens.service';
 
 @Injectable()

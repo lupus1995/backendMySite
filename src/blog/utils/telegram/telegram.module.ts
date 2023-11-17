@@ -1,5 +1,6 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import Telegram from 'node-telegram-bot-api';
+
 import { TelegramService } from './telegram.service';
 
 @Module({

@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { Response } from 'express';
+
+import { IResponse } from 'src/utils/response/response.type';
+
+import { AUTH_SERVICES } from './auth-enum';
+import { AuthService } from './auth.service';
 import { AuthorizationDto } from './dto/authorization.dto';
 import { TokensService } from '../utils/tokens/tokens.service';
-import { AuthService } from './auth.service';
-import { AUTH_SERVICES } from './auth-enum';
-import { IResponse } from 'src/utils/response/response.type';
 
 @Controller('auth')
 export class AuthController {

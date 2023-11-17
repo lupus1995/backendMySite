@@ -1,15 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { ProjectDto } from '../../projects/dto/project.dto';
+
+import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { HasFilterDto } from '../../../utils/dto/has-filter.dto';
+import { QueryPaginationDto } from '../../../utils/dto/query-pagination.dto';
+import { BaseRepository } from '../../../utils/repositories/base-repository';
 import {
   Projects,
   ProjectsDocument,
 } from '../../../utils/schemas/blog/projects.schema';
-import { BaseRepository } from '../../../utils/repositories/base-repository';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
-import { HasFilterDto } from '../../../utils/dto/has-filter.dto';
-import { QueryPaginationDto } from '../../../utils/dto/query-pagination.dto';
+import { ProjectDto } from '../../projects/dto/project.dto';
 
 @Injectable()
 export class ProjectsRepository extends BaseRepository<ProjectsDocument> {

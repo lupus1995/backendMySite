@@ -10,14 +10,15 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ProjectsService } from './projects.service';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+
 import { ProjectDto } from './dto/project.dto';
+import { ProjectsService } from './projects.service';
 import { HasFilterDto } from '../../utils/dto/has-filter.dto';
 import { TokenGuard } from '../../utils/tokens/token.guard';
 

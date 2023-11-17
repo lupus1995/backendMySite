@@ -1,10 +1,11 @@
+import { CanActivate } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { ProjectDto } from './dto/project.dto';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
-import { TokensService } from '../../utils/tokens/tokens.service';
-import { CanActivate } from '@nestjs/common';
 import { TokenGuard } from '../../utils/tokens/token.guard';
-import { ProjectDto } from './dto/project.dto';
+import { TokensService } from '../../utils/tokens/tokens.service';
 
 describe('ProjectsController', () => {
   let controller: ProjectsController;

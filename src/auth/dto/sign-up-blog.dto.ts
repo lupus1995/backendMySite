@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MinLength, Validate } from 'class-validator';
-import { CustomUsernameValidation } from '../rules/blog/exists-username.rule';
+
 import { CustomConfirmPasswordValidation } from '../rules/blog/confirm-password.rule';
+import { CustomUsernameValidation } from '../rules/blog/exists-username.rule';
 
 export interface SignUpBlogInterface {
   username: string;

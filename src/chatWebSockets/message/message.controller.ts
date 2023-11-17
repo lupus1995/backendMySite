@@ -8,11 +8,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { MessageService } from './message.service';
+import { ApiOkResponse } from '@nestjs/swagger';
+
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { MessageService } from './message.service';
 
 @Controller('message')
 export class MessageController {

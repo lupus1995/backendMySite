@@ -1,6 +1,6 @@
 import { DynamicModule, Logger, Module, Provider } from '@nestjs/common';
-import { VK } from 'vk-io';
 import * as dotenv from 'dotenv';
+import { VK } from 'vk-io';
 
 import { VkService } from './vk.service';
 

@@ -7,12 +7,14 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
-import { UserService } from './user.service';
-import { TokenGuard } from 'src/utils/tokens/token.guard';
+
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+import { TokenGuard } from 'src/utils/tokens/token.guard';
 import { TokensService } from 'src/utils/tokens/tokens.service';
+
 import { MessageService } from './message.service';
 import { RoomsService } from './rooms.service';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {

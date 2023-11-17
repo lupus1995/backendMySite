@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TransAction } from '../../../utils/repositories/transaction';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
+
+import { TransAction } from '../../../utils/repositories/transaction';
 import {
   Article,
   ArticleDocument,

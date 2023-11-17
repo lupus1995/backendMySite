@@ -1,11 +1,13 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
-import { BaseRepository } from '../../../utils/repositories/base-repository';
+
 import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
+
+import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
+import { BaseRepository } from '../../../utils/repositories/base-repository';
 import { UserInterface } from '../dto/user.dto';
 
 @Injectable()
@@ -56,11 +58,10 @@ export class UserRepository extends BaseRepository<UserDocument> {
 
   // получения списка пользователей
   async getAll({
-    userId,
     offset,
     limit,
     hasFilter = true,
-  }: { userId: string } & HasFilterDto & QueryPaginationDto) {
+  }: HasFilterDto & QueryPaginationDto) {
     if (hasFilter) {
       const users = await this.model.find().skip(offset).limit(limit);
 

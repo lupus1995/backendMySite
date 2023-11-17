@@ -1,10 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, Logger } from '@nestjs/common';
-import { MessageRepository } from './repositories/messages.repository';
-import { MessageInterface } from './interfaces';
-import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
-import { RoomsRepository } from './repositories/rooms.repository';
+
 import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
+import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
+
+import { MessageInterface } from './interfaces';
+import { MessageRepository } from './repositories/messages.repository';
+import { RoomsRepository } from './repositories/rooms.repository';
 
 @Injectable()
 export class GenerateMessageService {

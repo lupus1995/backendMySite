@@ -1,6 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { AuthInterface } from './auth-interface';
+import { Injectable } from '@nestjs/common';
+
 import { AUTH_SERVICES } from './auth-enum';
+import { AuthInterface } from './auth-interface';
 import { AuthBlogService } from './services/auth-blog/auth-blog.service';
 import { AuthWebSocketsService } from './services/auth-web-sockets/auth-web-sockets.service';
 

@@ -1,7 +1,8 @@
+import { ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
 import { TokenGuard } from './token.guard';
 import { TokensService } from './tokens.service';
-import { ExecutionContext } from '@nestjs/common';
 
 jest.mock('./tokens.service', () => {
   const module = jest.requireActual('./tokens.service');

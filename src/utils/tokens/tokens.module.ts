@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { TokensService } from './tokens.service';
+
 import secrets from 'src/secrets';
+
+import { TokensService } from './tokens.service';
 
 @Module({
   imports: [JwtModule.register({ secret: secrets.jwtSecret })],

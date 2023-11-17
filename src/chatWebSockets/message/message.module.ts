@@ -1,9 +1,11 @@
 import { Logger, Module } from '@nestjs/common';
-import { MessageController } from './message.controller';
-import { MessageService } from './message.service';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
+
+import { MessageController } from './message.controller';
 import { MessageRepository } from './message.repository';
+import { MessageService } from './message.service';
 import { MESSAGE } from '../../utils/schemas/web-sockets/message.schema';
 
 @Module({

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import * as argon2 from 'argon2';
 import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import * as argon2 from 'argon2';
-import { AuthBlogService } from 'src/auth/services/auth-blog/auth-blog.service';
-import { AuthBlogFindDataService } from 'src/auth/services/auth-blog/auth-blog-find-data.service';
+
+import { AuthBlogFindDataService } from 'auth/services/auth-blog/auth-blog-find-data.service';
 
 @ValidatorConstraint({ name: 'passwod', async: true })
 @Injectable()

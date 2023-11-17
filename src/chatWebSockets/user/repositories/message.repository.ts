@@ -1,15 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
+
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 import { TransAction } from 'src/utils/repositories/transaction';
 import {
   Message,
   MessageDocument,
-  MessageType,
 } from 'src/utils/schemas/web-sockets/message.schema';
-import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class MessageRepository extends TransAction {

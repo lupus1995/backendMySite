@@ -1,10 +1,13 @@
-import { TokensService } from '../../utils/tokens/tokens.service';
-import { ArticleGuard } from './article.guard';
-import { JwtService } from '@nestjs/jwt';
-import { ArticleRepository } from '../utils/repositories/ArticleRepository';
-import { Model, Connection } from 'mongoose';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ExecutionContext, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { addDays, subDays } from 'date-fns';
+import { Model, Connection } from 'mongoose';
+
+import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+import { TokensService } from 'utils/tokens/tokens.service';
+
+import { ArticleGuard } from './article.guard';
 
 class Context {
   private headers;

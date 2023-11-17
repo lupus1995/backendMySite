@@ -1,17 +1,19 @@
+import { Logger } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { seeder } from 'nestjs-seeder';
+
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { USER } from 'src/utils/schemas/web-sockets/user.schema';
-import { UserRepository } from './repositories/user.repository';
-import { UserSeeder } from './user.seeder';
-import { Logger } from '@nestjs/common';
-import { GenarateUserService } from './generate-user.service';
-import { GenerateMessageService } from './generate-messages.service';
-import { MessageRepository } from './repositories/messages.repository';
 import { MESSAGE } from 'src/utils/schemas/web-sockets/message.schema';
 import { INTERLOCUTORS } from 'src/utils/schemas/web-sockets/rooms.schema';
+import { USER } from 'src/utils/schemas/web-sockets/user.schema';
+
+import { GenerateMessageService } from './generate-messages.service';
+import { GenarateUserService } from './generate-user.service';
+import { MessageRepository } from './repositories/messages.repository';
 import { RoomsRepository } from './repositories/rooms.repository';
+import { UserRepository } from './repositories/user.repository';
+import { UserSeeder } from './user.seeder';
 
 dotenv.config();
 

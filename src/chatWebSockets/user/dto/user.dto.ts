@@ -1,4 +1,5 @@
 import { IsArray, IsString } from 'class-validator';
+
 import { RegistrationDto, RegistrationInterface } from './registration.dto';
 
 export interface UserInterface extends RegistrationInterface {

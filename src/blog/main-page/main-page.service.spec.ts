@@ -1,9 +1,10 @@
+import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ImageService } from '../utils/image/image.service';
+
 import { MainPageService } from './main-page.service';
 import { mainPageCreateData } from './mockData';
+import { ImageService } from '../utils/image/image.service';
 import { MainPageRepository } from '../utils/repositories/main-page.repository';
-import { Logger } from '@nestjs/common';
 
 describe('main page service', () => {
   let mainPageService: MainPageService;

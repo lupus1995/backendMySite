@@ -1,15 +1,16 @@
 import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
+
 import { MainPageRepository } from './main-page.repository';
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   connection,
   logger,
   model,
 } from '../../../utils/repositories/mockData';
-import { CreateMainPageDto } from '../../main-page/main-page.dto';
 import { MainPage } from '../../../utils/schemas/blog/mainPage.schema';
+import { CreateMainPageDto } from '../../main-page/main-page.dto';
 
 describe('MainPageRepository', () => {
   let mainPageRepository: MainPageRepository;

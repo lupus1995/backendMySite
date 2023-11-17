@@ -8,9 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { QueryPaginationDto } from '../../utils/dto/query-pagination.dto';
+
 import { FeedbackDto } from './feedback.dto';
 import { FeedbackService } from './feedback.service';
+import { QueryPaginationDto } from '../../utils/dto/query-pagination.dto';
 import { TokenGuard } from '../../utils/tokens/token.guard';
 
 @Controller('feedback')

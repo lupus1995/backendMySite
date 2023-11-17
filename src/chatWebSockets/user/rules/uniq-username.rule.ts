@@ -3,6 +3,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+
 import { UserService } from '../user.service';
 
 @ValidatorConstraint()

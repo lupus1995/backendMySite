@@ -1,9 +1,11 @@
-import { Test } from '@nestjs/testing';
-import { ArticleService } from './article.service';
-import { ImageService } from '../../utils/image/image.service';
-import { ArticleRepository } from 'src/blog/utils/repositories/ArticleRepository';
 import { Logger } from '@nestjs/common';
-import { CreateArticleDto } from '../dto/article.dto';
+import { Test } from '@nestjs/testing';
+
+import { CreateArticleDto } from 'blog/article/dto/article.dto';
+import { ImageService } from 'blog/utils/image/image.service';
+import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+
+import { ArticleService } from './article.service';
 
 let articleServiceMock: ArticleService;
 

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEnum } from 'class-validator';
+
 import { TYPE_MESSAGE } from '../enums/type-message';
 
 export interface MessageInterface {

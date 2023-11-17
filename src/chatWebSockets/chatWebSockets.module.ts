@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MONGOOSE_LINK_SOCKETS } from '../constants';
-import { UserModule } from './user/user.module';
+
 import { MessageModule } from './message/message.module';
+import { UserModule } from './user/user.module';
+import { MONGOOSE_LINK_SOCKETS } from '../constants';
 
 @Module({
   imports: [

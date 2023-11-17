@@ -1,6 +1,7 @@
 import { IsString, Validate } from 'class-validator';
-import { UsernameOrEmailRule } from '../rules/web-sockets/username-or-email.rule';
+
 import { PasswordRule } from '../rules/web-sockets/password.rule';
+import { UsernameOrEmailRule } from '../rules/web-sockets/username-or-email.rule';
 
 export interface LoginWebSocket {
   usernameOrEmail: string;

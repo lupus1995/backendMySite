@@ -3,6 +3,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+
 import { AuthWebsocketsFindDataService } from 'src/auth/services/auth-web-sockets/auth-web-sockets-find-data.service';
 
 @ValidatorConstraint({ name: 'websockets uniq email', async: true })

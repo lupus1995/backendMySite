@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, Validate } from 'class-validator';
-import { UniqUsernameRule } from '../rules/uniq-username.rule';
+
 import { UniqEmailRule } from '../rules/uniq-email.rule';
+import { UniqUsernameRule } from '../rules/uniq-username.rule';
 
 export interface RegistrationInterface {
   lastname: string;

@@ -1,15 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SitemapRepository } from './sitemap.repository';
-import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
-import {
-  connection,
-  logger,
-  model,
-} from '../../../utils/repositories/mockData';
-import { Projects } from '../../../utils/schemas/blog/projects.schema';
-import { Article } from '../../../utils/schemas/blog/article.schema';
 import { Logger } from '@nestjs/common';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { MONGOOSE_LINK_NEST } from 'src/constants';
+import { connection, logger, model } from 'utils/repositories/mockData';
+import { Article } from 'utils/schemas/blog/article.schema';
+import { Projects } from 'utils/schemas/blog/projects.schema';
+
+import { SitemapRepository } from './sitemap.repository';
 
 describe('SitemapRepository', () => {
   let sitemapRepository: SitemapRepository;
@@ -41,7 +39,6 @@ describe('SitemapRepository', () => {
   });
 
   it('get', async () => {
-    // @ts-ignore
     model().find.mockReturnValue([]);
 
     expect(await sitemapRepository.get()).toStrictEqual({

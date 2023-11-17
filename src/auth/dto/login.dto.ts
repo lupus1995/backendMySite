@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Validate } from 'class-validator';
+
 import { CustomLoginValidation } from '../rules/blog/login.rule';
 
 export interface LoginInterface {

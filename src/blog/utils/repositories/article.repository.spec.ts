@@ -1,15 +1,16 @@
 import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Article } from '../../../utils/schemas/blog/article.schema';
-import { ArticleRepository } from './ArticleRepository';
-import { CreateArticleDto } from '../../article/dto/article.dto';
+
+import { ArticleRepository } from './article.repository';
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   connection,
   model,
   logger,
 } from '../../../utils/repositories/mockData';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
+import { Article } from '../../../utils/schemas/blog/article.schema';
+import { CreateArticleDto } from '../../article/dto/article.dto';
 
 describe('ArticleRepository', () => {
   let articleRepository: ArticleRepository;
@@ -41,7 +42,6 @@ describe('ArticleRepository', () => {
   });
 
   it('getAll with filter is false', async () => {
-    // @ts-ignore
     model().find.mockReturnThis();
     expect(
       await articleRepository.getAll({
@@ -53,7 +53,6 @@ describe('ArticleRepository', () => {
   });
 
   it('getAll with filter is true', async () => {
-    // @ts-ignore
     model().find.mockReturnThis();
     expect(
       await articleRepository.getAll({
@@ -73,13 +72,11 @@ describe('ArticleRepository', () => {
   });
 
   it('getByPublichTelegram', async () => {
-    // @ts-ignore
     model().find.mockReturnValue('telegram');
     expect(await articleRepository.getByPublichTelegram()).toBe('telegram');
   });
 
   it('getByPublichVk', async () => {
-    // @ts-ignore
     model().find.mockReturnValue('vk');
 
     expect(await articleRepository.getByPublichVk()).toBe('vk');

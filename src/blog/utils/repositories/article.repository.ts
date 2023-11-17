@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import {
-  Article,
-  ArticleDocument,
-} from '../../../utils/schemas/blog/article.schema';
-import { ArticlePaginationDto } from '../../article/dto/article-pagination.dto';
-import { CreateArticleDto } from '../../article/dto/article.dto';
+
+import { ArticlePaginationDto } from 'blog/article/dto/article-pagination.dto';
+import { CreateArticleDto } from 'blog/article/dto/article.dto';
+import { MONGOOSE_LINK_NEST } from 'src/constants';
+import { Article, ArticleDocument } from 'utils/schemas/blog/article.schema';
+
 import { SocialRepository } from './social-repository';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
 
 @Injectable()
 export class ArticleRepository extends SocialRepository<ArticleDocument> {
@@ -112,7 +111,7 @@ export class ArticleRepository extends SocialRepository<ArticleDocument> {
       );
     };
 
-    return await this.transaction(execute, handleError);
+    return this.transaction(execute, handleError);
   }
 
   public async delete(id: string) {
@@ -125,6 +124,6 @@ export class ArticleRepository extends SocialRepository<ArticleDocument> {
       throw new HttpException('Ошибка удаления статьи', HttpStatus.BAD_REQUEST);
     };
 
-    return await this.transaction(execute, handleError);
+    return this.transaction(execute, handleError);
   }
 }

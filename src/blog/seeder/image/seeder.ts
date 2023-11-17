@@ -1,11 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { seeder } from 'nestjs-seeder';
 import * as dotenv from 'dotenv';
-import { Article, ArticleSchema } from 'src/utils/schemas/blog/article.schema';
+import { seeder } from 'nestjs-seeder';
+
 import { ImageModule } from 'src/blog/utils/image/image.module';
-import { ImageSeeder } from './images.seeder';
-import { ImageSeedRepository } from './image.seed.repository';
+import { Article, ArticleSchema } from 'src/utils/schemas/blog/article.schema';
 import {
   MainPage,
   MainPageSchema,
@@ -14,6 +13,9 @@ import {
   Projects,
   ProjectsSchema,
 } from 'src/utils/schemas/blog/projects.schema';
+
+import { ImageSeedRepository } from './image.seed.repository';
+import { ImageSeeder } from './images.seeder';
 
 dotenv.config();
 

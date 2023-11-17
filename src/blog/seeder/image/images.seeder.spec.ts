@@ -1,7 +1,8 @@
+import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+
 import { ImageSeedRepository } from './image.seed.repository';
 import { ImageSeeder } from './images.seeder';
-import { Logger } from '@nestjs/common';
 import { ImageService } from '../../utils/image/image.service';
 
 describe('ImagesSeeder', () => {

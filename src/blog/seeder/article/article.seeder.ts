@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Seeder } from 'nestjs-seeder';
+
 import { ArticleSeedRepository } from './article.seed.repository';
 
 @Injectable()

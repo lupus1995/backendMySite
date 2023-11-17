@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   Article,
   ArticleDocument,
@@ -9,7 +11,6 @@ import {
   Projects,
   ProjectsDocument,
 } from '../../../utils/schemas/blog/projects.schema';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
 
 @Injectable()
 export class SitemapRepository {

@@ -1,4 +1,3 @@
-import { ArticleService } from './article.service';
 import {
   Body,
   Controller,
@@ -12,17 +11,19 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { CreateArticleDto } from '../dto/article.dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { ArticlePaginationDto } from '../dto/article-pagination.dto';
+
+import { ArticleService } from './article.service';
+import { TokenGuard } from '../../../utils/tokens/token.guard';
 import { ArticleGuard } from '../article.guard';
 import { ArticleUpdatePipe } from '../article.update.pipe';
-import { TokenGuard } from '../../../utils/tokens/token.guard';
+import { ArticlePaginationDto } from '../dto/article-pagination.dto';
+import { CreateArticleDto } from '../dto/article.dto';
 
 @Controller('articles')
 export class ArticleController {

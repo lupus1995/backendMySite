@@ -1,8 +1,9 @@
 import { Logger } from '@nestjs/common';
-import { TestingModule, Test } from '@nestjs/testing';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
-import { Article } from '../../../utils/schemas/blog/article.schema';
+import { TestingModule, Test } from '@nestjs/testing';
+
 import { ArticleSeedRepository } from './article.seed.repository';
+import { Article } from '../../../utils/schemas/blog/article.schema';
 
 describe('ArticleSeedRepository', () => {
   let articleSeedRepository: ArticleSeedRepository;

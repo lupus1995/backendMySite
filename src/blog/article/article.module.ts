@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ArticleUIModule } from './ui/article.ui.module';
+
 import { ArticleCronModule } from './cron/artucle.cron.module';
+import { ArticleUIModule } from './ui/article.ui.module';
 
 @Module({
   imports: [ArticleUIModule, ArticleCronModule],

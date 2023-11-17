@@ -1,10 +1,13 @@
+import * as fs from 'fs';
+
 import { faker } from '@faker-js/faker';
 import { Injectable, Logger } from '@nestjs/common';
-import * as fs from 'fs';
 import * as argon2 from 'argon2';
+
+import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
+
 import { UserInterface } from './interfaces';
 import { UserRepository } from './repositories/user.repository';
-import { UserType } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class GenarateUserService {

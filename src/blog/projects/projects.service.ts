@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { ImageService } from '../utils/image/image.service';
+
+import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+
 import { ProjectDto } from './dto/project.dto';
 import { HasFilterDto } from '../../utils/dto/has-filter.dto';
+import { ImageService } from '../utils/image/image.service';
 import { ProjectsRepository } from '../utils/repositories/projects.repository';
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 
 @Injectable()
 export class ProjectsService {

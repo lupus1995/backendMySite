@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MessageRepository } from './repositories/message.repository';
-import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
+
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 import { MessageDocument } from 'src/utils/schemas/web-sockets/message.schema';
+
+import { MessageRepository } from './repositories/message.repository';
 
 @Injectable()
 export class MessageService {

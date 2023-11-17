@@ -1,15 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
-import { BaseRepository } from '../../../utils/repositories/base-repository';
+
+import { TransAction } from 'src/utils/repositories/transaction';
 import {
   User,
   UserDocument,
   UserType,
 } from 'src/utils/schemas/web-sockets/user.schema';
+
+import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
 import { UserInterface } from '../interfaces';
-import { TransAction } from 'src/utils/repositories/transaction';
 
 @Injectable()
 export class UserRepository extends TransAction {

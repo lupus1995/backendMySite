@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
+import * as argon2 from 'argon2';
 import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import * as argon2 from 'argon2';
+
 import { AuthWebsocketsFindDataService } from 'src/auth/services/auth-web-sockets/auth-web-sockets-find-data.service';
 
 @ValidatorConstraint({ name: 'check password websockets', async: true })

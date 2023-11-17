@@ -1,8 +1,9 @@
 import { ExecutionContext, Inject } from '@nestjs/common';
 import { isAfter } from 'date-fns';
-import { TokenGuard } from '../../utils/tokens/token.guard';
-import { TokensService } from '../../utils/tokens/tokens.service';
-import { ArticleRepository } from '../utils/repositories/article.repository';
+
+import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+import { TokenGuard } from 'utils/tokens/token.guard';
+import { TokensService } from 'utils/tokens/tokens.service';
 
 export class ArticleGuard extends TokenGuard {
   constructor(
@@ -12,6 +13,7 @@ export class ArticleGuard extends TokenGuard {
   ) {
     super(tokensService);
   }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const id = this.getId(context);

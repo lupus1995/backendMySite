@@ -1,14 +1,15 @@
 import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
+
 import { FeedbackRepository } from './feedback.repository';
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   connection,
   model,
   logger,
 } from '../../../utils/repositories/mockData';
 import { Feedback } from '../../../utils/schemas/blog/feedback.schema';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
 
 describe('FeedbackRepository', () => {
   let feedbackRepository: FeedbackRepository;
@@ -54,7 +55,6 @@ describe('FeedbackRepository', () => {
   });
 
   it('getAll', async () => {
-    // @ts-ignore
     model().find.mockReturnThis();
     expect(
       await feedbackRepository.getAll({ offset: 0, limit: 10 }),

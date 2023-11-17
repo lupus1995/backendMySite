@@ -1,9 +1,11 @@
-import { TransAction } from '../../../utils/repositories/transaction';
-import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
-import { Connection, Model } from 'mongoose';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
+
 import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
+
+import { MONGOOSE_LINK_SOCKETS } from '../../../constants';
+import { TransAction } from '../../../utils/repositories/transaction';
 
 // репозиторий для работы с валидаторами в дто
 @Injectable()

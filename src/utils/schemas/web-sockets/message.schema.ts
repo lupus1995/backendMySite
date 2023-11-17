@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-export type MessageType = Document<unknown, any, MessageDocument> &
+export type MessageType = Document<unknown, unknown, MessageDocument> &
   Omit<
     Message &
       Document & {

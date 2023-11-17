@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Validate, IsEmail, MinLength } from 'class-validator';
+
 import { UniqEmailRule } from '../rules/web-sockets/uniq-email.rule';
 import { UniqUsernameRule } from '../rules/web-sockets/uniq-username.rule';
 
@@ -39,7 +40,6 @@ export class SignUpWebSocketsDto {
   password: string;
 
   @IsString()
-  // @ts-ignore
   @Validate(UniqUsernameRule)
   @ApiProperty({
     type: String,

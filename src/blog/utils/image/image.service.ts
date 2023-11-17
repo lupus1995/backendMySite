@@ -1,3 +1,6 @@
+import * as fs from 'fs';
+import { createReadStream } from 'fs';
+
 import {
   HttpException,
   HttpStatus,
@@ -5,11 +8,10 @@ import {
   Logger,
   StreamableFile,
 } from '@nestjs/common';
-import { SharpService } from 'nestjs-sharp';
-import * as fs from 'fs';
 import isBase64 from 'is-base64';
+import { SharpService } from 'nestjs-sharp';
+
 import { sizes, sizes2x } from './constants';
-import { createReadStream } from 'fs';
 
 // вспомогательный модуль для сохранения и нарезки картинок в нужный размер, их выдачи на запрос
 @Injectable()

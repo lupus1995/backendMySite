@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsBooleanString } from 'class-validator';
+
 import { BaseMessageDto } from './base-message.dto';
 
 export class MessageDto extends BaseMessageDto {

@@ -1,11 +1,13 @@
 import { CanActivate } from '@nestjs/common';
-import { ArticleController } from './article.controller';
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+import { TokenGuard } from 'utils/tokens/token.guard';
+import { TokensService } from 'utils/tokens/tokens.service';
+
+import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { ArticleGuard } from '../article.guard';
-import { TokenGuard } from '../../../utils/tokens/token.guard';
-import { TokensService } from '../../../utils/tokens/tokens.service';
-import { ArticleRepository } from 'src/blog/utils/repositories/ArticleRepository';
 import { CreateArticleDto } from '../dto/article.dto';
 
 const articleGuardMock: CanActivate = {

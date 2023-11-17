@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
+
+import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
+
 import { MONGOOSE_LINK_SOCKETS } from '../../constants';
 import { TransAction } from '../../utils/repositories/transaction';
-import { User, UserDocument } from 'src/utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class UserWebSocketsRepository extends TransAction {

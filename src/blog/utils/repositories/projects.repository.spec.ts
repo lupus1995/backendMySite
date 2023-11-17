@@ -1,15 +1,16 @@
-import { Projects } from '../../../utils/schemas/blog/projects.schema';
-import { ProjectsRepository } from './projects.repository';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { ProjectsRepository } from './projects.repository';
+import { MONGOOSE_LINK_NEST } from '../../../constants';
 import {
   connection,
   logger,
   model,
 } from '../../../utils/repositories/mockData';
-import { Logger } from '@nestjs/common';
+import { Projects } from '../../../utils/schemas/blog/projects.schema';
 import { ProjectDto } from '../../projects/dto/project.dto';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
 
 describe('ProjectsRepository', () => {
   let projectsRepository: ProjectsRepository;

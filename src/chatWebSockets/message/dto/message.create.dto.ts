@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { BaseMessageDto } from './base-message.dto';
 
 export class MessageCreateDto extends BaseMessageDto {
@@ -8,5 +9,5 @@ export class MessageCreateDto extends BaseMessageDto {
   })
   // TODO сделать валидацию сообщения c файлом
   // @Validate(FileImageRule)
-  image: any;
+  image: string;
 }

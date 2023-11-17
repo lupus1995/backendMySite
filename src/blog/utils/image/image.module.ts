@@ -1,5 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { SharpModule } from 'nestjs-sharp';
+
 import { ImageService } from './image.service';
 
 @Module({

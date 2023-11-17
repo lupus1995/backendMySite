@@ -1,7 +1,8 @@
+import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+
 import { ArticleSeedRepository } from './article.seed.repository';
 import { AticleSeeder } from './article.seeder';
-import { Logger } from '@nestjs/common';
 
 describe('ArticleSeeder', () => {
   let articleSeed: AticleSeeder;

@@ -1,9 +1,11 @@
+import * as fs from 'fs';
+
+import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { SharpService } from 'nestjs-sharp';
-import * as fs from 'fs';
+
 import { ImageService } from './image.service';
 import { ImageServiceTest } from './image.test.sevice';
-import { Logger } from '@nestjs/common';
 
 const rootSize = 'rootFolder/480/nameFile@480.png';
 const rootPathWithFile = 'rootFolder/nameFile.png';
