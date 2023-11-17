@@ -17,6 +17,13 @@
     "typeRoots": [
       "@types/*/**",
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "src/*": ["./src/*"],
+      "auth/*": ["./src/auth/*"],
+      "blog/*": ["./src/blog/*"],
+      "chatWebSockets/*": ["./src/chatWebSockets/*"],
+      "utils/*": ["./src/utils/*"],
+    }
   }
 }
