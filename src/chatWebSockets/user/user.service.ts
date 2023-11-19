@@ -1,11 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-import { RoomsDocument } from 'src/utils/schemas/web-sockets/rooms.schema';
+import { RoomsDocument } from 'utils/schemas/web-sockets/rooms.schema';
 import {
   User,
   UserDocument,
   UserType,
-} from 'src/utils/schemas/web-sockets/user.schema';
+} from 'utils/schemas/web-sockets/user.schema';
 
 import { RegistrationDto } from './dto/registration.dto';
 import { UserRuleRepository } from './repositories/user-rule.repository';
@@ -16,7 +16,6 @@ export class UserService {
   constructor(
     private userRepository: UserRepository,
     private userRuleRepository: UserRuleRepository,
-    private logger: Logger,
   ) {}
 
   async findByEmail({ email }: { email: string }) {
@@ -78,7 +77,7 @@ export class UserService {
       listIOfDeletedDialogs: [],
     };
 
-    await this.userRepository.create(user);
+    return await this.userRepository.create(user);
   }
 
   async searchUsers({ users, search }: { users: UserType[]; search: string }) {

@@ -1,16 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
-import { MessageDocument } from 'src/utils/schemas/web-sockets/message.schema';
+import { QueryPaginationDto } from 'utils/dto/query-pagination.dto';
+import { MessageDocument } from 'utils/schemas/web-sockets/message.schema';
 
 import { MessageRepository } from './repositories/message.repository';
 
 @Injectable()
 export class MessageService {
-  constructor(
-    private messageRepository: MessageRepository,
-    private logger: Logger,
-  ) {}
+  constructor(private messageRepository: MessageRepository) {}
 
   async getMessages({
     roomsIds,

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-  Headers,
-  Logger,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Headers } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
@@ -22,7 +15,6 @@ export class UserController {
     private userService: UserService,
     private roomsService: RoomsService,
     private messageService: MessageService,
-    private logger: Logger,
     private tokenService: TokensService,
   ) {}
 
