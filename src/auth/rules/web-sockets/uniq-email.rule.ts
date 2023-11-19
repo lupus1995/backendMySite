@@ -14,8 +14,6 @@ export class UniqEmailRule implements ValidatorConstraintInterface {
     const user = await this.authFindData.findByEmail({ email: value });
 
     return user === null;
-
-    return false;
   }
   defaultMessage?(): string {
     return 'Пользователь с таким email уже существует';

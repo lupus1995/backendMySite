@@ -23,6 +23,7 @@ export class UsernameOrEmailRule implements ValidatorConstraintInterface {
 
     if (hasError) {
       this.logger.error('Email или username введены неверно');
+      return false;
     }
 
     return !hasError;

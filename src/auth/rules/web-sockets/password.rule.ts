@@ -6,7 +6,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { AuthWebsocketsFindDataService } from 'src/auth/services/auth-web-sockets/auth-web-sockets-find-data.service';
+import { AuthWebsocketsFindDataService } from 'auth/services/auth-web-sockets/auth-web-sockets-find-data.service';
 
 @ValidatorConstraint({ name: 'check password websockets', async: true })
 @Injectable()
@@ -37,6 +37,7 @@ export class PasswordRule implements ValidatorConstraintInterface {
 
     if (!result) {
       this.logger.error('Пароль введен неверно');
+      return false;
     }
 
     return result;
