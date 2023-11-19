@@ -1,16 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ValidationError, validate } from 'class-validator';
 
 import {
   LoginWebSocket,
   LoginWebsocketDto,
-} from 'src/auth/dto/login-web-sockets.dto';
+} from 'auth/dto/login-web-sockets.dto';
 import {
   SignUpWebSocketsDto,
   SignUpWebSocketsI,
-} from 'src/auth/dto/sign-up-web-sockets.dto';
+} from 'auth/dto/sign-up-web-sockets.dto';
 
-import { AuthWebsocketsFindDataService } from './auth-web-sockets-find-data.service';
 import { AuthValidate } from '../auth-validate.interface';
 
 /**
@@ -18,13 +17,6 @@ import { AuthValidate } from '../auth-validate.interface';
  */
 @Injectable()
 export class AuthWebSocketsValidateService extends AuthValidate {
-  constructor(
-    private readonly authFindDataService: AuthWebsocketsFindDataService,
-    private logger: Logger,
-  ) {
-    super();
-  }
-
   // валидация данных для регистрации пользователя
   async validateSignup({
     user,
