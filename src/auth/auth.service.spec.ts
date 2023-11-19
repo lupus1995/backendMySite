@@ -1,93 +1,59 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as argon2 from 'argon2';
+
+import { AUTH_SERVICES } from './auth-enum';
 import { AuthService } from './auth.service';
-import { UserRepository } from '../utils/repositories/user.repository';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { AuthBlogService } from './services/auth-blog/auth-blog.service';
+import { AuthWebSocketsService } from './services/auth-web-sockets/auth-web-sockets.service';
 
-jest.mock('argon2', () => {
-  const module = jest.requireActual('argon2');
-
-  return {
-    __esModule: true,
-    ...module,
-  };
+const authBlogServiceMock = jest.fn().mockReturnValue({
+  signup: jest.fn().mockResolvedValue('signup'),
+  login: jest.fn().mockResolvedValue('login'),
 });
 
-describe('auth service', () => {
+const authWebSocketsServiceMock = jest.fn().mockReturnValue({
+  signup: jest.fn().mockResolvedValue('signup'),
+  login: jest.fn().mockResolvedValue('login'),
+});
+
+describe('AuthService', () => {
   let authService: AuthService;
-
-  const tokensServiceMock = jest.fn().mockReturnValue({
-    generateTokens: jest.fn().mockReturnValue('generateTokens'),
-  });
-
-  const userRepositoryMock = jest.fn().mockReturnValue({
-    findOne: jest.fn().mockReturnValue('findOne'),
-    create: jest.fn().mockReturnValue('create'),
-  });
-
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         AuthService,
         {
-          provide: UserRepository,
-          useFactory: userRepositoryMock,
+          provide: AuthBlogService,
+          useFactory: authBlogServiceMock,
         },
         {
-          provide: TokensService,
-          useFactory: tokensServiceMock,
+          provide: AuthWebSocketsService,
+          useFactory: authWebSocketsServiceMock,
         },
       ],
     }).compile();
 
-    authService = module.get(AuthService);
+    authService = module.get<AuthService>(AuthService);
   });
 
   afterEach(() => jest.clearAllMocks());
 
-  it('uniqUsername', async () => {
-    const result = await authService.uniqUsername({ username: 'username' });
-
-    expect(result).toBe('findOne');
-  });
-
   it('signup', async () => {
-    const result = await authService.signup({
-      username: 'username',
-      password: 'password',
-      confirmPassword: 'password',
-    });
-
-    expect(result).toBe('generateTokens');
+    expect(authService.signup).toBeDefined();
+    expect(
+      await authService.signup({
+        user: {} as unknown,
+        type: AUTH_SERVICES.BLOG,
+      }),
+    ).toBe('signup');
   });
 
-  it('login success', async () => {
-    jest
-      .spyOn(argon2, 'verify')
-      .mockImplementation(() => new Promise((res) => res(true)));
-
-    const result = await authService.login({
-      username: 'username',
-      password: 'password',
-    });
-
-    expect(result).toBe('generateTokens');
-  });
-
-  it('login error', async () => {
-    jest
-      .spyOn(argon2, 'verify')
-      .mockImplementation(() => new Promise((res) => res(false)));
-
-    const result = () =>
-      authService.login({
-        username: 'username',
-        password: 'password',
-      });
-
-    await expect(result).rejects.toThrow(
-      new HttpException('Логин или пароль некорректы', HttpStatus.FORBIDDEN),
-    );
+  it('login', async () => {
+    expect(authService.login).toBeDefined();
+    expect(
+      await authService.login({
+        login: {} as unknown,
+        type: AUTH_SERVICES.BLOG,
+      }),
+    ).toBe('login');
   });
 });

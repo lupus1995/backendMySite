@@ -1,8 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { Model, Connection } from 'mongoose';
-import { HasFilterDto } from '../dto/has-filter.dto';
-import { QueryPaginationDto } from '../dto/query-pagination.dto';
+
 import { TransAction } from './transaction';
+import { HasFilterDto } from '../../utils/dto/has-filter.dto';
+import { QueryPaginationDto } from '../../utils/dto/query-pagination.dto';
 
 export abstract class BaseRepository<T> extends TransAction {
   constructor(

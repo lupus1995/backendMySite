@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
-import { TokensService } from './tokens.service';
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { TokensService } from './tokens.service';
 
 describe('TokensService', () => {
   let tokensService: TokensService;

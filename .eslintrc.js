@@ -5,10 +5,11 @@ module.exports = {
     tsconfigRootDir : __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint/eslint-plugin', 'prettier', 'import'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:import/recommended'
   ],
   root: true,
   env: {
@@ -17,12 +18,47 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    "endOfLine": "off",
-    "no-console": "error",
-    "@typescript-eslint/ban-ts-comment": "off",
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    'endOfLine': 'off',
+    'no-console': 'error',
+    'import/order': [
+      'error',
+      {
+        'groups': ['builtin', 'external', 'internal'],
+        'pathGroups': [
+          {
+            'pattern': 'react',
+            'group': 'external',
+            'position': 'before'
+          }
+        ],
+        'pathGroupsExcludedImportTypes': ['react'],
+        'newlines-between': 'always',
+        'alphabetize': {
+          'order': 'asc',
+          'caseInsensitive': true
+        }
+      }
+    ]
   },
+  'settings': {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx']
+    },
+    'import/resolver': {
+      'typescript': {
+        'alwaysTryTypes': true,
+        'project': './tsconfig.json'
+      },
+      'alias': {
+        'map': [
+          ['auth', './src/auth/*'],
+          ['src', './src'],
+          ['blog', './src/blog'],
+          ['chatWebSockets', './src/chatWebSockets'],
+          ['utils', './src/utils']
+        ],
+        'extensions': ['.js', '.jsx', '.ts', '.tsx']
+      }
+    }
+  }
 };

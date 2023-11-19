@@ -1,56 +1,33 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as argon2 from 'argon2';
-import { SignUpDto } from './dto/sign-up.dto';
-import { UserRepository } from '../utils/repositories/user.repository';
-import { TokensService } from '../utils/tokens/tokens.service';
+import { Injectable } from '@nestjs/common';
+
+import { AUTH_SERVICES } from './auth-enum';
+import { AuthInterface } from './auth-interface';
+import { AuthBlogService } from './services/auth-blog/auth-blog.service';
+import { AuthWebSocketsService } from './services/auth-web-sockets/auth-web-sockets.service';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthInterface {
+  private services: { [key: string]: AuthInterface };
   constructor(
-    private readonly tokensService: TokensService,
-    private readonly userRepository: UserRepository,
-  ) {}
-
-  /**
-   * поиск уникального пользователя по имени
-   */
-  public async uniqUsername({ username }: { username: string }) {
-    return await this.userRepository.findOne(username);
+    private authBlogService: AuthBlogService,
+    private authWebSocketsService: AuthWebSocketsService,
+  ) {
+    this.services = {
+      [AUTH_SERVICES.BLOG]: authBlogService,
+      [AUTH_SERVICES.WEB_SOCKETS]: authWebSocketsService,
+    };
   }
-
   /**
-   * регистрация пользователя
+   * регистрация нового пользователя
    */
-  public async signup(
-    user: SignUpDto,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
-    await this.userRepository.create({
-      ...user,
-      password: await argon2.hash(user.password),
-    });
-
-    return this.tokensService.generateTokens({ username: user.username });
+  async signup({ user, type }: { user: unknown; type: AUTH_SERVICES }) {
+    return await this.services[type].signup({ user });
   }
 
   /**
    * авторизация пользователя
    */
-  public async login({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) {
-    const user = await this.uniqUsername({ username });
-    const isVerifyPassword = await argon2.verify(user?.password, password);
-    if (isVerifyPassword) {
-      return this.tokensService.generateTokens({ username: user.username });
-    }
-
-    throw new HttpException(
-      'Логин или пароль некорректы',
-      HttpStatus.BAD_REQUEST,
-    );
+  async login({ login, type }: { login: unknown; type: AUTH_SERVICES }) {
+    return await this.services[type].login(login);
   }
 }

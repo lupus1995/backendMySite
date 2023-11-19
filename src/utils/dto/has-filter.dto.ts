@@ -10,5 +10,5 @@ export class HasFilterDto {
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value === 'true')
-  hasFilter: boolean;
+  hasFilter?: boolean;
 }

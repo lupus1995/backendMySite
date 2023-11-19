@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import secrets from '../../secrets';
 import { JwtModule } from '@nestjs/jwt';
+
+import secrets from 'src/secrets';
+
 import { TokensService } from './tokens.service';
 
 @Module({

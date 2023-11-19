@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TransAction } from './transaction';
-import { getConnectionToken } from '@nestjs/mongoose';
-import { connection, logger } from './mockData';
 import { Logger } from '@nestjs/common';
+import { getConnectionToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { connection, logger } from './mockData';
+import { TransAction } from './transaction';
 
 describe('Transaction', () => {
   let transaction: TransAction;

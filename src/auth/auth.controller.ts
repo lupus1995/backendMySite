@@ -1,10 +1,12 @@
-import { Body, Controller, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Param, Post, Res } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { AuthPipe } from './auth.pipe';
+import { Response } from 'express';
+
+import { IResponse } from 'src/utils/response/response.type';
+
+import { AUTH_SERVICES } from './auth-enum';
 import { AuthService } from './auth.service';
 import { AuthorizationDto } from './dto/authorization.dto';
-import { LoginDto } from './dto/login.dto';
-import { SignUpDto } from './dto/sign-up.dto';
 import { TokensService } from '../utils/tokens/tokens.service';
 
 @Controller('auth')
@@ -15,15 +17,30 @@ export class AuthController {
   ) {}
 
   @ApiCreatedResponse({ description: 'Создание пользователя' })
-  @Post('signup')
-  signup(@Body(new AuthPipe()) newUser: SignUpDto) {
-    return this.authService.signup(newUser);
+  @Post(':type/signup')
+  async signup(
+    @Res() res: Response,
+    @Param('type') type: AUTH_SERVICES,
+    @Body() newUser: unknown,
+  ) {
+    const result: IResponse = await this.authService.signup({
+      user: newUser,
+      type,
+    });
+
+    res.status(result.status).json(result);
   }
 
   @ApiCreatedResponse({ description: 'Авторизация пользователя' })
-  @Post('login')
-  login(@Body() login: LoginDto) {
-    return this.authService.login(login);
+  @Post(':type/login')
+  async login(
+    @Res() res: Response,
+    @Param('type') type: AUTH_SERVICES,
+    @Body() login,
+  ) {
+    const result: IResponse = await this.authService.login({ login, type });
+
+    res.status(result.status).json(result);
   }
 
   @Post('access')
