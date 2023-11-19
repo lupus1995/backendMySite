@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Headers,
-  Logger,
-  Param,
-  Post,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Headers, Param, Post, Res } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -22,7 +14,6 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokensService: TokensService,
-    private readonly logger: Logger,
   ) {}
 
   @ApiCreatedResponse({ description: 'Создание пользователя' })
