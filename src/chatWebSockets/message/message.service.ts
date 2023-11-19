@@ -16,7 +16,7 @@ export class MessageService {
     limit,
     offset,
   }: { from: string; to: string } & QueryPaginationDto) {
-    await this.messageRepository.getAll({
+    return await this.messageRepository.getAll({
       to,
       from,
       limit,
@@ -39,7 +39,7 @@ export class MessageService {
     return await this.messageRepository.update({ id, data });
   }
 
-  async deteteMessage({ to, from }: { to: string; from: string }) {
+  async deleteMessage({ to, from }: { to: string; from: string }) {
     const messages = await this.messageRepository.getMessagesByFromAndTo({
       from,
       to,

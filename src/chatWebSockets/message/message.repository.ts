@@ -4,16 +4,16 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { HasFilterDto } from 'src/utils/dto/has-filter.dto';
-import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
-import { BaseRepository } from 'src/utils/repositories/base-repository';
-
-import { MessageCreateDto } from './dto/message.create.dto';
-import { MessageDto } from './dto/message.dto';
+import { HasFilterDto } from 'utils/dto/has-filter.dto';
+import { QueryPaginationDto } from 'utils/dto/query-pagination.dto';
+import { BaseRepository } from 'utils/repositories/base-repository';
 import {
   Message,
   MessageDocument,
-} from '../../utils/schemas/web-sockets/message.schema';
+} from 'utils/schemas/web-sockets/message.schema';
+
+import { MessageCreateDto } from './dto/message.create.dto';
+import { MessageDto } from './dto/message.dto';
 
 @Injectable()
 export class MessageRepository extends BaseRepository<MessageDocument> {

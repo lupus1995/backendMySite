@@ -39,11 +39,11 @@ export class MessageController {
   @Put(':id')
   @ApiOkResponse({ description: 'Редактирование сообщений' })
   async updateMessage(@Body() data: MessageDto, @Param() id: string) {
-    this.messageService.updateMessage({ id, data });
+    return this.messageService.updateMessage({ id, data });
   }
 
   @Delete(':from/:to')
   async deleteMessages(@Param() to: string, @Param('from') from: string) {
-    this.messageService.deteteMessage({ from, to });
+    return this.messageService.deleteMessage({ from, to });
   }
 }
