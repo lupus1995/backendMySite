@@ -4,7 +4,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { AuthBlogFindDataService } from 'src/auth/services/auth-blog/auth-blog-find-data.service';
+import { AuthBlogFindDataService } from 'auth/services/auth-blog/auth-blog-find-data.service';
 
 @ValidatorConstraint({ name: 'login', async: true })
 @Injectable()
