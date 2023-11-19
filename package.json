@@ -100,11 +100,11 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^src(.*)$": "<rootDir>/src/$1",
-      "^auth(.*)$": "<rootDir>/src/auth/$1",
-      "^blog(.*)$": "<rootDir>/src/blog/$1",
-      "^chatWebSockets(.*)$": "<rootDir>/src/chatWebSockets/$1",
-      "^utils(.*)$": "<rootDir>/src/utils/$1"
+      "^src(.*)$": "<rootDir>$1",
+      "^auth(.*)$": "<rootDir>/auth/$1",
+      "^blog(.*)$": "<rootDir>/blog/$1",
+      "^chatWebSockets(.*)$": "<rootDir>/chatWebSockets/$1",
+      "^utils(.*)$": "<rootDir>/utils/$1"
     }
   }
 }
