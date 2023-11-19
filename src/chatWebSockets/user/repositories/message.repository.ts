@@ -3,11 +3,11 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { TransAction } from 'src/utils/repositories/transaction';
+import { TransAction } from 'utils/repositories/transaction';
 import {
   Message,
   MessageDocument,
-} from 'src/utils/schemas/web-sockets/message.schema';
+} from 'utils/schemas/web-sockets/message.schema';
 
 @Injectable()
 export class MessageRepository extends TransAction {
