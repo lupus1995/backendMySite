@@ -2,14 +2,11 @@ import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
 
+import { MONGOOSE_LINK_NEST } from 'src/constants';
+import { connection, model, logger } from 'utils/repositories/mockData';
+import { Feedback } from 'utils/schemas/blog/feedback.schema';
+
 import { FeedbackRepository } from './feedback.repository';
-import { MONGOOSE_LINK_NEST } from '../../../constants';
-import {
-  connection,
-  model,
-  logger,
-} from '../../../utils/repositories/mockData';
-import { Feedback } from '../../../utils/schemas/blog/feedback.schema';
 
 describe('FeedbackRepository', () => {
   let feedbackRepository: FeedbackRepository;
