@@ -28,4 +28,17 @@ export class RoomsRepository extends TransAction {
 
     return this.transaction(execute, handleError);
   }
+
+  // поиск комнаты по id
+  async getRoomById({ roomId }: { roomId: string }) {
+    const execute = async () => {
+      return await this.roomsModel.findById(roomId);
+    };
+
+    const handleError = () => {
+      this.logger.error('Ошибка в поиске комнаты');
+    };
+
+    return this.transaction(execute, handleError);
+  }
 }

@@ -56,6 +56,8 @@ describe('UserController', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('getInterlocutor', () => expect(controller.getInterlocutor).toBeDefined());
-  it('searchInterlocutor', () =>
-    expect(controller.searchInterlocutor).toBeDefined());
+  it('searchInterlocutors', () =>
+    expect(controller.searchInterlocutors).toBeDefined());
+  it('getDataUser', () => expect(controller.getDataUser).toBeDefined());
+  it('getInterlocutor', () => expect(controller.getInterlocutor).toBeDefined());
 });

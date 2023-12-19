@@ -31,4 +31,8 @@ export class MessageService {
       })
       .splice(offset * limit, limit);
   }
+
+  async getMessagesByRoomId({ roomId }: { roomId: string }) {
+    return await this.messageRepository.getMessagesByRoomId(roomId);
+  }
 }

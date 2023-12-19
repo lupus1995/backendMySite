@@ -9,4 +9,8 @@ export class RoomsService {
   async getRooms({ userId }: { userId: string }) {
     return await this.roomsRepository.getRoomsByInterlocutor({ userId });
   }
+
+  async getRoomById({ roomId }: { roomId: string }) {
+    return await this.roomsRepository.getRoomById({ roomId });
+  }
 }

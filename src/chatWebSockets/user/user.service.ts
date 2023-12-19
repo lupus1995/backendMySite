@@ -26,6 +26,10 @@ export class UserService {
     return await this.userRuleRepository.findByUsername({ username });
   }
 
+  async findById({ userId }: { userId: string }) {
+    return await this.userRepository.findById(userId);
+  }
+
   // на данный момент в диалоге может участвовать только двое людей
   // если в дальнейшем будет расширение до групповых переписок,
   // то необходимо будет ввести типы для общения между собеседниками

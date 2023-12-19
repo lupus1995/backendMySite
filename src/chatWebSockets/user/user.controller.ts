@@ -1,4 +1,11 @@
-import { Controller, Get, Query, UseGuards, Headers } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  Headers,
+  Param,
+} from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
@@ -18,17 +25,36 @@ export class UserController {
     private tokenService: TokensService,
   ) {}
 
+  private async getUserFromAuthorization({
+    authorization,
+  }: {
+    authorization: string;
+  }) {
+    const username = this.tokenService.getUserNameByToken(authorization);
+    const user = await this.userService.findByUsername({ username });
+
+    return user;
+  }
+
+  @UseGuards(TokenGuard)
+  @Get()
+  @ApiCreatedResponse({
+    description: 'Получение данных о самом пользователе',
+  })
+  async getDataUser(@Headers('authorization') authorization: string) {
+    return await this.getUserFromAuthorization({ authorization });
+  }
+
   @UseGuards(TokenGuard)
   @Get('/interlocutors')
   @ApiCreatedResponse({
     description: 'Получение получение списка собеседников',
   })
-  async getInterlocutor(
+  async getInterlocutors(
     @Headers('authorization') authorization: string,
     @Query() { limit, offset }: QueryPaginationDto,
   ) {
-    const username = this.tokenService.getUserNameByToken(authorization);
-    const user = await this.userService.findByUsername({ username });
+    const user = await this.getUserFromAuthorization({ authorization });
 
     const draftData = await this.roomsService.getRooms({ userId: user._id });
 
@@ -58,13 +84,12 @@ export class UserController {
   @ApiCreatedResponse({
     description: 'Получение получение списка собеседников',
   })
-  async searchInterlocutor(
+  async searchInterlocutors(
     @Headers('authorization') authorization: string,
     @Query('search') search: string,
     @Query() { limit, offset }: QueryPaginationDto,
   ) {
-    const username = this.tokenService.getUserNameByToken(authorization);
-    const user = await this.userService.findByUsername({ username });
+    const user = await this.getUserFromAuthorization({ authorization });
 
     const draftData = await this.roomsService.getRooms({ userId: user._id });
 
@@ -88,5 +113,27 @@ export class UserController {
     }));
 
     return data;
+  }
+
+  @UseGuards(TokenGuard)
+  @Get('/room/:roomId')
+  @ApiCreatedResponse({
+    description: 'Получение данных по одному собеседнику',
+  })
+  async getInterlocutor(
+    @Headers('authorization') authorization: string,
+    @Param('roomId') roomId: string,
+  ) {
+    const message = await this.messageService.getMessagesByRoomId({ roomId });
+
+    const interlocutor = await this.userService.findById({
+      userId: message.to,
+    });
+
+    return {
+      id: roomId,
+      interlocutor,
+      message,
+    };
   }
 }

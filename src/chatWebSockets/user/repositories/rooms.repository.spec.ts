@@ -37,4 +37,6 @@ describe('RoomRepository', () => {
 
   it('getRoomsByInterlocutor', () =>
     expect(roomRepository.getRoomsByInterlocutor).toBeDefined());
+
+  it('getRoomById', () => expect(roomRepository.getRoomById).toBeDefined());
 });

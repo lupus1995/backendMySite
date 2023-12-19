@@ -6,6 +6,7 @@ import { RoomsService } from './rooms.service';
 let roomsService: RoomsService;
 const roomsRepository = jest.fn().mockReturnValue({
   getRoomsByInterlocutor: jest.fn().mockResolvedValue('getRoomsByInterlocutor'),
+  getRoomById: jest.fn().mockResolvedValue('getRoomById'),
 });
 describe('RoomsService', () => {
   beforeEach(async () => {
@@ -29,5 +30,12 @@ describe('RoomsService', () => {
 
     expect(roomsService.getRooms).toBeDefined();
     expect(result).toBe('getRoomsByInterlocutor');
+  });
+
+  it('getRoomById', async () => {
+    const result = await roomsService.getRoomById({ roomId: '111' });
+
+    expect(roomsService.getRoomById).toBeDefined();
+    expect(result).toBe('getRoomById');
   });
 });

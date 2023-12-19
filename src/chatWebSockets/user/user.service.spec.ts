@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 let userService: UserService;
 
 const userRepositoryMock = jest.fn().mockReturnValue({
-  findById: jest.fn(),
+  findById: jest.fn().mockResolvedValue('findById'),
   create: jest.fn().mockResolvedValue('create'),
 });
 
@@ -65,5 +65,11 @@ describe('UserService', () => {
     });
     expect(userService.searchUsers).toBeDefined();
     expect(Array.isArray(result)).toBeTruthy();
+  });
+
+  it('findById', async () => {
+    const result = await userService.findById({ userId: '111' });
+
+    expect(result).toBe('findById');
   });
 });

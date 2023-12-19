@@ -37,4 +37,11 @@ describe('MessageService', () => {
     expect(messageService.getMessages).toBeDefined();
     expect(Array.isArray(result)).toBeTruthy();
   });
+
+  it('getMessagesByRoomId', async () => {
+    const result = await messageService.getMessagesByRoomId({ roomId: '1111' });
+
+    expect(messageService.getMessagesByRoomId).toBeDefined();
+    expect(result.createdAt).toBeInstanceOf(Date);
+  });
 });
