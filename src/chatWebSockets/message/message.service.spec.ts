@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';
+import { TYPE_MESSAGE } from './enums/type-message';
 import { MessageRepository } from './message.repository';
 import { MessageService } from './message.service';
 
@@ -9,7 +10,7 @@ describe('MessageService', () => {
   let messageService: MessageService;
 
   const messageRepositoryMock = jest.fn().mockReturnValue({
-    getAll: jest.fn().mockResolvedValue('getAll'),
+    getAll: jest.fn().mockResolvedValue(['getAll']),
     create: jest.fn().mockResolvedValue('create'),
     update: jest.fn().mockResolvedValue('update'),
     getMessagesByFromAndTo: jest.fn().mockResolvedValue([]),
@@ -34,14 +35,13 @@ describe('MessageService', () => {
 
   it('getMessages', async () => {
     const result = await messageService.getMessages({
-      to: '111',
-      from: '222',
+      roomId: '123123',
       limit: 10,
       offset: 0,
     });
 
     expect(messageService.getMessages).toBeDefined();
-    expect(result).toBe('getAll');
+    expect(result).toStrictEqual(['getAll']);
   });
   it('createMessage', async () => {
     const result = await messageService.createMessage({} as MessageCreateDto);
@@ -66,5 +66,10 @@ describe('MessageService', () => {
 
     expect(messageService.deleteMessage).toBeDefined();
     expect(result).toBe('delete');
+  });
+
+  it('getTypesMessage', () => {
+    const result = messageService.getTypesMessage();
+    expect(result).toEqual(TYPE_MESSAGE);
   });
 });

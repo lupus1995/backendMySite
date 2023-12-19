@@ -49,6 +49,13 @@ export class BaseMessageDto {
   @IsString()
   @ApiProperty({
     type: String,
+    description: 'Id комнаты для чата',
+  })
+  roomId: string;
+
+  @IsString()
+  @ApiProperty({
+    type: String,
     description: 'Дата создания сообщения',
   })
   createdAt: string;

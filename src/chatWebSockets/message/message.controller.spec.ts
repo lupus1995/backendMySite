@@ -1,7 +1,10 @@
 import { Test } from '@nestjs/testing';
 
+import { TokensService } from 'utils/tokens/tokens.service';
+
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';
+import { TYPE_MESSAGE } from './enums/type-message';
 import { MessageController } from './message.controller';
 import { MessageService } from './message.service';
 
@@ -12,6 +15,11 @@ const messageServiceMock = jest.fn().mockReturnValue({
   createMessage: jest.fn().mockReturnValue('createMessage'),
   updateMessage: jest.fn().mockReturnValue('updateMessage'),
   deleteMessage: jest.fn().mockReturnValue('deleteMessages'),
+  getTypesMessage: jest.fn().mockReturnValue(TYPE_MESSAGE),
+});
+
+const tokenServiceMock = jest.fn().mockReturnValue({
+  getUserNameByToken: jest.fn(),
 });
 
 describe('MessageController', () => {
@@ -23,6 +31,10 @@ describe('MessageController', () => {
           provide: MessageService,
           useFactory: messageServiceMock,
         },
+        {
+          provide: TokensService,
+          useFactory: tokenServiceMock,
+        },
       ],
     }).compile();
 
@@ -31,13 +43,18 @@ describe('MessageController', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('getMessages', async () => {
-    const result = await messageController.getMessages('123', '456', {
+    const result = await messageController.getMessages('123', {
       limit: 10,
       offset: 0,
     });
 
     expect(messageController.getMessages).toBeDefined();
     expect(result).toBe('getMessages');
+  });
+  it('getTypesMessage', () => {
+    const result = messageController.getTypesMessage();
+
+    expect(result).toStrictEqual(TYPE_MESSAGE);
   });
   it('createMessage', async () => {
     const result = await messageController.createMessage(

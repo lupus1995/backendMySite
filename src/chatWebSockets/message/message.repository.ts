@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
@@ -57,15 +56,14 @@ export class MessageRepository extends BaseRepository<MessageDocument> {
   async getAll({
     offset,
     limit,
-    from,
     hasFilter = false,
-    to,
-  }: HasFilterDto & QueryPaginationDto & { from: string; to: string }) {
+    roomId,
+  }: HasFilterDto & QueryPaginationDto & { roomId: string }) {
     if (!hasFilter) {
-      return await this.getMessagesByFromAndTo({ from, to });
+      return await this.model.find({ roomId });
     }
     return await this.model
-      .find({ to, from })
+      .find({ roomId })
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit);

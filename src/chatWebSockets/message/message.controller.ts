@@ -7,10 +7,12 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
+import { TokenGuard } from 'utils/tokens/token.guard';
 
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';
@@ -20,16 +22,26 @@ import { MessageService } from './message.service';
 export class MessageController {
   constructor(private messageService: MessageService) {}
 
-  @Get(':from/:to')
+  @UseGuards(TokenGuard)
+  @Get('/room/:roomId')
   @ApiOkResponse({ description: 'Получение статей для диалога' })
   async getMessages(
-    @Param('from') from: string,
-    @Param('to') to: string,
+    @Param('roomId') roomId: string,
     @Query() { limit, offset }: QueryPaginationDto,
   ) {
-    return await this.messageService.getMessages({ to, limit, offset, from });
+    return await this.messageService.getMessages({ limit, offset, roomId });
   }
 
+  @UseGuards(TokenGuard)
+  @Get('/types')
+  @ApiOkResponse({
+    description: 'Типы сообщений',
+  })
+  getTypesMessage() {
+    return this.messageService.getTypesMessage();
+  }
+
+  @UseGuards(TokenGuard)
   @Post()
   @ApiOkResponse({ description: 'Создание сообщения' })
   async createMessage(@Body() message: MessageCreateDto) {

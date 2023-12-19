@@ -4,6 +4,7 @@ import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
 
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';
+import { TYPE_MESSAGE } from './enums/type-message';
 import { MessageRepository } from './message.repository';
 
 @Injectable()
@@ -11,17 +12,18 @@ export class MessageService {
   constructor(private messageRepository: MessageRepository) {}
 
   async getMessages({
-    to,
-    from,
+    roomId,
     limit,
     offset,
-  }: { from: string; to: string } & QueryPaginationDto) {
-    return await this.messageRepository.getAll({
-      to,
-      from,
+  }: { roomId: string } & QueryPaginationDto) {
+    const messages = await this.messageRepository.getAll({
+      roomId,
       limit,
       offset,
+      hasFilter: true,
     });
+
+    return messages.reverse();
   }
 
   async createMessage(data: MessageCreateDto) {
@@ -46,5 +48,9 @@ export class MessageService {
     });
     const ids = messages.map((message) => message._id.toString());
     return await this.messageRepository.delete(ids);
+  }
+
+  getTypesMessage() {
+    return TYPE_MESSAGE;
   }
 }
