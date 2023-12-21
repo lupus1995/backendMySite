@@ -5,7 +5,6 @@ import {
   UseGuards,
   Headers,
   Param,
-  Logger,
 } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
@@ -24,7 +23,6 @@ export class UserController {
     private roomsService: RoomsService,
     private messageService: MessageService,
     private tokenService: TokensService,
-    private logger: Logger,
   ) {}
 
   private async getUserFromAuthorization({
