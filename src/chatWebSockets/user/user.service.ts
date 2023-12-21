@@ -46,7 +46,7 @@ export class UserService {
       interlocutor: UserDocument;
       id: string;
     }[] = [];
-    for (let i = 0; i < data.length - 1; i++) {
+    for (let i = 0; i < data.length; i++) {
       const interlocutorId = data[i].interlocutors.find(
         (item) => item.toString() !== currentUser._id.toString(),
       );

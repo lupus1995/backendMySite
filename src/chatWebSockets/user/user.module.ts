@@ -13,6 +13,7 @@ import { RoomsRepository } from './repositories/rooms.repository';
 import { UserRuleRepository } from './repositories/user-rule.repository';
 import { UserRepository } from './repositories/user.repository';
 import { RoomsService } from './rooms.service';
+import { UserOnlineModule } from './user-online/user-online.module';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -22,6 +23,8 @@ import { UserService } from './user.service';
     MongooseModule.forFeature([MESSAGE], MONGOOSE_LINK_SOCKETS),
     MongooseModule.forFeature([INTERLOCUTORS], MONGOOSE_LINK_SOCKETS),
     TokensModule,
+
+    UserOnlineModule,
   ],
   controllers: [UserController],
   providers: [

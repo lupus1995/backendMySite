@@ -15,7 +15,7 @@ export class MessageService {
     offset,
   }: { roomsIds: string[] } & QueryPaginationDto) {
     const data: Array<{ message: MessageDocument; id: string }> = [];
-    for (let i = 0; i < roomsIds.length - 1; i++) {
+    for (let i = 0; i < roomsIds.length; i++) {
       const message = await this.messageRepository.getMessagesByRoomId(
         roomsIds[i],
       );
@@ -24,7 +24,6 @@ export class MessageService {
         message,
       });
     }
-
     return data
       .sort((a, b) => {
         return b.message.createdAt.getTime() - a.message.createdAt.getTime();

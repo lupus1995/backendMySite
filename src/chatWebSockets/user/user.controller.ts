@@ -5,6 +5,7 @@ import {
   UseGuards,
   Headers,
   Param,
+  Logger,
 } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
@@ -23,6 +24,7 @@ export class UserController {
     private roomsService: RoomsService,
     private messageService: MessageService,
     private tokenService: TokensService,
+    private logger: Logger,
   ) {}
 
   private async getUserFromAuthorization({
@@ -120,10 +122,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: 'Получение данных по одному собеседнику',
   })
-  async getInterlocutor(
-    @Headers('authorization') authorization: string,
-    @Param('roomId') roomId: string,
-  ) {
+  async getInterlocutor(@Param('roomId') roomId: string) {
     const message = await this.messageService.getMessagesByRoomId({ roomId });
 
     const interlocutor = await this.userService.findById({

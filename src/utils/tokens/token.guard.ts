@@ -11,7 +11,7 @@ export class TokenGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = this.getRequest<
       IncomingMessage & { user?: Record<string, unknown> }
-    >(context); // you could use FastifyRequest here too
+    >(context);
     try {
       const token = this.getToken(request);
       return this.tokensService.checkToken({ token });
