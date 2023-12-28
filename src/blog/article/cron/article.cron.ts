@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
-import { ArticleRepository } from 'src/blog/utils/repositories/article.repository';
-
-import { TelegramService } from '../../utils/telegram/telegram.service';
-import { VkService } from '../../utils/vk/vk.service';
+import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+import { TelegramService } from 'blog/utils/telegram/telegram.service';
+import { VkService } from 'blog/utils/vk/vk.service';
 
 // не получилось написать тесты на крон таску из-за нижеописанной ошибки
 // You need to run with a version of node that supports ES Modules in the VM API
@@ -19,6 +18,9 @@ export class ArticleCron {
 
   @Cron('1 * * * * *')
   async sendPost() {
+    if (process.env.environment !== 'production') {
+      return null;
+    }
     const articlesTelegram =
       await this.articleRepository.getByPublichTelegram();
     for (let i = 0; i < articlesTelegram.length; i++) {

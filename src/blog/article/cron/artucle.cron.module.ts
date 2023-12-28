@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 
-import { RepositoriesModule } from 'src/blog/utils/repositories/repositories.module';
-import { TelegramModule } from 'src/blog/utils/telegram/telegram.module';
-import { VKModule } from 'src/blog/utils/vk/vk.module';
+import { RepositoriesModule } from 'blog/utils/repositories/repositories.module';
+import { TelegramModule } from 'blog/utils/telegram/telegram.module';
+import { VKModule } from 'blog/utils/vk/vk.module';
 
 import { ArticleCron } from './article.cron';
 
@@ -14,6 +14,6 @@ import { ArticleCron } from './article.cron';
     TelegramModule.forRoot(),
     ScheduleModule.forRoot(),
   ],
-  providers: [ArticleCron],
+  providers: [ArticleCron, Logger],
 })
 export class ArticleCronModule {}
