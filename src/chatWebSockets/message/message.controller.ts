@@ -22,9 +22,9 @@ import { MessageService } from './message.service';
 export class MessageController {
   constructor(private messageService: MessageService) {}
 
-  @UseGuards(TokenGuard)
+  // @UseGuards(TokenGuard)
   @Get('/room/:roomId')
-  @ApiOkResponse({ description: 'Получение статей для диалога' })
+  @ApiOkResponse({ description: 'Получение сообщений для диалога' })
   async getMessages(
     @Param('roomId') roomId: string,
     @Query() { limit, offset }: QueryPaginationDto,

@@ -10,7 +10,10 @@ describe('MessageService', () => {
   let messageService: MessageService;
 
   const messageRepositoryMock = jest.fn().mockReturnValue({
-    getAll: jest.fn().mockResolvedValue(['getAll']),
+    getAll: jest.fn().mockResolvedValue({
+      count: null,
+      messages: ['getAll'],
+    }),
     create: jest.fn().mockResolvedValue('create'),
     update: jest.fn().mockResolvedValue('update'),
     getMessagesByFromAndTo: jest.fn().mockResolvedValue([]),
@@ -41,7 +44,10 @@ describe('MessageService', () => {
     });
 
     expect(messageService.getMessages).toBeDefined();
-    expect(result).toStrictEqual(['getAll']);
+    expect(result).toStrictEqual({
+      count: null,
+      messages: ['getAll'],
+    });
   });
   it('createMessage', async () => {
     const result = await messageService.createMessage({} as MessageCreateDto);

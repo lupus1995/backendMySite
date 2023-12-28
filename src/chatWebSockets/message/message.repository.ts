@@ -26,6 +26,10 @@ export class MessageRepository extends BaseRepository<MessageDocument> {
     super(model, connection, logger);
   }
 
+  async getCountByRoomId({ roomId }: { roomId: string }) {
+    return await this.model.find({ roomId }).count();
+  }
+
   async findById(id: string) {
     return await this.model.findById(id);
   }
@@ -36,7 +40,10 @@ export class MessageRepository extends BaseRepository<MessageDocument> {
 
       const savedModel = await model.save();
 
-      return savedModel;
+      return {
+        message: savedModel,
+        count: await this.getCountByRoomId({ roomId: message.roomId }),
+      };
     };
 
     const handleError = () => {
@@ -58,15 +65,33 @@ export class MessageRepository extends BaseRepository<MessageDocument> {
     limit,
     hasFilter = false,
     roomId,
-  }: HasFilterDto & QueryPaginationDto & { roomId: string }) {
+  }: HasFilterDto & QueryPaginationDto & { roomId: string }): Promise<{
+    messages: MessageDocument[];
+    count: number;
+  }> {
+    let messages: MessageDocument[] = [];
+    let count = 0;
     if (!hasFilter) {
-      return await this.model.find({ roomId });
+      messages = await this.model.find({ roomId });
+      count = messages.length;
+
+      return {
+        messages,
+        count,
+      };
     }
-    return await this.model
+    messages = await this.model
       .find({ roomId })
-      .sort({ createdAt: -1 })
-      .skip(offset)
+      .sort({ _id: -1 })
+      .skip(offset * limit)
       .limit(limit);
+
+    count = await this.model.find({ roomId }).count();
+
+    return {
+      messages,
+      count,
+    };
   }
 
   async update({ id, data }: { id: string; data: MessageDto }) {

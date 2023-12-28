@@ -1,8 +1,11 @@
 import { Logger } from '@nestjs/common';
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
@@ -12,6 +15,7 @@ import { UserDocument } from 'utils/schemas/web-sockets/user.schema';
 import { TokensService } from 'utils/tokens/tokens.service';
 
 import { UserOnlineService } from './user-online.service';
+import { MessageService } from '../message.service';
 import { UserService } from '../user.service';
 
 @WebSocketGateway(5000, { namespace: '/user-online', cors: true })
@@ -23,6 +27,7 @@ export class UserOnlineGateway
     private readonly tokensService: TokensService,
     private userService: UserService,
     private userOnlineService: UserOnlineService,
+    private messageService: MessageService,
   ) {}
 
   handleDisconnect(client: Socket) {
@@ -64,5 +69,53 @@ export class UserOnlineGateway
       return usersIsOnline.push(user);
     });
     this.server.emit('online', usersIsOnline);
+  }
+
+  @SubscribeMessage('updateInterlocutor')
+  async handleEmitUpdateInterlocutor(@MessageBody() roomId: string) {
+    const message = await this.messageService.getMessagesByRoomId({ roomId });
+
+    const interlocutor = await this.userService.findById({
+      userId: message.to,
+    });
+
+    const data = {
+      id: roomId,
+      interlocutor,
+      message,
+    };
+
+    this.server.in(roomId).emit('updateInterlocutor', data);
+  }
+
+  @SubscribeMessage('joinRoom')
+  handleEmitJoinRoom(
+    @MessageBody() roomIds: string[],
+    @ConnectedSocket() client: Socket,
+  ) {
+    roomIds.map((roomId) => {
+      client.join(roomId);
+    });
+    const user = this.userOnlineService.getUser(client.id);
+
+    this.logger.log(
+      `Пользователь ${user.firstname} ${user.lastname} зашел в комнату`,
+    );
+  }
+
+  @SubscribeMessage('leaveRoom')
+  handleEmitLeftRoom(
+    @MessageBody() roomIds: string[],
+    @ConnectedSocket() client: Socket,
+  ) {
+    roomIds.map((roomId) => {
+      client.leave(roomId);
+    });
+
+    const user = this.userOnlineService.getUser(client.id);
+
+    this.logger.log(
+      `Пользователь ${user.firstname} ${user.lastname} покинул комнату`,
+    );
   }
 }

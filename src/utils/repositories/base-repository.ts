@@ -2,8 +2,6 @@ import { Logger } from '@nestjs/common';
 import { Model, Connection } from 'mongoose';
 
 import { TransAction } from './transaction';
-import { HasFilterDto } from '../../utils/dto/has-filter.dto';
-import { QueryPaginationDto } from '../../utils/dto/query-pagination.dto';
 
 export abstract class BaseRepository<T> extends TransAction {
   constructor(
@@ -22,13 +20,6 @@ export abstract class BaseRepository<T> extends TransAction {
 
   // добавление нового объекта в базу данных
   abstract create(data: unknown): Promise<unknown>;
-
-  // получение всех данных, участвует в пагинации
-  abstract getAll({
-    offset,
-    limit,
-    hasFilter,
-  }: HasFilterDto & QueryPaginationDto): Promise<unknown[]>;
 
   // обновление данных в базе данных
   abstract update({

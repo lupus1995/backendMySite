@@ -25,7 +25,7 @@ export class MessageRepository extends TransAction {
       return await this.messageModel.findOne(
         { roomId },
         {},
-        { sort: { createdAt: -1 }, limit: 1 },
+        { sort: { _id: -1 }, limit: 1 },
       );
     };
 

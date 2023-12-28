@@ -16,14 +16,17 @@ export class MessageService {
     limit,
     offset,
   }: { roomId: string } & QueryPaginationDto) {
-    const messages = await this.messageRepository.getAll({
+    const data = await this.messageRepository.getAll({
       roomId,
       limit,
       offset,
       hasFilter: true,
     });
 
-    return messages.reverse();
+    return {
+      ...data,
+      messages: data.messages.reverse(),
+    };
   }
 
   async createMessage(data: MessageCreateDto) {
