@@ -19,7 +19,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "add:pre-commit": "husky add .husky/pre-commit 'npm run lint && npm run test'"
+    "add:pre-commit": "husky add .husky/pre-commit 'npm run lint && npm run test'",
+    "dump": "mongorestore -d nest ./dump/nest.gz",
+    "seeder": "node ./dist/chatWebSockets/seeder/seeder && node ./dist/blog/seeder/article-editor/seeder"
   },
   "dependencies": {
     "@faker-js/faker": "^8.1.0",

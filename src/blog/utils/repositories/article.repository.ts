@@ -5,7 +5,11 @@ import { Model, Connection } from 'mongoose';
 import { ArticlePaginationDto } from 'blog/article/dto/article-pagination.dto';
 import { CreateArticleDto } from 'blog/article/dto/article.dto';
 import { MONGOOSE_LINK_NEST } from 'src/constants';
-import { Article, ArticleDocument } from 'utils/schemas/blog/article.schema';
+import {
+  Article,
+  ArticleDocument,
+  EditorEnum,
+} from 'utils/schemas/blog/article.schema';
 
 import { SocialRepository } from './social-repository';
 
@@ -46,6 +50,8 @@ export class ArticleRepository extends SocialRepository<ArticleDocument> {
   public async create(article: CreateArticleDto): Promise<Article | void> {
     const execute = async () => {
       const model = new this.model(article);
+
+      model.editor = EditorEnum.quill;
 
       const savedModel = await model.save();
 
