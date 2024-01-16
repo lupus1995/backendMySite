@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
+import { ArticleImageService } from 'blog/utils/image/article-image.service';
+
 import { Article } from '../../../utils/schemas/blog/article.schema';
 import { ImageService } from '../../utils/image/image.service';
 import { ArticleRepository } from '../../utils/repositories/article.repository';
@@ -14,6 +16,7 @@ export class ArticleService {
   constructor(
     private articleRepository: ArticleRepository,
     private imageService: ImageService,
+    private articleImageService: ArticleImageService,
     private logger: Logger,
   ) {}
 
@@ -79,6 +82,8 @@ export class ArticleService {
 
     const model = this.articleRepository.delete(id);
 
+    this.articleImageService.deleteForlderWithImage({ id });
+
     return model;
   }
 
@@ -126,6 +131,7 @@ export class ArticleService {
     }
   }
 
+  // получение картинки для обложки статей
   async getFile({ id, size }: { id: string; size: string }) {
     const article = await this.articleRepository.findById(id);
 
@@ -134,5 +140,9 @@ export class ArticleService {
       nameImage: article.thumbnail,
       rootFolder: this.rootFolder,
     });
+  }
+
+  async uploadFile({ id, image }: { id: string; image: Express.Multer.File }) {
+    return await this.articleImageService.uploadImage({ image, id });
   }
 }

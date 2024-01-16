@@ -8,9 +8,12 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -94,6 +97,19 @@ export class ArticleController {
       id,
       createArticle: createArticleDto,
     });
+  }
+
+  @UseGuards(TokenGuard)
+  @Post(':id/upload-image')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiCreatedResponse({ description: 'Загрузка картинки для статьи' })
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    const path = await this.articleService.uploadFile({ id, image: file });
+
+    return { path };
   }
 
   @ApiOkResponse({ description: 'Получение картинки для социальных сетей' })
