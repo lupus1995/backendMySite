@@ -3,9 +3,9 @@ import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { connection } from 'mongoose';
 
+import { logger, model } from '@utils/repositories/mockData';
+import { User } from '@utils/schemas/web-sockets/user.schema';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { logger, model } from 'utils/repositories/mockData';
-import { User } from 'utils/schemas/web-sockets/user.schema';
 
 import { UserWebSocketsRepository } from './user-web-sockets.repository';
 

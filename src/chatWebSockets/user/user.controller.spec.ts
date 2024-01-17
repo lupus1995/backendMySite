@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 
-import { TokensService } from 'utils/tokens/tokens.service';
+import { TokensService } from '@utils/tokens/tokens.service';
 
 import { MessageService } from './message.service';
 import { RoomsService } from './rooms.service';

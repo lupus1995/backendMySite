@@ -2,14 +2,14 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
-import { ArticlePaginationDto } from 'blog/article/dto/article-pagination.dto';
-import { CreateArticleDto } from 'blog/article/dto/article.dto';
-import { MONGOOSE_LINK_NEST } from 'src/constants';
 import {
   Article,
   ArticleDocument,
   EditorEnum,
-} from 'utils/schemas/blog/article.schema';
+} from '@utils/schemas/blog/article.schema';
+import { ArticlePaginationDto } from 'blog/article/dto/article-pagination.dto';
+import { CreateArticleDto } from 'blog/article/dto/article.dto';
+import { MONGOOSE_LINK_NEST } from 'src/constants';
 
 import { SocialRepository } from './social-repository';
 

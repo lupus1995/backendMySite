@@ -4,6 +4,7 @@ import { Test } from '@nestjs/testing';
 import { CreateArticleDto } from 'blog/article/dto/article.dto';
 import { ImageService } from 'blog/utils/image/image.service';
 import { ArticleRepository } from 'blog/utils/repositories/article.repository';
+import { ArticleImageService } from 'src/blog/utils/image/article-image.service';
 
 import { ArticleService } from './article.service';
 
@@ -25,6 +26,11 @@ const articleRepositoryMock = jest.fn().mockReturnValue({
   getAll: jest.fn().mockReturnValue([]),
 });
 
+const articleImageServiceMock = jest.fn().mockReturnValue({
+  uploadImage: jest.fn().mockReturnValue('uploadFile'),
+  deleteForlderWithImage: jest.fn(),
+});
+
 describe('ArticleService', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -43,6 +49,10 @@ describe('ArticleService', () => {
           useValue: {
             log: jest.fn(),
           },
+        },
+        {
+          provide: ArticleImageService,
+          useFactory: articleImageServiceMock,
         },
       ],
     }).compile();
@@ -105,5 +115,14 @@ describe('ArticleService', () => {
 
     expect(articleServiceMock.getFile).toBeDefined();
     expect(result).toBe('getFile');
+  });
+
+  it('check uploadFile', async () => {
+    const result = await articleServiceMock.uploadFile(
+      {} as { id: string; image: Express.Multer.File },
+    );
+
+    expect(articleServiceMock.uploadFile).toBeDefined();
+    expect(result).toBe('uploadFile');
   });
 });

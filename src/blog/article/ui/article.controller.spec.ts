@@ -1,9 +1,9 @@
 import { CanActivate } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { TokenGuard } from '@utils/tokens/token.guard';
+import { TokensService } from '@utils/tokens/tokens.service';
 import { ArticleRepository } from 'blog/utils/repositories/article.repository';
-import { TokenGuard } from 'utils/tokens/token.guard';
-import { TokensService } from 'utils/tokens/tokens.service';
 
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
@@ -25,6 +25,7 @@ const articleServiceMock = jest.fn().mockReturnValue({
   delete: jest.fn().mockReturnValue('delete'),
   update: jest.fn().mockReturnValue('update'),
   getFile: jest.fn().mockReturnValue('getFile'),
+  uploadFile: jest.fn().mockReturnValue('uploadFile'),
 });
 
 const tokenServiceMock = jest.fn().mockReturnValue({
@@ -84,5 +85,14 @@ describe('ArticleController', () => {
   });
   it('check getFile', async () => {
     expect(await controller.getFile('123123', '11')).toBe('getFile');
+  });
+
+  it('check uploadImage', async () => {
+    expect(
+      await controller.uploadImage(
+        'file' as unknown as Express.Multer.File,
+        'id',
+      ),
+    ).toStrictEqual({ path: 'uploadFile' });
   });
 });

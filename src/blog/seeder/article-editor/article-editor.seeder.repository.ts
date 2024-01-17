@@ -2,12 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
-import { TransAction } from 'utils/repositories/transaction';
+import { TransAction } from '@utils/repositories/transaction';
 import {
   Article,
   ArticleDocument,
   EditorEnum,
-} from 'utils/schemas/blog/article.schema';
+} from '@utils/schemas/blog/article.schema';
 
 @Injectable()
 export class ArticleEditorSeederRepository extends TransAction {

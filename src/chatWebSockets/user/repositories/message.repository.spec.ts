@@ -2,9 +2,9 @@ import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
+import { connection, logger, model } from '@utils/repositories/mockData';
+import { Message } from '@utils/schemas/web-sockets/message.schema';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { connection, logger, model } from 'utils/repositories/mockData';
-import { Message } from 'utils/schemas/web-sockets/message.schema';
 
 import { MessageRepository } from './message.repository';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserDocument } from 'utils/schemas/web-sockets/user.schema';
+import { UserDocument } from '@utils/schemas/web-sockets/user.schema';
 
 @Injectable()
 export class UserOnlineService {

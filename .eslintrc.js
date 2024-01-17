@@ -55,7 +55,7 @@ module.exports = {
           ['src', './src'],
           ['blog', './src/blog'],
           ['chatWebSockets', './src/chatWebSockets'],
-          ['utils', './src/utils']
+          ['@utils', './src/utils']
         ],
         'extensions': ['.js', '.jsx', '.ts', '.tsx']
       }

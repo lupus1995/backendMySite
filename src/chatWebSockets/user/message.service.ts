@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { QueryPaginationDto } from 'utils/dto/query-pagination.dto';
-import { MessageDocument } from 'utils/schemas/web-sockets/message.schema';
+import { QueryPaginationDto } from '@utils/dto/query-pagination.dto';
+import { MessageDocument } from '@utils/schemas/web-sockets/message.schema';
 
 import { MessageRepository } from './repositories/message.repository';
 

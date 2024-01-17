@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 
+import { ResponseService } from '@utils/response/response.service';
+import { TokensService } from '@utils/tokens/tokens.service';
 import { AuthInterface } from 'auth/auth-interface';
 import { LoginWebSocket } from 'auth/dto/login-web-sockets.dto';
 import { SignUpWebSocketsI } from 'auth/dto/sign-up-web-sockets.dto';
 import { UserWebSocketsRepository } from 'auth/repositories/user-web-sockets.repository';
-import { ResponseService } from 'utils/response/response.service';
-import { TokensService } from 'utils/tokens/tokens.service';
 
 import { AuthWebSocketsValidateService } from './auth-web-sockets-validate.service';
 

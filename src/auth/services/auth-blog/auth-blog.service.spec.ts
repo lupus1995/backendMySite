@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 
+import { ResponseService } from '@utils/response/response.service';
+import { TokensService } from '@utils/tokens/tokens.service';
 import { UserBlogRepository } from 'auth/repositories/user-blog.repository';
 import { SignUpBlogInterface } from 'src/auth/dto/sign-up-blog.dto';
-import { ResponseService } from 'utils/response/response.service';
-import { TokensService } from 'utils/tokens/tokens.service';
 
 import { AuthBlogFindDataService } from './auth-blog-find-data.service';
 import { AuthBlogValidateService } from './auth-blog-validate.service';

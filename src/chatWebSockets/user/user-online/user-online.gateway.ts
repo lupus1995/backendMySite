@@ -11,8 +11,8 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { UserDocument } from 'utils/schemas/web-sockets/user.schema';
-import { TokensService } from 'utils/tokens/tokens.service';
+import { UserDocument } from '@utils/schemas/web-sockets/user.schema';
+import { TokensService } from '@utils/tokens/tokens.service';
 
 import { UserOnlineService } from './user-online.service';
 import { MessageService } from '../message.service';

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { RoomsDocument } from 'utils/schemas/web-sockets/rooms.schema';
+import { RoomsDocument } from '@utils/schemas/web-sockets/rooms.schema';
 import {
   User,
   UserDocument,
   UserType,
-} from 'utils/schemas/web-sockets/user.schema';
+} from '@utils/schemas/web-sockets/user.schema';
 
 import { RegistrationDto } from './dto/registration.dto';
 import { UserRuleRepository } from './repositories/user-rule.repository';

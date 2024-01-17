@@ -107,7 +107,7 @@
       "^auth(.*)$": "<rootDir>/auth/$1",
       "^blog(.*)$": "<rootDir>/blog/$1",
       "^chatWebSockets(.*)$": "<rootDir>/chatWebSockets/$1",
-      "^utils(.*)$": "<rootDir>/utils/$1"
+      "^@utils(.*)$": "<rootDir>/utils/$1"
     }
   }
 }
