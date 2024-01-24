@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 
-import { TokensService } from 'utils/tokens/tokens.service';
+import { TokensService } from '@utils/tokens/tokens.service';
 
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';

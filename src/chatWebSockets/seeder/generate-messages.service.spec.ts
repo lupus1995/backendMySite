@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
-import { logger } from 'utils/repositories/mockData';
+import { logger } from '@utils/repositories/mockData';
 
 import { GenerateMessageService } from './generate-messages.service';
 import { MessageRepository } from './repositories/messages.repository';

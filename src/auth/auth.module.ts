@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 
-import { ResponseModule } from 'utils/response/response.module';
-import { TokensModule } from 'utils/tokens/tokens.module';
+import { ResponseModule } from '@utils/response/response.module';
+import { TokensModule } from '@utils/tokens/tokens.module';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';

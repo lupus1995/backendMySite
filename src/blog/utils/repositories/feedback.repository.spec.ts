@@ -2,9 +2,9 @@ import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
 
+import { connection, model, logger } from '@utils/repositories/mockData';
+import { Feedback } from '@utils/schemas/blog/feedback.schema';
 import { MONGOOSE_LINK_NEST } from 'src/constants';
-import { connection, model, logger } from 'utils/repositories/mockData';
-import { Feedback } from 'utils/schemas/blog/feedback.schema';
 
 import { FeedbackRepository } from './feedback.repository';
 

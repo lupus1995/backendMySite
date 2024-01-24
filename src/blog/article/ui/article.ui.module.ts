@@ -6,10 +6,11 @@ import { TokensModule } from 'src/utils/tokens/tokens.module';
 
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
+import { DictionariesController } from './dictionaries.controller';
 
 @Module({
   imports: [TokensModule, RepositoriesModule, ImageModule],
   providers: [ArticleService],
-  controllers: [ArticleController],
+  controllers: [ArticleController, DictionariesController],
 })
 export class ArticleUIModule {}

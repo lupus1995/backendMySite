@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 
+import { ResponseService } from '@utils/response/response.service';
+import { TokensService } from '@utils/tokens/tokens.service';
 import { SignUpWebSocketsI } from 'auth/dto/sign-up-web-sockets.dto';
 import { UserWebSocketsRepository } from 'auth/repositories/user-web-sockets.repository';
-import { ResponseService } from 'utils/response/response.service';
-import { TokensService } from 'utils/tokens/tokens.service';
 
 import { AuthWebSocketsValidateService } from './auth-web-sockets-validate.service';
 import { AuthWebSocketsService } from './auth-web-sockets.service';

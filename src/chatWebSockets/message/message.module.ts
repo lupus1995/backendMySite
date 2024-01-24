@@ -1,8 +1,8 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { TokensModule } from '@utils/tokens/tokens.module';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { TokensModule } from 'utils/tokens/tokens.module';
 
 import { MessageController } from './message.controller';
 import { MessageRepository } from './message.repository';

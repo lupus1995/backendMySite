@@ -2,9 +2,9 @@ import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { connection, logger, model } from '@utils/repositories/mockData';
+import { User } from '@utils/schemas/blog/user.schema';
 import { MONGOOSE_LINK_NEST } from 'src/constants';
-import { connection, logger, model } from 'utils/repositories/mockData';
-import { User } from 'utils/schemas/blog/user.schema';
 
 import { UserRepository } from './user.repository';
 

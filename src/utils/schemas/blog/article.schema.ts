@@ -3,6 +3,13 @@ import { Document } from 'mongoose';
 
 import { Language } from './language.schema';
 
+export enum EditorEnum {
+  wysiwyg = 'wysiwyg',
+  quill = 'Quill',
+}
+
+export type EditorType = EditorEnum.quill | EditorEnum.wysiwyg;
+
 export type ArticleDocument = Article & Document;
 
 @Schema()
@@ -18,6 +25,9 @@ export class Article {
 
   @Prop()
   text: Language;
+
+  @Prop()
+  editor: EditorType;
 
   @Prop()
   createdAt: Date;

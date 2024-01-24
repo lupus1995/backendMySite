@@ -4,8 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { addDays, subDays } from 'date-fns';
 import { Model, Connection } from 'mongoose';
 
+import { TokensService } from '@utils/tokens/tokens.service';
 import { ArticleRepository } from 'blog/utils/repositories/article.repository';
-import { TokensService } from 'utils/tokens/tokens.service';
 
 import { ArticleGuard } from './article.guard';
 

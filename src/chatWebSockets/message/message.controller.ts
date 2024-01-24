@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
+import { TokenGuard } from '@utils/tokens/token.guard';
 import { QueryPaginationDto } from 'src/utils/dto/query-pagination.dto';
-import { TokenGuard } from 'utils/tokens/token.guard';
 
 import { MessageCreateDto } from './dto/message.create.dto';
 import { MessageDto } from './dto/message.dto';

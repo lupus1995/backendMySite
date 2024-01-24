@@ -2,9 +2,9 @@ import { Logger } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 
+import { connection, logger, model } from '@utils/repositories/mockData';
+import { Rooms } from '@utils/schemas/web-sockets/rooms.schema';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
-import { connection, logger, model } from 'utils/repositories/mockData';
-import { Rooms } from 'utils/schemas/web-sockets/rooms.schema';
 
 import { RoomsRepository } from './rooms.repository';
 

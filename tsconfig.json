@@ -23,7 +23,7 @@
       "auth/*": ["./src/auth/*"],
       "blog/*": ["./src/blog/*"],
       "chatWebSockets/*": ["./src/chatWebSockets/*"],
-      "utils/*": ["./src/utils/*"],
+      "@utils/*": ["./src/utils/*"],
     }
   }
 }
