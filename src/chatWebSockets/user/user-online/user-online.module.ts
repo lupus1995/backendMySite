@@ -6,6 +6,7 @@ import { USER } from '@utils/schemas/web-sockets/user.schema';
 import { TokensModule } from '@utils/tokens/tokens.module';
 import { MONGOOSE_LINK_SOCKETS } from 'src/constants';
 
+import { PeerToPeerGateway } from './peer-to-peer.gateway';
 import { UserOnlineGateway } from './user-online.gateway';
 import { UserOnlineService } from './user-online.service';
 import { MessageService } from '../message.service';
@@ -26,6 +27,7 @@ import { UserService } from '../user.service';
     Logger,
     UserService,
     UserOnlineGateway,
+    PeerToPeerGateway,
     UserOnlineService,
     MessageService,
     MessageRepository,
