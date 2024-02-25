@@ -1,74 +1,33 @@
 import { Logger } from '@nestjs/common';
 import {
-  ConnectedSocket,
   MessageBody,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
 
-import { UserDocument } from '@utils/schemas/web-sockets/user.schema';
 import { TokensService } from '@utils/tokens/tokens.service';
 
+import { UserOnlineRootGateway } from './user-online-root.gateway';
 import { UserOnlineService } from './user-online.service';
 import { MessageService } from '../message.service';
 import { UserService } from '../user.service';
 
 @WebSocketGateway(5000, { namespace: '/user-online', cors: true })
-export class UserOnlineGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class UserOnlineGateway extends UserOnlineRootGateway {
   constructor(
-    private logger: Logger,
-    private readonly tokensService: TokensService,
-    private userService: UserService,
-    private userOnlineService: UserOnlineService,
-    private messageService: MessageService,
-  ) {}
-
-  handleDisconnect(client: Socket) {
-    const user = this.userOnlineService.getUser(client.id);
-    this.logger.log(
-      `Пользователь отключился ${user.firstname} ${user.lastname} от чата`,
+    protected logger: Logger,
+    protected readonly tokensService: TokensService,
+    protected userService: UserService,
+    protected userOnlineService: UserOnlineService,
+    protected messageService: MessageService,
+  ) {
+    super(
+      logger,
+      tokensService,
+      userService,
+      userOnlineService,
+      messageService,
     );
-    this.userOnlineService.deleteUser(client.id);
-
-    this.handleEmitOnline();
-  }
-  afterInit() {
-    this.logger.log('Server initilazed');
-  }
-  async handleConnection(client: Socket) {
-    const token = client.handshake.auth.authorization;
-    if (this.tokensService.checkToken({ token })) {
-      const username = this.tokensService.getUserNameByToken(token);
-      const activeUser: UserDocument = await this.userService.findByUsername({
-        username,
-      });
-      this.userOnlineService.setUser({ id: client.id, user: activeUser });
-      this.logger.log(
-        `Пользователь подключился ${activeUser.firstname} ${activeUser.lastname} к чату`,
-      );
-
-      this.handleEmitOnline();
-    } else {
-      client.disconnect();
-    }
-  }
-
-  @WebSocketServer()
-  server: Server;
-
-  handleEmitOnline() {
-    const usersIsOnline: UserDocument[] = [];
-    this.userOnlineService.users.forEach((user) => {
-      return usersIsOnline.push(user);
-    });
-    this.server.emit('online', usersIsOnline);
   }
 
   @SubscribeMessage('updateInterlocutor')
@@ -86,36 +45,5 @@ export class UserOnlineGateway
     };
 
     this.server.in(roomId).emit('updateInterlocutor', data);
-  }
-
-  @SubscribeMessage('joinRoom')
-  handleEmitJoinRoom(
-    @MessageBody() roomIds: string[],
-    @ConnectedSocket() client: Socket,
-  ) {
-    roomIds.map((roomId) => {
-      client.join(roomId);
-    });
-    const user = this.userOnlineService.getUser(client.id);
-
-    this.logger.log(
-      `Пользователь ${user.firstname} ${user.lastname} зашел в комнату`,
-    );
-  }
-
-  @SubscribeMessage('leaveRoom')
-  handleEmitLeftRoom(
-    @MessageBody() roomIds: string[],
-    @ConnectedSocket() client: Socket,
-  ) {
-    roomIds.map((roomId) => {
-      client.leave(roomId);
-    });
-
-    const user = this.userOnlineService.getUser(client.id);
-
-    this.logger.log(
-      `Пользователь ${user.firstname} ${user.lastname} покинул комнату`,
-    );
   }
 }
